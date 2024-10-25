@@ -77,6 +77,12 @@ int Node::next_ID = 0;
 class NeuralNetwork {
     public:
         NeuralNetwork(int iNode_count=1, int hLayer_count=1, int hNode_count=1, int oNode_count=1) {
+            // Assign Variables
+            input_node_count = iNode_count;
+            hidden_layer_count = hLayer_count;
+            hidden_node_count = hNode_count;
+            output_node_count = oNode_count;
+
             // Randomize
             srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -84,33 +90,28 @@ class NeuralNetwork {
             for(int n=0; n<iNode_count; n++) {
                 Node newInputNode(0);
                 allNodes.push_back(newInputNode);
-                input_layer_nodes.push_back(&allNodes.back());
-                //cout << "added node " << newInputNode.ID << " to input layer " << Node::last_layer << endl;
             }
             Node::last_layer += 1;
+
             // Hidden Layer
             for (int l = 0; l < hLayer_count; l++) {
                 for (int n = 0; n < hNode_count; n++) {
                     Node newHiddenNode(Node::last_layer);
                     allNodes.push_back(newHiddenNode);
-                    hidden_layer_nodes.push_back(&allNodes.back());
-                    //cout << "added node " << newHiddenNode.ID << " to hidden layer " << Node::last_layer << endl;
                 }
                 Node::last_layer += 1;
             }
+
             // Output Layer
             for(int n=0; n<oNode_count; n++) {
                 Node newOutputNode(Node::last_layer);
                 allNodes.push_back(newOutputNode);
-                output_layer_nodes.push_back(&  allNodes.back());
-                //cout << "added node " << newOutputNode.ID << " to output layer " << Node::last_layer << endl;
             }
 
             cout << "THIS NN HAS " << Node::last_layer << "(" << Node::last_layer+1 << ")" << " LAYERS" << endl;
 
             // Make Connections
             int current_layer = 0;
-
             while (current_layer < Node::last_layer) {
                 cout << "MAKING CONNECTIONS FOR LAYER " << current_layer << endl;
                 vector<Node*> startNodes;
@@ -162,12 +163,8 @@ class NeuralNetwork {
         void run_network(vector<float> inputs) {
             cout << "RUNNING NETWORK" << endl;
 
-            if (inputs.size() != input_layer_nodes.size()) {
-                cout << "| ERROR - INPUT SIZE MISMATCH. Expected " << input_layer_nodes.size() << ", but got " << inputs.size() << "." << endl;
-                return; // Exit early to prevent further errors
-            }
             // Set Activations of Input Layer
-            cout << "NODE INPUTS: " << input_layer_nodes.size() << endl;
+            cout << "NODE INPUTS: " << input_node_count << endl;
 
             int inputIndex = 0;
             for (auto& node : allNodes) {
@@ -191,16 +188,20 @@ class NeuralNetwork {
                 }
                 current_layer++;
             }
-            for(auto &node : output_layer_nodes) {
-                cout << "OUTPUT OF NODE " << node->ID << ": " << node->activation_value << endl;
+            for(auto &node : allNodes) {
+                if(node.layer == Node::last_layer) {
+                    cout << "OUTPUT OF NODE " << node.ID << ": " << node.activation_value << endl;
+                }
             }
         }
 
     private:
         vector<Node> allNodes;
-        vector<Node*> input_layer_nodes;
-        vector<Node*> hidden_layer_nodes;
-        vector<Node*> output_layer_nodes;
+
+        int input_node_count;
+        int hidden_layer_count;
+        int hidden_node_count; //per layer
+        int output_node_count;
 };
 
 double getRandom(double min, double max) {
@@ -214,3 +215,9 @@ double LeakyReLU(double x, float bias) {
         return x*0.01f;
     }
 }
+
+//NEXT
+//save start and end of each layer
+//so when iterating we can save time
+//
+//might not be worth it but who knows
