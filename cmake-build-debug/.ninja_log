@@ -1,0 +1,5 @@
+# ninja log v5
+501	598	7515181447737201	NeuralNetworkTest.exe	683180cdb804dd80
+3	498	7515181446777924	CMakeFiles/NeuralNetworkTest.dir/main.cpp.obj	e637f3b2e7bc0989
+3	500	7515699562595102	CMakeFiles/NeuralNetworkTest.dir/main.cpp.obj	a9bed0aae09a5561
+501	596	7515699563515161	NeuralNetworkTest.exe	683180cdb804dd80
