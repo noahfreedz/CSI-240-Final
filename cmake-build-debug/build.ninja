@@ -49,8 +49,8 @@ cmake_ninja_workdir = C$:/Users/nfree/OneDrive/Desktop/CSI-240-Final/cmake-build
 
 build cmake_object_order_depends_target_NeuralNetworkTest: phony || CMakeFiles/NeuralNetworkTest.dir
 
-build CMakeFiles/NeuralNetworkTest.dir/main.cpp.obj: CXX_COMPILER__NeuralNetworkTest_unscanned_Debug C$:/Users/nfree/OneDrive/Desktop/CSI-240-Final/main.cpp || cmake_object_order_depends_target_NeuralNetworkTest
-  DEP_FILE = CMakeFiles\NeuralNetworkTest.dir\main.cpp.obj.d
+build CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj: CXX_COMPILER__NeuralNetworkTest_unscanned_Debug C$:/Users/nfree/OneDrive/Desktop/CSI-240-Final/neural_network.cpp || cmake_object_order_depends_target_NeuralNetworkTest
+  DEP_FILE = CMakeFiles\NeuralNetworkTest.dir\neural_network.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -Ic:/SFML/include -isystem C:/SFML/include
   OBJECT_DIR = CMakeFiles\NeuralNetworkTest.dir
@@ -64,7 +64,7 @@ build CMakeFiles/NeuralNetworkTest.dir/main.cpp.obj: CXX_COMPILER__NeuralNetwork
 #############################################
 # Link the executable NeuralNetworkTest.exe
 
-build NeuralNetworkTest.exe: CXX_EXECUTABLE_LINKER__NeuralNetworkTest_Debug CMakeFiles/NeuralNetworkTest.dir/main.cpp.obj | C$:/SFML/lib/libsfml-graphics-d.a C$:/SFML/lib/libsfml-window-d.a C$:/SFML/lib/libsfml-system-d.a
+build NeuralNetworkTest.exe: CXX_EXECUTABLE_LINKER__NeuralNetworkTest_Debug CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj | C$:/SFML/lib/libsfml-graphics-d.a C$:/SFML/lib/libsfml-window-d.a C$:/SFML/lib/libsfml-system-d.a
   FLAGS = -g
   LINK_LIBRARIES = C:/SFML/lib/libsfml-graphics-d.a  C:/SFML/lib/libsfml-window-d.a  C:/SFML/lib/libsfml-system-d.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\NeuralNetworkTest.dir

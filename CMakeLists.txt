@@ -10,7 +10,7 @@ set(SFML_DIR "C:/SFML/lib/cmake/SFML")
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 # Add executable before linking
-add_executable(NeuralNetworkTest main.cpp main.h
+add_executable(NeuralNetworkTest neural_network.cpp neural_network.h
         window.h)
 
 # Link SFML libraries

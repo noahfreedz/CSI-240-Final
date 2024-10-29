@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "main.h"
+#include "neural_network.h"
 #include "window.h"
 #include <SFML/Graphics.hpp>
 

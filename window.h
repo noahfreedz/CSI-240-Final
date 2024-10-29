@@ -10,7 +10,7 @@
 #include <chrono>
 #include <thread>
 #include <SFML/Graphics.hpp>
-#include "main.h"
+#include "neural_network.h"
 
 using namespace std;
 
