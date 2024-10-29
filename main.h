@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -76,7 +77,10 @@ int Node::next_ID = 0;
 
 class NeuralNetwork {
     public:
+        vector<Node> allNodes;
+
         NeuralNetwork(int iNode_count=1, int hLayer_count=1, int hNode_count=1, int oNode_count=1) {
+
             // Assign Variables
             input_node_count = iNode_count;
             hidden_layer_count = hLayer_count;
@@ -113,7 +117,7 @@ class NeuralNetwork {
             // Make Connections
             int current_layer = 0;
             while (current_layer < Node::last_layer) {
-                cout << "MAKING CONNECTIONS FOR LAYER " << current_layer << endl;
+                //cout << "MAKING CONNECTIONS FOR LAYER " << current_layer << endl;
                 vector<Node*> startNodes;
                 vector<Node*> endNodes;
 
@@ -148,14 +152,14 @@ class NeuralNetwork {
 
             // Print Out All Connections
             for (auto& node : allNodes) {
-                cout << "NODE ID: " << node.ID << ", LAYER: " << node.layer << ", BIAS: " << node.bias << endl;
+                //cout << "NODE ID: " << node.ID << ", LAYER: " << node.layer << ", BIAS: " << node.bias << endl;
                 for (const auto& connection : node.forward_connections) {
-                    cout << "  Forward Connection to Node ID: " << connection.end_id
-                         << " with initial weight: " << connection.weight << endl;
+                    //cout << "  Forward Connection to Node ID: " << connection.end_id
+                    //     << " with initial weight: " << connection.weight << endl;
                 }
                 for (const auto& connection : node.backward_connections) {
-                    cout << "  Backward Connection from Node ID: " << connection.start_id
-                         << " with initial weight: " << connection.weight << endl;
+                    //cout << "  Backward Connection from Node ID: " << connection.start_id
+                    //     << " with initial weight: " << connection.weight << endl;
                 }
             }
         }
@@ -164,22 +168,22 @@ class NeuralNetwork {
             cout << "RUNNING NETWORK" << endl;
 
             // Set Activations of Input Layer
-            cout << "NODE INPUTS: " << input_node_count << endl;
+            //cout << "NODE INPUTS: " << input_node_count << endl;
 
             int inputIndex = 0;
             for (auto& node : allNodes) {
                 if (node.layer == 0) {
                     node.setActivationValue(inputs[inputIndex]);
-                    cout << "NODE ID: " << node.ID << " SET TO " << inputs[inputIndex] << endl;
+                    //cout << "NODE ID: " << node.ID << " SET TO " << inputs[inputIndex] << endl;
                     inputIndex++;
                 }
             }
 
             // Starting with 2nd Layer, Calculate Activations
             int current_layer = 1;
-            cout << " -- CALCULATING ACTIVATIONS -- " << endl;
+            //cout << " -- CALCULATING ACTIVATIONS -- " << endl;
             while (current_layer <= Node::last_layer) {
-                cout << "CALCULATING LAYER " << current_layer << endl;
+                //cout << "CALCULATING LAYER " << current_layer << endl;
                 for (auto &node: allNodes) {
                     int layer = node.layer;
                     if (layer == current_layer) {
@@ -195,8 +199,18 @@ class NeuralNetwork {
             }
         }
 
+        int nodes_in_layer(int layer) {
+            int count = 0;
+            for(auto &node : allNodes) {
+                if (node.layer == layer) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        
     private:
-        vector<Node> allNodes;
+
 
         int input_node_count;
         int hidden_layer_count;

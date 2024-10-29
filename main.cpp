@@ -2,17 +2,16 @@
 #include <cstdlib>
 #include <ctime>
 #include "main.h"
+#include "window.h"
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
 int main() {
     cout << "STARTING MAIN" << endl;
 
-    NeuralNetwork myNN(3, 2, 2, 2);
+    NeuralNetwork myNN(3, 3, 5, 3);
 
-    vector<float> inputs;
-    for(int i = 0; i < 3; i++) {
-        inputs.push_back((static_cast<double>(rand()) / RAND_MAX) * 2.0 - 1.0);
-    }
-    myNN.run_network(inputs);
+    Visualizer visualizer(800, 600, "SFML Window Example", myNN);
+    visualizer.run();
 }

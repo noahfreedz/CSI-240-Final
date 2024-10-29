@@ -251,6 +251,12 @@ NeuralNetworkTest_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 NeuralNetworkTest_SOURCE_DIR:STATIC=C:/Users/nfree/OneDrive/Desktop/CSI-240-Final
 
+//The directory containing a CMake configuration file for SFML.
+SFML_DIR:PATH=SFML_DIR-NOTFOUND
+
+//Path to a file.
+SFML_DOC_DIR:PATH=SFML_DOC_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries
