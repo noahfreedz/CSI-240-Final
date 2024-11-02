@@ -10,7 +10,7 @@ using namespace std;
 int main() {
     cout << "STARTING MAIN" << endl;
 
-    NeuralNetwork myNN(3, 3, 5, 3);
+    NeuralNetwork myNN(8, 5, 5, 3);
 
     Visualizer visualizer(800, 600, "SFML Window Example", myNN);
     visualizer.run();

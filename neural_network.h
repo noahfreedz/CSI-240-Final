@@ -64,7 +64,9 @@ class Node {
                 activation_value = LeakyReLU(connection_total, bias);
             } else if (layer == last_layer) {
                 // Otherwise use TanH for output
-                activation_value = tanh(connection_total + bias);
+                activation_value = tanh(connection_total - bias);
+                //messing up?
+                //activation_value = LeakyReLU(connection_total, bias);
             } else {
                 cout << "| ERROR - NODE LAYER IS OUTSIDE NEURAL NETWORK" << endl;
             }

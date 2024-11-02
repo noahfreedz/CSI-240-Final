@@ -27,14 +27,14 @@ class Visualizer {
         void run() {
             while (window.isOpen()) {
                 vector<float> inputs;
-                for(int i = 0; i < 3; i++) {
+                for(int i = 0; i < 8; i++) {
                     inputs.push_back((static_cast<double>(rand()) / RAND_MAX) * 2.0 - 1.0);
                 }
                 network->run_network(inputs);
                 handle_events();
                 update();
                 render();
-                this_thread::sleep_for(std::chrono::seconds(1));
+                this_thread::sleep_for(std::chrono::milliseconds(500));
             }
         }
 
@@ -72,6 +72,53 @@ class Visualizer {
         float min_circle_radius = std::min(window_width / (2 * total_layers), window_height / (2 * max_nodes_in_layer + 1));
         float circle_radius = std::min(min_circle_radius, 10.0f);
 
+        // Draw connections first
+        for (const auto& node : network->allNodes) {
+            for (const auto& connection : node.forward_connections) {
+                // Calculate start and end positions
+                sf::Vector2f start_pos(
+                        x_padding + node.layer * x_layer_spacing,
+                        (window_height / 2) - ((network->nodes_in_layer(node.layer) - 1)
+                        * (window_height / (network->nodes_in_layer(node.layer) + 1)) / 2)
+                        + (node.ID % network->nodes_in_layer(node.layer))
+                        * (window_height / (network->nodes_in_layer(node.layer) + 1))
+                );
+
+                sf::Vector2f end_pos(
+                        x_padding + connection.end_address->layer * x_layer_spacing,
+                        (window_height / 2) - ((network->nodes_in_layer(connection.end_address->layer) - 1)
+                        * (window_height / (network->nodes_in_layer(connection.end_address->layer) + 1)) / 2)
+                        + (connection.end_address->ID % network->nodes_in_layer(connection.end_address->layer))
+                        * (window_height / (network->nodes_in_layer(connection.end_address->layer) + 1))
+                );
+
+                //make line color green if positive and red if negative
+                sf::Color line_color = connection.weight > 0 ? sf::Color(0, 255, 0) : sf::Color(255, 0, 0);
+                float weight_magnitude = abs(connection.weight);
+                line_color.a = static_cast<sf::Uint8>(max(64.0f, weight_magnitude * 255.0f));
+
+                float line_thickness = 1.0f + weight_magnitude * 2.0f;
+
+                sf::VertexArray line(sf::Quads, 4);
+
+                sf::Vector2f direction = end_pos - start_pos;
+                sf::Vector2f unit_direction = direction / std::sqrt(direction.x * direction.x + direction.y * direction.y);
+                sf::Vector2f perpendicular(-unit_direction.y, unit_direction.x);
+
+                line[0].position = start_pos + perpendicular * (line_thickness / 2.0f);
+                line[1].position = start_pos - perpendicular * (line_thickness / 2.0f);
+                line[2].position = end_pos - perpendicular * (line_thickness / 2.0f);
+                line[3].position = end_pos + perpendicular * (line_thickness / 2.0f);
+
+                for (int i = 0; i < 4; ++i) {
+                    line[i].color = line_color;
+                }
+
+                window.draw(line);
+            }
+        }
+
+        // Draw nodes
         for (int layer = 0; layer < total_layers; ++layer) {
             int nodes_in_layer = network->nodes_in_layer(layer);
             float x_pos = x_padding + layer * x_layer_spacing;

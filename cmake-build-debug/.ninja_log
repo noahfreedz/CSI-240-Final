@@ -1,6 +1,23 @@
 # ninja log v5
 3	705	7519141124770473	CMakeFiles/NeuralNetworkTest.dir/main.cpp.obj	86b584349e341812
-705	864	7519141126310720	NeuralNetworkTest.exe	2bf1627d51aa93bd
-1	214	7519143900828743	build.ninja	579cb0b4845edd68
-1	735	7519143908571371	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
 736	863	7519143909807409	NeuralNetworkTest.exe	7c8d087f26c9b31e
+1	214	7519211049653434	build.ninja	579cb0b4845edd68
+1	735	7519143908571371	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+3	603	7519215764270591	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+603	730	7519215765499970	NeuralNetworkTest.exe	7c8d087f26c9b31e
+3	603	7519218819535199	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+603	718	7519218820650386	NeuralNetworkTest.exe	7c8d087f26c9b31e
+3	605	7519222038258364	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+606	723	7519222039376989	NeuralNetworkTest.exe	7c8d087f26c9b31e
+3	646	7519227925241406	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+646	771	7519227926446539	NeuralNetworkTest.exe	7c8d087f26c9b31e
+3	632	7519229386195775	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+632	749	7519229387324143	NeuralNetworkTest.exe	7c8d087f26c9b31e
+4	629	7519229561433676	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+630	742	7519229562510640	NeuralNetworkTest.exe	7c8d087f26c9b31e
+3	624	7519231374343605	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+624	742	7519231375480389	NeuralNetworkTest.exe	7c8d087f26c9b31e
+3	696	7519248623165244	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+696	855	7519248624709517	NeuralNetworkTest.exe	7c8d087f26c9b31e
+3	666	7519249030159808	CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj	66077c045085ab1f
+666	786	7519249031307804	NeuralNetworkTest.exe	7c8d087f26c9b31e
