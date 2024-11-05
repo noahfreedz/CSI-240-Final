@@ -212,40 +212,77 @@ class NeuralNetwork {
             }
             return count;
         }
+        int getPositionInLayer(int nodeId, int layer)
+        {
+            int nodelayerCount = 0;
+            for(auto node: allNodes)
+            {
+                if(node.layer == layer)
+                {
+                    nodelayerCount++;
+                    if(node.ID == nodeId)
+                    {
+                        return nodelayerCount;
+                    }
+                }
+            }
+
+            return -1;
+
+        }
 
         int costFuniton()
         {
 
         }
 
-        void backPropigation()
+        void backPropigation(int correctNode)
         {
             // defines the cost and we keep evething for future need
             float Cost = 0;
             float Y = 0;
-            vector<float> activations;
+            vector<pair<float, Node>> activations;
+            vector<float> newWeights;
             for(int i = Node::last_layer; 0 < i ; i--)
             {
-                // L means Layer, Z is the wieght, bais, and leaky, A is activation 1 mean -1 just cant define a -
+                // L means Layer, Z is the weight, bais, and leaky, A is activation 1 mean -1 just cant define a -
                 // B is bias
                 float ZL = 0;
                 float AL = 0;
                 float AL1 = 0;
                 float BL = 0;
                 // i starts as the output layer i -1  is the layer we are checking the weight for
-                for(const auto upperNode: allNodes) {
+                for(auto upperNode: allNodes) {
+                    double outputNodeValue = 0.0;
+                    Node* correct = nullptr;
                     if (upperNode.layer == i) {
-                        cout << "Test Print for each node Node Id:" << upperNode.ID << "Layer :" << i << endl;
+                        if(i == Node::last_layer)
+                        {
+                            int nodePos = getPositionInLayer(upperNode.ID, i);
+                            if(nodePos == correctNode)
+                            {
+                                activations.push_back(make_pair(1.0, upperNode));
+                            }
+                            else
+                            {
+                                activations.push_back(make_pair(0.0, upperNode));
+                            }
+
+                        }
+
+                        cout << "Test Print for each node Node Id: " << upperNode.ID << " Layer :" << i << endl;
+
                         vector<Node::connection> backwardConnections = upperNode.backward_connections;
                         double connection_total = 0;
 
+                        // deffines ZL
                         for (auto &connection: backwardConnections) {
                             // Add the activation value and the connection weight
                             connection_total += connection.start_address->activation_value * connection.weight;
                         }
                         if (i > 0 && i < Node::last_layer) {
                             // Use Leaky Rectified Linear Unit for Hidden Layers
-                            ZL = LeakyReLU(connection_total, upperNode.bias);
+                             ZL = LeakyReLU(connection_total, upperNode.bias);
 
                         }
                         else if (i == Node::last_layer) {
@@ -255,6 +292,15 @@ class NeuralNetwork {
 
 
                         }
+
+                        int targetValue = 0;
+                        for()
+
+                        //for output node
+                        outputNodeValue = upperNode.activation_value*(1-upperNode.activation_value)*(targetValue)
+
+
+
                     }
                 }
 
