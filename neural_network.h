@@ -23,6 +23,7 @@ class Node {
         int layer;
         float bias;
         float activation_value;
+        float nodeErrorTerm;
 
         // Constructor
         Node(int node_layer) : activation_value(0.0f){
@@ -33,6 +34,8 @@ class Node {
             next_ID++;
             // Set Random Bias
             bias = getRandom(-15.0, 15.0);
+            nodeErrorTerm = NULL;
+
         }
 
         // Node Connection Struct
@@ -247,12 +250,12 @@ class NeuralNetwork {
             {
                 // L means Layer, Z is the weight, bais, and leaky, A is activation 1 mean -1 just cant define a -
                 // B is bias
-                float ZL = 0;
-                float AL = 0;
-                float AL1 = 0;
-                float BL = 0;
+                double ZL = 0;
+                double AL = 0;
+                double AL1 = 0;
+                double BL = 0;
                 // i starts as the output layer i -1  is the layer we are checking the weight for
-                for(auto upperNode: allNodes) {
+                for(const auto& upperNode: allNodes) {
                     double outputNodeValue = 0.0;
                     Node* correct = nullptr;
                     if (upperNode.layer == i) {
@@ -280,7 +283,7 @@ class NeuralNetwork {
                             // Add the activation value and the connection weight
                             connection_total += connection.start_address->activation_value * connection.weight;
                         }
-                        if (i > 0 && i < Node::last_layer) {
+                        if (i < Node::last_layer) {
                             // Use Leaky Rectified Linear Unit for Hidden Layers
                              ZL = LeakyReLU(connection_total, upperNode.bias);
 
@@ -293,11 +296,17 @@ class NeuralNetwork {
 
                         }
 
-                        int targetValue = 0;
-                        for()
+                        float targetValue = 0.0;
+                        for(const auto& targetNode: activations)
+                        {
+                            if(targetNode.second.ID == upperNode.ID)
+                            {
+                                targetValue = targetNode.first - targetNode.second.activation_value;
+                            }
+                        }
 
                         //for output node
-                        outputNodeValue = upperNode.activation_value*(1-upperNode.activation_value)*(targetValue)
+                        outputNodeValue = upperNode.activation_value*(1-upperNode.activation_value)*(targetValue);
 
 
 
