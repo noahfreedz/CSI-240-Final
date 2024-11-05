@@ -6,12 +6,14 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 
 using namespace std;
 
 double getRandom(double min, double max);
 double LeakyReLU(double x, float bias);
+double LeakyReLUDerivative(double x, float bias);
+double tanhDerivative(double z);
 
 class Node {
     public:
@@ -210,10 +212,56 @@ class NeuralNetwork {
             }
             return count;
         }
+
+        int costFuniton()
+        {
+
+        }
+
+        void backPropigation()
+        {
+            // defines the cost and we keep evething for future need
+            float Cost = 0;
+            float Y = 0;
+            vector<float> activations;
+            for(int i = Node::last_layer; 0 < i ; i--)
+            {
+                // L means Layer, Z is the wieght, bais, and leaky, A is activation 1 mean -1 just cant define a -
+                // B is bias
+                float ZL = 0;
+                float AL = 0;
+                float AL1 = 0;
+                float BL = 0;
+                // i starts as the output layer i -1  is the layer we are checking the weight for
+                for(const auto upperNode: allNodes) {
+                    if (upperNode.layer == i) {
+                        cout << "Test Print for each node Node Id:" << upperNode.ID << "Layer :" << i << endl;
+                        vector<Node::connection> backwardConnections = upperNode.backward_connections;
+                        double connection_total = 0;
+
+                        for (auto &connection: backwardConnections) {
+                            // Add the activation value and the connection weight
+                            connection_total += connection.start_address->activation_value * connection.weight;
+                        }
+                        if (i > 0 && i < Node::last_layer) {
+                            // Use Leaky Rectified Linear Unit for Hidden Layers
+                            ZL = LeakyReLU(connection_total, upperNode.bias);
+
+                        }
+                        else if (i == Node::last_layer) {
+                            ZL = tanh(connection_total - upperNode.bias);
+                            //messing up?
+                            //activation_value = LeakyReLU(connection_total, bias);
+
+
+                        }
+                    }
+                }
+
+            }
+        }
         
     private:
-
-
         int input_node_count;
         int hidden_layer_count;
         int hidden_node_count; //per layer
@@ -230,6 +278,17 @@ double LeakyReLU(double x, float bias) {
     } else {
         return x*0.01f;
     }
+}
+double LeakyReLUDerivative(double x, float bias) {
+    if (x > bias) {
+        return 1.0;
+    } else {
+        return 0.01;
+    }
+}
+double tanhDerivative(double z)
+{
+    return 1.0 - (z * z);
 }
 
 //NEXT
