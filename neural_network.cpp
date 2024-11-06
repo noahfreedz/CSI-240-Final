@@ -8,9 +8,9 @@
 
 using namespace std;
 
-vector<double>average(vector<vector<pair<int, double>>>& _vector)
+vector<pair<double, int>>average(vector<vector<pair<int, double>>>& _vector)
 {
-    vector<double> averagedWeights; // Start with an empty vector
+    vector<pair<double, int>> averagedWeights; // Start with an empty vector
 
     int count = 0;
     for (auto& base : _vector)
@@ -18,18 +18,17 @@ vector<double>average(vector<vector<pair<int, double>>>& _vector)
         count++;
         for (auto& pair : base)
         {
-            // Ensure the vector is large enough to include pair.first
-            if (pair.first >= averagedWeights.size()) {
-                averagedWeights.resize(pair.first + 1, 0.0);
+            if(!averagedWeights[pair.first].first)
+            {
+                averagedWeights[pair.first].first = 0.0;
             }
-
-            averagedWeights[pair.first] += pair.second;
+            averagedWeights[pair.first].first += pair.second;
         }
     }
 
     for (auto& weight : averagedWeights)
     {
-        weight = weight / count;
+        weight.first = weight.first / count;
     }
     return averagedWeights;
 }
@@ -39,7 +38,7 @@ int main() {
     vector<vector<pair<int, double>>> allWeights;
 
 
-    NeuralNetwork myNN(8, 5, 5, 3);
+    NeuralNetwork myNN(8, 2, 5, 3);
     for(int i = 0; i < 10; i++)
     {
         for(int i = 0; i < 8; i++)
@@ -50,7 +49,7 @@ int main() {
         myNN.run_network(values);
         vector<pair<int, double>> neWeights = myNN.backPropigation(getRandom(1,3));
         allWeights.emplace_back(neWeights);
-        vector<double> averagedWeights = average(allWeights);
+        vector<pair<double, int>> averagedWeights = average(allWeights);
         myNN.assignValues(averagedWeights);
         allWeights.clear();
         averagedWeights.clear();

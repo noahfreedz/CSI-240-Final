@@ -7,14 +7,30 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
+#include <list>
+#include <unordered_map>
 //#include <SFML/Graphics.hpp>
 
 using namespace std;
 
 double getRandom(double min, double max);
 double sigmoid(double x) {
-    return 1 / (1 + exp(-x));
+    double result = 1 / (1 + exp(-x));
+
+    if (result < 0.000000001) {
+        result = 0.0; // Set the minimum value
+    }
+    return result;
 }
+class Node;
+
+struct connection {
+    Node* start_address;
+    Node* end_address;
+    double weight;
+    int ID;
+    static int nextID;
+};
 
 class Node {
     public:
@@ -38,21 +54,9 @@ class Node {
 
         }
 
-        // Node Connection Struct
-        struct connection {
-            Node* start_address;
-            Node* end_address;
-            int start_id;
-            int end_id;
-            double weight;
-            int ID;
-            static int nextID;
-
-            connection() : ID(nextID++) {}
-        };
-
-    vector<connection*> forward_connections; // Change to store pointers
-    vector<connection*> backward_connections;
+        // Node Connection Hashtable
+        unordered_map<int , connection*> forward_connections;
+        unordered_map<int , connection*> backward_connections;
 
     void setActivationValue(double x) {
             if(layer != 0) {
@@ -65,10 +69,14 @@ class Node {
         // Calculate Activation Value for Node
         void calculate_node() {
             double connection_total = 0;
-            for (auto & connection : backward_connections) {
-                // Add the activation value and the connection weight
-                connection_total += connection->start_address->activation_value * connection->weight;
+            if(layer != 0)
+            {for (const auto& pair : backward_connections) {
+                    std::cout << pair.second->start_address->ID << ": " << pair.second->weight << std::endl;
+                    connection_total += pair.second->start_address->activation_value * pair.second->weight;
+                }
             }
+
+//
             if(layer > 0) {
                 activation_value = sigmoid(connection_total-bias);
             }
@@ -81,14 +89,16 @@ class Node {
 // Initialize Static Node Variables
 int Node::last_layer = 0;
 int Node::next_ID = 0;
-int Node::connection::nextID = 0;
+int connection::nextID = 0;
 
 class NeuralNetwork {
     public:
         vector<Node> allNodes;
-        vector<Node::connection*> allConnections;
+        vector<connection> allConnections;
 
         NeuralNetwork(int iNode_count=1, int hLayer_count=1, int hNode_count=1, int oNode_count=1) {
+            // Reserve For No Resizing
+            allConnections.reserve(999999);
 
             // Assign Variables
             input_node_count = iNode_count;
@@ -138,18 +148,31 @@ class NeuralNetwork {
                     }
                 }
 
-                for (auto* start_node : startNodes) {
-                    for (auto* end_node : endNodes) {
-                        auto new_connection = new Node::connection(); // Use dynamic allocation
-                        new_connection->start_address = start_node;
-                        new_connection->end_address = end_node;
-                        new_connection->start_id = start_node->ID;
-                        new_connection->end_id = end_node->ID;
-                        new_connection->weight = getRandom(-1.0, 1.0);
+                for (auto& start_Node : startNodes)
+                {
+                    for (auto& end_Node : endNodes) {
+                        connection new_connection{};
 
-                        start_node->forward_connections.push_back(new_connection);
-                        end_node->backward_connections.push_back(new_connection);
+                        new_connection.ID = connection::nextID;
+                        connection::nextID++;
+
+                        new_connection.start_address = start_Node;
+                        new_connection.end_address = end_Node;
+                        new_connection.weight = getRandom(-1.0, 1.0);
+
+                       // cout << "ID: " << new_connection.ID << " Weight " << new_connection.weight << endl;
+
                         allConnections.push_back(new_connection);
+
+                        int start_size = start_Node->forward_connections.size();
+                        start_Node->forward_connections[start_size] = &allConnections.back();
+                        //connection* forward_connection = start_Node->forward_connections.at(start_size);
+                        //cout << "FORWARD (HASH): " << forward_connection->ID << " - W: " << forward_connection->weight << endl;
+
+                        int end_size = end_Node->backward_connections.size();
+                        end_Node->backward_connections[end_size] = &allConnections.back();
+                        //connection* backward_connection = end_Node->backward_connections.at(end_size);
+                       //cout << "BACKWARD (HASH) : " << backward_connection->ID << " - W: " << backward_connection->weight << endl;
                     }
                 }
 
@@ -157,23 +180,22 @@ class NeuralNetwork {
             }
 
             // Print Out All Connections
-            for (auto& node : allNodes) {
-                //cout << "NODE ID: " << node.ID << ", LAYER: " << node.layer << ", BIAS: " << node.bias << endl;
-                for (const auto& connection : node.forward_connections) {
-                    //cout << "  Forward Connection to Node ID: " << connection.end_id
-                    //     << " with initial weight: " << connection.weight << endl;
-                }
-                for (const auto& connection : node.backward_connections) {
-                    //cout << "  Backward Connection from Node ID: " << connection.start_id
-                    //     << " with initial weight: " << connection.weight << endl;
-                }
-            }
-        }
+//            for (auto& node : allNodes) {
+//                cout << "NODE ID: " << node.ID << ", LAYER: " << node.layer << ", BIAS: " << node.bias << endl;
+//
+//                // Loop for forward connections
+//                for (const auto& connection : node.forward_connections) {
+//                    cout << "  Forward Connection to Node ID: " << connection.second->end_address->ID
+//                         << " with initial weight: " << connection.second->weight << endl;
+//                }
+//
+//                // Loop for backward connections
+//                for (const auto& connection : node.backward_connections) {
+//                    cout << "  Backward Connection from Node ID: " << connection.second->start_address->ID
+//                         << " with initial weight: " << connection.second->weight << endl;
+//                }
+//            }
 
-        ~NeuralNetwork() {
-            for (auto connection : allConnections) {
-                delete connection; // Free the dynamically allocated memory
-            }
         }
 
         void run_network(vector<double> inputs) {
@@ -241,54 +263,42 @@ class NeuralNetwork {
 
         vector<pair<int, double>> backPropigation(int correctNode)
         {
-            double learningRate = .5;
-            vector<pair<double, Node>> activations;
+            double learningRate = 1;
+            double correctValue = 1;
+            double wrongValue = 0;
             vector<pair<int, double>>newWeights;
             for(int i = Node::last_layer; 0 < i ; i--)
             {
                 for(auto& upperNode: allNodes) {
                     if (upperNode.layer == i) {
 
-                        //cout << "Test Print for each node Node Id: " << upperNode.ID << " Layer :" << i << endl;
                         double targetValue = 0.0;
 
-                        // sets the
-                        if(i == Node::last_layer)
-                        {
+                        // sets the output layer Errors
+                        if(i == Node::last_layer) {
                             int nodePos = getPositionInLayer(upperNode.ID, i);
-                            if(nodePos == correctNode)
+                            if (nodePos == correctNode)
                             {
-                                activations.push_back(make_pair(1.0, upperNode));
+                                targetValue = correctValue - upperNode.activation_value;
                             }
                             else
                             {
-                                activations.push_back(make_pair(0.0, upperNode));
+                                targetValue = wrongValue - upperNode.activation_value;
                             }
 
+                            upperNode.nodeError = upperNode.activation_value * (1 - upperNode.activation_value) * (targetValue);
                         }
-
-                        if(i == Node::last_layer)
-                        {
-                            for(const auto& targetNode: activations)
-                            {
-                                if(targetNode.second.ID == upperNode.ID)
-                                {
-                                    targetValue = targetNode.first - targetNode.second.activation_value;
-                                }
-                            }
-
-                                upperNode.nodeError = upperNode.activation_value*(1-upperNode.activation_value)*(targetValue);
-                                //cout << upperNode.nodeError << endl;
-                        }
-
                         else
                         {
                             double sumErrorvaules = 0;
-                            for(auto forwardConnect :upperNode.forward_connections)
-                            {
-                               sumErrorvaules += forwardConnect->weight * forwardConnect->end_address ->nodeError;
-
+                            for(int hash_key = 0; hash_key < upperNode.forward_connections.size(); hash_key++) {
+                                connection* _connection = upperNode.forward_connections.at(hash_key);
+                                sumErrorvaules += _connection->weight * _connection->end_address->nodeError;
                             }
+                            //for(auto forwardConnect : upperNode.forward_connections)
+                            //{
+                            //   sumErrorvaules += forwardConnect->weight * forwardConnect->end_address ->nodeError;
+                            //}
                             upperNode.nodeError = upperNode.activation_value*(1-upperNode.activation_value)*(sumErrorvaules);
                             //cout << upperNode.nodeError << endl;
                         }
@@ -297,27 +307,28 @@ class NeuralNetwork {
                 }
 
             }
-            for (auto connection : allConnections) {
-                double nodeError = connection->end_address->nodeError;
-                double weightChange =   learningRate * nodeError * connection->start_address->activation_value;
-                double tempValue = weightChange + connection->weight;
-                newWeights.emplace_back(connection->ID, tempValue);
+
+            for (auto connection : allConnections)
+            {
+
+                double nodeError = connection.end_address->nodeError;
+                double weightChange =   learningRate * nodeError * connection.start_address->activation_value;
+                double tempValue = weightChange + connection.weight;
+                newWeights.emplace_back(connection.ID, tempValue);
             }
 
             return newWeights;
         }
 
-        void assignValues(const vector<double> averagedWeights)
+        void assignValues(const vector<pair<double, int>> averagedWeights)
         {
-
-
             for (auto& connection : allConnections)
             {
 //                cout << "From connection " << connection.ID << " the weight has been changed from "
 ////                     << connection.weight << " to " << averagedWeights[connection.ID]
 ////                     << " that is a change of " << change << endl;
 
-                connection->weight = averagedWeights[connection->ID];
+                connection.weight = averagedWeights[connection.ID].first;
             }
     }
 
