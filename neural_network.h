@@ -6,24 +6,24 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 //#include <SFML/Graphics.hpp>
 
 using namespace std;
 
 double getRandom(double min, double max);
-double LeakyReLU(double x, float bias);
-double LeakyReLUDerivative(double x, float bias);
-double tanhDerivative(double z);
-
+double sigmoid(double x) {
+    return 1 / (1 + exp(-x));
+}
 class Node {
     public:
         static int last_layer;
         static int next_ID;
         int ID;
         int layer;
-        float bias;
-        float activation_value;
-        float nodeErrorTerm;
+        double bias;
+        double activation_value;
+        double nodeError = 0;
 
         // Constructor
         Node(int node_layer) : activation_value(0.0f){
@@ -34,7 +34,6 @@ class Node {
             next_ID++;
             // Set Random Bias
             bias = getRandom(-15.0, 15.0);
-            nodeErrorTerm = NULL;
 
         }
 
@@ -45,11 +44,16 @@ class Node {
             int start_id;
             int end_id;
             double weight;
+            int ID;
+            static int nextID;
+
+
+            connection() : ID(nextID++) {}
         };
         vector<connection> forward_connections;
         vector<connection> backward_connections;
 
-        void setActivationValue(float x) {
+        void setActivationValue(double x) {
             if(layer != 0) {
                 cout << "| ERROR - EDITING ACTIVATION VALUE OF NON-INPUT ("<< layer << ") NODE!" << endl;
                 return; // Prevent setting non-input node activation values
@@ -66,10 +70,11 @@ class Node {
             }
             if(layer > 0 && layer < last_layer) {
                 // Use Leaky Rectified Linear Unit for Hidden Layers
-                activation_value = LeakyReLU(connection_total, bias);
+
+                activation_value = sigmoid(connection_total-bias);
             } else if (layer == last_layer) {
                 // Otherwise use TanH for output
-                activation_value = tanh(connection_total - bias);
+                activation_value = sigmoid(connection_total - bias);
                 //messing up?
                 //activation_value = LeakyReLU(connection_total, bias);
             } else {
@@ -81,10 +86,12 @@ class Node {
 // Initialize Static Node Variables
 int Node::last_layer = 0;
 int Node::next_ID = 0;
+int Node::connection::nextID = 0;
 
 class NeuralNetwork {
     public:
         vector<Node> allNodes;
+        vector<Node::connection> allConnections;
 
         NeuralNetwork(int iNode_count=1, int hLayer_count=1, int hNode_count=1, int oNode_count=1) {
 
@@ -93,9 +100,6 @@ class NeuralNetwork {
             hidden_layer_count = hLayer_count;
             hidden_node_count = hNode_count;
             output_node_count = oNode_count;
-
-            // Randomize
-            srand(static_cast<unsigned int>(time(nullptr)));
 
             // Input Layers
             for(int n=0; n<iNode_count; n++) {
@@ -147,10 +151,10 @@ class NeuralNetwork {
                         new_connection.start_id = start_node->ID;
                         new_connection.end_id = end_node->ID;
                         new_connection.weight = getRandom(-1.0, 1.0);
-
                         // Add connection to nodes' lists
                         start_node->forward_connections.push_back(new_connection);
                         end_node->backward_connections.push_back(new_connection);
+                        allConnections.push_back(new_connection);
                     }
                 }
 
@@ -171,7 +175,7 @@ class NeuralNetwork {
             }
         }
 
-        void run_network(vector<float> inputs) {
+        void run_network(vector<double> inputs) {
             cout << "RUNNING NETWORK" << endl;
 
             // Set Activations of Input Layer
@@ -234,31 +238,20 @@ class NeuralNetwork {
 
         }
 
-        int costFuniton()
+        vector<pair<int, double>> backPropigation(int correctNode)
         {
-
-        }
-
-        void backPropigation(int correctNode)
-        {
-            // defines the cost and we keep evething for future need
-            float Cost = 0;
-            float Y = 0;
-            vector<pair<float, Node>> activations;
-            vector<float> newWeights;
+            double learningRate = .5;
+            vector<pair<double, Node>> activations;
+            vector<pair<int, double>>newWeights;
             for(int i = Node::last_layer; 0 < i ; i--)
             {
-                // L means Layer, Z is the weight, bais, and leaky, A is activation 1 mean -1 just cant define a -
-                // B is bias
-                double ZL = 0;
-                double AL = 0;
-                double AL1 = 0;
-                double BL = 0;
-                // i starts as the output layer i -1  is the layer we are checking the weight for
-                for(const auto& upperNode: allNodes) {
-                    double outputNodeValue = 0.0;
-                    Node* correct = nullptr;
+                for(auto& upperNode: allNodes) {
                     if (upperNode.layer == i) {
+
+                        //cout << "Test Print for each node Node Id: " << upperNode.ID << " Layer :" << i << endl;
+                        double targetValue = 0.0;
+
+                        // sets the
                         if(i == Node::last_layer)
                         {
                             int nodePos = getPositionInLayer(upperNode.ID, i);
@@ -273,50 +266,68 @@ class NeuralNetwork {
 
                         }
 
-                        cout << "Test Print for each node Node Id: " << upperNode.ID << " Layer :" << i << endl;
-
-                        vector<Node::connection> backwardConnections = upperNode.backward_connections;
-                        double connection_total = 0;
-
-                        // deffines ZL
-                        for (auto &connection: backwardConnections) {
-                            // Add the activation value and the connection weight
-                            connection_total += connection.start_address->activation_value * connection.weight;
-                        }
-                        if (i < Node::last_layer) {
-                            // Use Leaky Rectified Linear Unit for Hidden Layers
-                             ZL = LeakyReLU(connection_total, upperNode.bias);
-
-                        }
-                        else if (i == Node::last_layer) {
-                            ZL = tanh(connection_total - upperNode.bias);
-                            //messing up?
-                            //activation_value = LeakyReLU(connection_total, bias);
-
-
-                        }
-
-                        float targetValue = 0.0;
-                        for(const auto& targetNode: activations)
+                        if(i == Node::last_layer)
                         {
-                            if(targetNode.second.ID == upperNode.ID)
+                            for(const auto& targetNode: activations)
                             {
-                                targetValue = targetNode.first - targetNode.second.activation_value;
+                                if(targetNode.second.ID == upperNode.ID)
+                                {
+                                    targetValue = targetNode.first - targetNode.second.activation_value;
+                                }
                             }
+
+                                upperNode.nodeError = upperNode.activation_value*(1-upperNode.activation_value)*(targetValue);
+                                cout << upperNode.nodeError << endl;
                         }
 
-                        //for output node
-                        outputNodeValue = upperNode.activation_value*(1-upperNode.activation_value)*(targetValue);
+                        else
+                        {
+                            double sumErrorvaules = 0;
+                            for(auto forwardConnect :upperNode.forward_connections)
+                            {
+                               sumErrorvaules += forwardConnect.weight * forwardConnect.end_address ->nodeError;
 
-
+                            }
+                            upperNode.nodeError = upperNode.activation_value*(1-upperNode.activation_value)*(sumErrorvaules);
+                            cout << upperNode.nodeError << endl;
+                        }
 
                     }
                 }
 
             }
+            for (auto connection : allConnections) {
+                double nodeError = connection.end_address->nodeError;
+                double weightChange =   learningRate * nodeError * connection.start_address->activation_value;
+                double tempValue = weightChange + connection.weight;
+                newWeights.emplace_back(connection.ID, tempValue);
+            }
+
+            return newWeights;
         }
-        
-    private:
+
+        void assignValues(const vector<double> averagedWeights)
+        {
+            const double tolerance = 1e-10; // Define a small tolerance value
+
+            for (auto& connection : allConnections)
+            {
+                double change = averagedWeights[connection.ID] - connection.weight;
+
+                // If the change is smaller than the tolerance, treat it as zero
+                if (abs(change) < tolerance)
+                    change = 0.0;
+
+                cout << "From connection " << connection.ID << " the weight has been changed from "
+                     << connection.weight << " to " << averagedWeights[connection.ID]
+                     << " that is a change of " << change << endl;
+
+                connection.weight = averagedWeights[connection.ID];
+            }
+    }
+
+
+private:
         int input_node_count;
         int hidden_layer_count;
         int hidden_node_count; //per layer
@@ -324,27 +335,12 @@ class NeuralNetwork {
 };
 
 double getRandom(double min, double max) {
-    return min + (static_cast<double>(rand()) / RAND_MAX) * (max - min);
+    static std::random_device rd;          // Seed source
+    static std::mt19937 gen(rd());         // Mersenne Twister generator initialized with random seed
+    std::uniform_real_distribution<> dis(min, max); // Distribution in the range [min, max]
+    return dis(gen);
 }
 
-double LeakyReLU(double x, float bias) {
-    if(x > bias) {
-        return x;
-    } else {
-        return x*0.01f;
-    }
-}
-double LeakyReLUDerivative(double x, float bias) {
-    if (x > bias) {
-        return 1.0;
-    } else {
-        return 0.01;
-    }
-}
-double tanhDerivative(double z)
-{
-    return 1.0 - (z * z);
-}
 
 //NEXT
 //save start and end of each layer
