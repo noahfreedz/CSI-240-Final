@@ -15,6 +15,7 @@ double getRandom(double min, double max);
 double sigmoid(double x) {
     return 1 / (1 + exp(-x));
 }
+
 class Node {
     public:
         static int last_layer;
@@ -47,13 +48,13 @@ class Node {
             int ID;
             static int nextID;
 
-
             connection() : ID(nextID++) {}
         };
-        vector<connection> forward_connections;
-        vector<connection> backward_connections;
 
-        void setActivationValue(double x) {
+    vector<connection*> forward_connections; // Change to store pointers
+    vector<connection*> backward_connections;
+
+    void setActivationValue(double x) {
             if(layer != 0) {
                 cout << "| ERROR - EDITING ACTIVATION VALUE OF NON-INPUT ("<< layer << ") NODE!" << endl;
                 return; // Prevent setting non-input node activation values
@@ -66,18 +67,12 @@ class Node {
             double connection_total = 0;
             for (auto & connection : backward_connections) {
                 // Add the activation value and the connection weight
-                connection_total += connection.start_address->activation_value * connection.weight;
+                connection_total += connection->start_address->activation_value * connection->weight;
             }
-            if(layer > 0 && layer < last_layer) {
-                // Use Leaky Rectified Linear Unit for Hidden Layers
-
+            if(layer > 0) {
                 activation_value = sigmoid(connection_total-bias);
-            } else if (layer == last_layer) {
-                // Otherwise use TanH for output
-                activation_value = sigmoid(connection_total - bias);
-                //messing up?
-                //activation_value = LeakyReLU(connection_total, bias);
-            } else {
+            }
+            else {
                 cout << "| ERROR - NODE LAYER IS OUTSIDE NEURAL NETWORK" << endl;
             }
         }
@@ -91,7 +86,7 @@ int Node::connection::nextID = 0;
 class NeuralNetwork {
     public:
         vector<Node> allNodes;
-        vector<Node::connection> allConnections;
+        vector<Node::connection*> allConnections;
 
         NeuralNetwork(int iNode_count=1, int hLayer_count=1, int hNode_count=1, int oNode_count=1) {
 
@@ -145,13 +140,13 @@ class NeuralNetwork {
 
                 for (auto* start_node : startNodes) {
                     for (auto* end_node : endNodes) {
-                        Node::connection new_connection{};
-                        new_connection.start_address = start_node;
-                        new_connection.end_address = end_node;
-                        new_connection.start_id = start_node->ID;
-                        new_connection.end_id = end_node->ID;
-                        new_connection.weight = getRandom(-1.0, 1.0);
-                        // Add connection to nodes' lists
+                        auto new_connection = new Node::connection(); // Use dynamic allocation
+                        new_connection->start_address = start_node;
+                        new_connection->end_address = end_node;
+                        new_connection->start_id = start_node->ID;
+                        new_connection->end_id = end_node->ID;
+                        new_connection->weight = getRandom(-1.0, 1.0);
+
                         start_node->forward_connections.push_back(new_connection);
                         end_node->backward_connections.push_back(new_connection);
                         allConnections.push_back(new_connection);
@@ -172,6 +167,12 @@ class NeuralNetwork {
                     //cout << "  Backward Connection from Node ID: " << connection.start_id
                     //     << " with initial weight: " << connection.weight << endl;
                 }
+            }
+        }
+
+        ~NeuralNetwork() {
+            for (auto connection : allConnections) {
+                delete connection; // Free the dynamically allocated memory
             }
         }
 
@@ -277,7 +278,7 @@ class NeuralNetwork {
                             }
 
                                 upperNode.nodeError = upperNode.activation_value*(1-upperNode.activation_value)*(targetValue);
-                                cout << upperNode.nodeError << endl;
+                                //cout << upperNode.nodeError << endl;
                         }
 
                         else
@@ -285,11 +286,11 @@ class NeuralNetwork {
                             double sumErrorvaules = 0;
                             for(auto forwardConnect :upperNode.forward_connections)
                             {
-                               sumErrorvaules += forwardConnect.weight * forwardConnect.end_address ->nodeError;
+                               sumErrorvaules += forwardConnect->weight * forwardConnect->end_address ->nodeError;
 
                             }
                             upperNode.nodeError = upperNode.activation_value*(1-upperNode.activation_value)*(sumErrorvaules);
-                            cout << upperNode.nodeError << endl;
+                            //cout << upperNode.nodeError << endl;
                         }
 
                     }
@@ -297,10 +298,10 @@ class NeuralNetwork {
 
             }
             for (auto connection : allConnections) {
-                double nodeError = connection.end_address->nodeError;
-                double weightChange =   learningRate * nodeError * connection.start_address->activation_value;
-                double tempValue = weightChange + connection.weight;
-                newWeights.emplace_back(connection.ID, tempValue);
+                double nodeError = connection->end_address->nodeError;
+                double weightChange =   learningRate * nodeError * connection->start_address->activation_value;
+                double tempValue = weightChange + connection->weight;
+                newWeights.emplace_back(connection->ID, tempValue);
             }
 
             return newWeights;
@@ -308,21 +309,15 @@ class NeuralNetwork {
 
         void assignValues(const vector<double> averagedWeights)
         {
-            const double tolerance = 1e-10; // Define a small tolerance value
+
 
             for (auto& connection : allConnections)
             {
-                double change = averagedWeights[connection.ID] - connection.weight;
+//                cout << "From connection " << connection.ID << " the weight has been changed from "
+////                     << connection.weight << " to " << averagedWeights[connection.ID]
+////                     << " that is a change of " << change << endl;
 
-                // If the change is smaller than the tolerance, treat it as zero
-                if (abs(change) < tolerance)
-                    change = 0.0;
-
-                cout << "From connection " << connection.ID << " the weight has been changed from "
-                     << connection.weight << " to " << averagedWeights[connection.ID]
-                     << " that is a change of " << change << endl;
-
-                connection.weight = averagedWeights[connection.ID];
+                connection->weight = averagedWeights[connection->ID];
             }
     }
 

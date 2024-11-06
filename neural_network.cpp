@@ -40,7 +40,7 @@ int main() {
 
 
     NeuralNetwork myNN(8, 5, 5, 3);
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < 10; i++)
     {
         for(int i = 0; i < 8; i++)
         {
@@ -50,9 +50,12 @@ int main() {
         myNN.run_network(values);
         vector<pair<int, double>> neWeights = myNN.backPropigation(getRandom(1,3));
         allWeights.emplace_back(neWeights);
+        vector<double> averagedWeights = average(allWeights);
+        myNN.assignValues(averagedWeights);
+        allWeights.clear();
+        averagedWeights.clear();
     }
-    vector<double> averagedWeights = average(allWeights);
-    myNN.assignValues(averagedWeights);
+
 
 
 
