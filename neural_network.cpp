@@ -4,6 +4,9 @@
 #include "neural_network.h"
 #include <vector>
 #include <unordered_map>
+#include <chrono>
+#include <thread>
+
 //#include "window.h"
 //#include <SFML/Graphics.hpp>
 
@@ -12,7 +15,6 @@ using namespace std;
 #include <fstream>
 #include <vector>
 #include <iostream>
-//#include <zlib.h> // Ensure this library is available
 
 std::vector<std::vector<double>> readMNISTImages(const std::string& filePath, int numImages, int numRows, int numCols) {
     std::ifstream file(filePath, std::ios::binary);
@@ -103,11 +105,11 @@ unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
 
 int main() {
     // Paths to your MNIST files
-    std::string imageFilePath = "Data sets/train-images.idx3-ubyte";
-    std::string labelFilePath = "Data sets/train-labels.idx1-ubyte";
+    std::string imageFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\train-images.idx3-ubyte";
+    std::string labelFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\train-labels.idx1-ubyte";
 
     // Read images and labels
-    int numImages = 10; // Change this to read as many as you need
+    int numImages = 100000; // Change this to read as many as you need
     int numRows = 28;
     int numCols = 28;
 
@@ -132,6 +134,8 @@ int main() {
             myNN.assignValues(averagedWeights);
             allWeights.clear();
             averagedWeights.clear();
+            cout << "Redoing Weights!" << endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             count = 0;
         }
     }
