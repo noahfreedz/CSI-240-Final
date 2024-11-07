@@ -95,6 +95,8 @@ class NeuralNetwork {
     public:
         vector<Node> allNodes;
         unordered_map<int, connection> allConnections;
+        int trys = 0;
+        int correct = 0;
 
         NeuralNetwork(int iNode_count=1, int hLayer_count=1, int hNode_count=1, int oNode_count=1) {
             // Reserve For No Resizing
@@ -228,7 +230,7 @@ class NeuralNetwork {
             }
             for(auto &node : allNodes) {
                 if(node.layer == Node::last_layer) {
-                    cout << "OUTPUT OF NODE " << node.ID << ": " << node.activation_value << endl;
+                    //cout << "OUTPUT OF NODE " << node.ID << ": " << node.activation_value << endl;
                 }
             }
         }
@@ -266,7 +268,29 @@ class NeuralNetwork {
             double learningRate = 1;
             double correctValue = 1;
             double wrongValue = 0;
+            trys ++;
             unordered_map<int, double> newWeights;
+            int Highest = 0;
+            Node *highestNode;
+            for(auto node: allNodes)
+            {
+
+                if(node.layer == Node::last_layer)
+                {
+                  if(node.activation_value > Highest)
+                  {
+                    highestNode = &node;
+                    Highest = node.activation_value;
+                  }
+                }
+
+            }
+            int correctCheck = getPositionInLayer(highestNode->ID, Node::last_layer);
+            if(correctCheck == correctNode+1)
+            {
+                correct ++;
+            }
+
             for(int i = Node::last_layer; 0 < i ; i--)
             {
                 for(auto& upperNode: allNodes) {
@@ -276,6 +300,7 @@ class NeuralNetwork {
 
                         // sets the output layer Errors
                         if(i == Node::last_layer) {
+
                             int nodePos = getPositionInLayer(upperNode.ID, i);
                             if (nodePos == correctNode)
                             {
