@@ -71,7 +71,7 @@ class Node {
             double connection_total = 0;
             if(layer != 0)
             {for (const auto& pair : backward_connections) {
-                    std::cout << pair.second->start_address->ID << ": " << pair.second->weight << std::endl;
+                    //std::cout << pair.second->start_address->ID << ": " << pair.second->weight << std::endl;
                     connection_total += pair.second->start_address->activation_value * pair.second->weight;
                 }
             }
@@ -94,7 +94,7 @@ int connection::nextID = 0;
 class NeuralNetwork {
     public:
         vector<Node> allNodes;
-        vector<connection> allConnections;
+        unordered_map<int, connection> allConnections;
 
         NeuralNetwork(int iNode_count=1, int hLayer_count=1, int hNode_count=1, int oNode_count=1) {
             // Reserve For No Resizing
@@ -162,15 +162,15 @@ class NeuralNetwork {
 
                        // cout << "ID: " << new_connection.ID << " Weight " << new_connection.weight << endl;
 
-                        allConnections.push_back(new_connection);
+                        allConnections[new_connection.ID] = new_connection;
 
                         int start_size = start_Node->forward_connections.size();
-                        start_Node->forward_connections[start_size] = &allConnections.back();
+                        start_Node->forward_connections[start_size] = & allConnections[new_connection.ID];
                         //connection* forward_connection = start_Node->forward_connections.at(start_size);
                         //cout << "FORWARD (HASH): " << forward_connection->ID << " - W: " << forward_connection->weight << endl;
 
                         int end_size = end_Node->backward_connections.size();
-                        end_Node->backward_connections[end_size] = &allConnections.back();
+                        end_Node->backward_connections[end_size] = & allConnections[new_connection.ID];
                         //connection* backward_connection = end_Node->backward_connections.at(end_size);
                        //cout << "BACKWARD (HASH) : " << backward_connection->ID << " - W: " << backward_connection->weight << endl;
                     }
@@ -261,12 +261,12 @@ class NeuralNetwork {
 
         }
 
-        vector<pair<int, double>> backPropigation(int correctNode)
+    unordered_map<int, double> backPropigation(int correctNode)
         {
             double learningRate = 1;
             double correctValue = 1;
             double wrongValue = 0;
-            vector<pair<int, double>>newWeights;
+            unordered_map<int, double> newWeights;
             for(int i = Node::last_layer; 0 < i ; i--)
             {
                 for(auto& upperNode: allNodes) {
@@ -310,29 +310,25 @@ class NeuralNetwork {
 
             for (auto connection : allConnections)
             {
-
-                double nodeError = connection.end_address->nodeError;
-                double weightChange =   learningRate * nodeError * connection.start_address->activation_value;
-                double tempValue = weightChange + connection.weight;
-                newWeights.emplace_back(connection.ID, tempValue);
+                double nodeError = connection.second.end_address->nodeError;
+                double weightChange =   learningRate * nodeError * connection.second.start_address->activation_value;
+                double tempValue = weightChange + connection.second.weight;
+                newWeights[connection.second.ID]  = tempValue;
             }
 
             return newWeights;
         }
 
-        void assignValues(const vector<pair<double, int>> averagedWeights)
+        void assignValues(const unordered_map<int, double> averagedWeights)
         {
             for (auto& connection : allConnections)
             {
 //                cout << "From connection " << connection.ID << " the weight has been changed from "
 ////                     << connection.weight << " to " << averagedWeights[connection.ID]
 ////                     << " that is a change of " << change << endl;
-
-                connection.weight = averagedWeights[connection.ID].first;
+                 connection.second.weight = averagedWeights.at(connection.first);
             }
     }
-
-
 private:
         int input_node_count;
         int hidden_layer_count;

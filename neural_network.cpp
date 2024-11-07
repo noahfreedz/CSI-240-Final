@@ -3,39 +3,36 @@
 #include <ctime>
 #include "neural_network.h"
 #include <vector>
+#include <unordered_map>
 //#include "window.h"
 //#include <SFML/Graphics.hpp>
 
 using namespace std;
 
-vector<pair<double, int>>average(vector<vector<pair<int, double>>>& _vector)
+unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
 {
-    vector<pair<double, int>> averagedWeights; // Start with an empty vector
-
+    unordered_map<int, double> averagedWeights;
     int count = 0;
-    for (auto& base : _vector)
-    {
+
+    for (const auto& base : _vector) {
         count++;
-        for (auto& pair : base)
-        {
-            if(!averagedWeights[pair.first].first)
-            {
-                averagedWeights[pair.first].first = 0.0;
-            }
-            averagedWeights[pair.first].first += pair.second;
+        for (const auto& pair : base) {
+            averagedWeights[pair.first] += pair.second;
         }
     }
 
-    for (auto& weight : averagedWeights)
-    {
-        weight.first = weight.first / count;
+    for (auto& weight : averagedWeights) {
+        weight.second = weight.second / count;
     }
+
     return averagedWeights;
 }
+
+
 int main() {
     cout << "STARTING MAIN" << endl;
     vector<double> values;
-    vector<vector<pair<int, double>>> allWeights;
+    vector<unordered_map<int, double>> allWeights;
 
 
     NeuralNetwork myNN(8, 2, 5, 3);
@@ -45,11 +42,10 @@ int main() {
         {
             values.push_back(getRandom(0,1.0));
         }
-
         myNN.run_network(values);
-        vector<pair<int, double>> neWeights = myNN.backPropigation(getRandom(1,3));
-        allWeights.emplace_back(neWeights);
-        vector<pair<double, int>> averagedWeights = average(allWeights);
+        unordered_map<int, double> newWeights = myNN.backPropigation(getRandom(1,3));
+        allWeights.emplace_back(newWeights);
+        unordered_map<int, double> averagedWeights = average(allWeights);
         myNN.assignValues(averagedWeights);
         allWeights.clear();
         averagedWeights.clear();
