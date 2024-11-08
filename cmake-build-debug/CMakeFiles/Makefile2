@@ -214,8 +214,8 @@ _deps/sfml-build/src/SFML/Window/clean: _deps/sfml-build/src/SFML/Window/CMakeFi
 
 # All Build rule for target.
 CMakeFiles/NeuralNetworkTest.dir/all: _deps/sfml-build/src/SFML/System/CMakeFiles/sfml-system.dir/all
-CMakeFiles/NeuralNetworkTest.dir/all: _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/all
 CMakeFiles/NeuralNetworkTest.dir/all: _deps/sfml-build/src/SFML/Window/CMakeFiles/sfml-window.dir/all
+CMakeFiles/NeuralNetworkTest.dir/all: _deps/sfml-build/src/SFML/Graphics/CMakeFiles/sfml-graphics.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\NeuralNetworkTest.dir\build.make CMakeFiles/NeuralNetworkTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\NeuralNetworkTest.dir\build.make CMakeFiles/NeuralNetworkTest.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="C:\coding shit\AI\CSI-240-Final\cmake-build-debug\CMakeFiles" --progress-num=1 "Built target NeuralNetworkTest"

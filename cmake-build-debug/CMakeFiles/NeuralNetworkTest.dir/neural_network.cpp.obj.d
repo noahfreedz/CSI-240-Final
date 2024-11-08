@@ -142,6 +142,7 @@ CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj: \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
+ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ctime \
  C:\coding\ shit\AI\CSI-240-Final\neural_network.h \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/map \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tree.h \
@@ -171,7 +172,6 @@ CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj: \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/poly_hermite.tcc \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/poly_laguerre.tcc \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/riemann_zeta.tcc \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ctime \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/random \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstdint \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h \
@@ -210,94 +210,4 @@ CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj: \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/codecvt.h \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
  C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++io.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fstream.tcc \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Config.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Clock.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Export.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Time.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Err.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/FileInputStream.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/InputStream.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/NonCopyable.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Lock.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/MemoryInputStream.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Mutex.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Sleep.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/String.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Utf.hpp \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/algorithm \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_algo.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/algorithmfwd.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_heap.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tempbuf.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_algorithm_defs.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/locale \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets_nonio.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/time_members.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/messages_members.h \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets_nonio.tcc \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_conv.h \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Utf.inl \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iterator \
- C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stream_iterator.h \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/String.inl \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Thread.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Thread.inl \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/ThreadLocal.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/ThreadLocalPtr.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/ThreadLocalPtr.inl \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Vector2.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Vector2.inl \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Vector3.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/System/Vector3.inl \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Clipboard.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Export.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Context.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/GlResource.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/ContextSettings.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Cursor.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Event.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Joystick.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Keyboard.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Mouse.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Sensor.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Touch.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/VideoMode.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Window.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/WindowBase.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/Vulkan.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/WindowHandle.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Window/WindowStyle.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/BlendMode.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Export.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/CircleShape.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Shape.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Drawable.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/RenderStates.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Transform.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Rect.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Rect.inl \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Transformable.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/VertexArray.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Vertex.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Color.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/PrimitiveType.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Font.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Glyph.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Texture.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Image.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/RectangleShape.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/RenderTarget.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/View.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/RenderTexture.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/RenderWindow.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Shader.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Glsl.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Glsl.inl \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Sprite.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/Text.hpp \
- C:/CODING~1/AI/CSI-24~1/CMAKE-~1/_deps/sfml-src/include/SFML/Graphics/VertexBuffer.hpp
+ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fstream.tcc

@@ -5,11 +5,11 @@
 #include <vector>
 #include <cmath>
 #include <cstdlib>
+#include <ctime>
 #include <random>
-#include <chrono>
-#include <thread>
+#include <list>
 #include <unordered_map>
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -86,7 +86,6 @@ class Node {
     }
 };
 
-
 // Initialize Static Node Variables
 int Node::last_layer = 0;
 int Node::next_ID = 0;
@@ -96,9 +95,9 @@ class NeuralNetwork {
     public:
         vector<Node> allNodes;
         unordered_map<int, connection> allConnections;
-        vector<unordered_map<int, double>> all_weights;
-        vector<unordered_map<int, double>> all_biases;
         vector<double> averageCost;
+        int runs = 0;
+        int correct = 0;
 
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count) {
             // Reserve For No Resizing
@@ -214,17 +213,15 @@ class NeuralNetwork {
             return total_error;
         }
 
-        void backpropigate_network()
+        pair<unordered_map<int, double>, unordered_map<int, double>> backpropigate_network()
             {
                 // New Weights To Implement
                 unordered_map<int, double> newWeights;
                 unordered_map<int, double> newBaises;
                 // Learning Rate 1 for default
                 double learningRate = 0.05;
-
                 // Increment Networks Run Count
                 runs++;
-                internal_runs++;
 
                 // Loop Through Layers Starting with Second To Last Going Backward
                 for(int i = Node::last_layer - 1; 0 < i ; i--)
@@ -259,16 +256,7 @@ class NeuralNetwork {
                     }
                 }
 
-                all_weights.emplace_back(newWeights);
-                all_biases.emplace_back(newBaises);
-                if(internal_runs == betwenn_backprop) {
-                    unordered_map<int, double> averaged_weights = average(all_weights);
-                    unordered_map<int, double> averaged_biases =average(all_biases);
-                    edit_weights(averaged_weights);
-                    edit_biases(averaged_biases);
-                    internal_runs = 0;
-                    this_thread::sleep_for(chrono::milliseconds(1000));
-                }
+                return make_pair(newWeights, newBaises);
             }
 
         double getCost() {
@@ -286,48 +274,22 @@ class NeuralNetwork {
 
         }
 
-    private:
         void edit_weights(const unordered_map<int, double> new_values)
-        {
-            for (auto& connection : allConnections)
             {
-                connection.second.weight = new_values.at(connection.first);
-            }
-        }
-
-        void edit_biases(const unordered_map<int, double> new_biases)
-        {
-            for(auto node: allNodes){
-                if(node.layer != 0)
+                for (auto& connection : allConnections)
                 {
-                    node.bias = new_biases.at(node.ID);
+                     connection.second.weight = new_values.at(connection.first);
                 }
             }
-        }
-
-        unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
-        {
-            unordered_map<int, double> averagedWeights;
-            int count = 0;
-
-            for (const auto& base : _vector) {
-                count++;
-                for (const auto& pair : base) {
-                    averagedWeights[pair.first] += pair.second;
+        void edit_biases(const unordered_map<int, double> new_biases)
+            {
+                for(auto node: allNodes){
+                    if(node.layer != 0)
+                    {
+                        node.bias = new_biases.at(node.ID);
+                    }
                 }
             }
-
-            for (auto& weight : averagedWeights) {
-                weight.second = weight.second / count;
-            }
-
-            return averagedWeights;
-        }
-
-        int runs = 0;
-        int correct = 0;
-        int internal_runs = 0;
-        int betwenn_backprop = 100;
 };
 
 double getRandom(double min, double max) {
