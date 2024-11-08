@@ -102,6 +102,15 @@ unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
     return averagedWeights;
 }
 
+double averageError(const std::vector<double>& values) {
+    if (values.empty()) {
+        return 0.0; // Return 0 if the vector is empty to avoid division by zero
+    }
+
+    double sum = std::accumulate(values.begin(), values.end(), 0.0);
+    return sum / values.size();
+}
+
 
 int main() {
     // Paths to your MNIST files
@@ -120,32 +129,32 @@ int main() {
     NeuralNetwork myNN(784, 2, 16, 10); // 784 input nodes for 28x28 images
     std::vector<std::unordered_map<int, double>> allWeights;
     int count = 0;
+    vector<double> total_errors;
     for (int i = 0; i < images.size(); ++i) {
-        vector<double> correct_outputs;
-        correct_outputs.reserve(10);
+        vector<double> correct_label_output;
+        correct_label_output.resize(10);
         for(int output = 0; output < 10; output++) {
-            cout << "OUTPUT: " << output << " - LABEL: " << labels[i] << endl;
             if(labels[i] == output) {
-                correct_outputs[output] = 1.0;
+                correct_label_output[output] = 1.0;
             } else {
-                correct_outputs[output] = 0.0;
+                correct_label_output[output] = 0.0;
             }
         }
-        myNN.run_network(images[i], correct_outputs);
+        total_errors.push_back(myNN.run_network(images[i], correct_label_output));
         std::unordered_map<int, double> newWeights = myNN.backpropigate_network(); // Use the label as the correct node
         allWeights.emplace_back(newWeights);
         count++;
 
-        cout << "The Number of tryes is: " << myNN.trys << " The Number Correct is :" << myNN.correct << endl;
         // Average weights if necessary
-        if(count == 100)
+        if(count == 500)
         {
             std::unordered_map<int, double> averagedWeights = average(allWeights);
             myNN.edit_weights(averagedWeights);
             allWeights.clear();
             averagedWeights.clear();
-            cout << "Editing Weights!" << endl;
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            cout << "GENERATION COMPLETE - " << averageError(total_errors) << endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            total_errors.clear();
             count = 0;
         }
     }

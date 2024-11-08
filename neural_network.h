@@ -95,7 +95,7 @@ class NeuralNetwork {
     public:
         vector<Node> allNodes;
         unordered_map<int, connection> allConnections;
-        int trys = 0;
+        int runs = 0;
         int correct = 0;
 
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count) {
@@ -171,9 +171,7 @@ class NeuralNetwork {
             }
         }
 
-        void run_network(vector<double> inputs, vector<double> correct_outputs) {
-            cout << "RUNNING NETWORK" << endl;
-
+        double run_network(vector<double> inputs, vector<double> correct_outputs) {
             int inputIndex = 0;
             for (auto& node : allNodes) {
                 if (node.layer == 0) {
@@ -207,9 +205,8 @@ class NeuralNetwork {
                     output_count++;
                 }
             }
-            double average_error = (output_count > 0) ? total_error / output_count : 0.0;
-            double correctness = (1.0 - average_error) * 100;
-            cout << "NETWORK FINISHED - CORRECTNESS: " << correctness << "%" << endl;
+            cout << "NETWORK RUN (" << runs << ")" << " - TOTAL ERROR: " << total_error << endl;
+            return total_error;
         }
 
         unordered_map<int, double> backpropigate_network()
@@ -218,8 +215,8 @@ class NeuralNetwork {
                 unordered_map<int, double> newWeights;
                 // Learning Rate 1 for default
                 double learningRate = 1;
-                // Increment Networks Try Count
-                trys++;
+                // Increment Networks Run Count
+                runs++;
 
                 // Loop Through Layers Starting with Second To Last Going Backward
                 for(int i = Node::last_layer - 1; 0 < i ; i--)
@@ -248,7 +245,7 @@ class NeuralNetwork {
                 return newWeights;
             }
 
-        void edit_weights(const unordered_map<int, double>& new_weights)
+        void edit_weights(const unordered_map<int, double> new_weights)
             {
                 for (auto& connection : allConnections)
                 {
