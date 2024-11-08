@@ -127,23 +127,23 @@ class NeuralNetwork {
             // Connections
             int current_layer = 0;
             while (current_layer < Node::last_layer) {
-                vector<Node*> startNodes;
-                vector<Node*> endNodes;
+                vector<Node*> start_nodes;
+                vector<Node*> end_nodes;
 
                 // Collect pointers to nodes in the current and next layer
                 for (auto& node : allNodes) {
                     int layer = node.layer;
                     if (layer == current_layer) {
-                        startNodes.push_back(&node);
+                        start_nodes.push_back(&node);
                     } else if (layer == current_layer + 1) {
-                        endNodes.push_back(&node);
+                        end_nodes.push_back(&node);
                     }
                 }
 
                 // Make Connections For All Nodes
-                for (auto& start_node : startNodes)
+                for (auto& start_node : start_nodes)
                 {
-                    for (auto& end_node : endNodes) {
+                    for (auto& end_node : end_nodes) {
                         // Initialize Connection
                         connection new_connection{};
 
@@ -153,7 +153,7 @@ class NeuralNetwork {
 
                         // Initialize Connection Values
                         new_connection.start_address = start_node;
-                        new_connection.end_address = start_node;
+                        new_connection.end_address = end_node;
                         new_connection.weight = getRandom(-1.0, 1.0);
 
                         // Add to All Connections Hash
@@ -235,28 +235,23 @@ class NeuralNetwork {
                     }
                 }
 
-                // Determine New Weights for All Connections and Baises for each node;
-                for (auto connection : allConnections)
-                {
-                    // this is weights
+                // Determine New Weights for All Connections and Biases for each node
+                for (auto connection : allConnections) {
+                    // Calculate weight change
                     double nodeError = connection.second.end_address->error_value;
                     double weightChange = learningRate * nodeError * connection.second.start_address->activation_value;
-                    double weightValue = weightChange + connection.second.weight;
-
-                    double baisValue = -1*(learningRate) * nodeError;
-
-
-
-                    newWeights[connection.second.ID]  = weightValue;
+                    double weightValue = connection.second.weight + weightChange;
+                    newWeights[connection.second.ID] = weightValue;
                 }
-                for(auto node: allNodes){
-                    if(node.layer != 0)
-                    {
-                      double baisError = -1 *(learningRate)*node.error_value;
-                      double baisVaule = node.bias + baisError;
-                      newBaises[node.ID] = baisVaule;
+
+                for (auto& node : allNodes) {
+                    if (node.layer != 0) {
+                        // Update bias using the node's own error value
+                        double biasValue = node.bias - learningRate * node.error_value;
+                        newBaises[node.ID] = biasValue;
                     }
                 }
+
                 return make_pair(newWeights, newBaises);
             }
 
