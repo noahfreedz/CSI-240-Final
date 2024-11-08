@@ -592,3 +592,192 @@ events:
     message: |
       Running the CXX compiler's linker: "C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/ld.exe" "-v"
       GNU ld (GNU Binutils) 2.40
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:250 (check_include_file)"
+      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
+      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
+    checks:
+      - "Looking for sys/types.h"
+    directories:
+      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-olxqh1"
+      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-olxqh1"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-olxqh1'
+        
+        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_c805d/fast
+        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_c805d.dir\\build.make CMakeFiles/cmTC_c805d.dir/build
+        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-olxqh1'
+        Building C object CMakeFiles/cmTC_c805d.dir/CheckIncludeFile.c.obj
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_c805d.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-olxqh1\\CheckIncludeFile.c"
+        Linking C executable cmTC_c805d.exe
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_c805d.dir\\link.txt --verbose=1
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_c805d.dir/objects.a
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_c805d.dir/objects.a @CMakeFiles\\cmTC_c805d.dir\\objects1.rsp
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_c805d.dir/objects.a -Wl,--no-whole-archive -o cmTC_c805d.exe -Wl,--out-implib,libcmTC_c805d.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_c805d.dir\\linkLibs.rsp
+        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-olxqh1'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:251 (check_include_file)"
+      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
+      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-07h5eh"
+      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-07h5eh"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-07h5eh'
+        
+        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_ef523/fast
+        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_ef523.dir\\build.make CMakeFiles/cmTC_ef523.dir/build
+        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-07h5eh'
+        Building C object CMakeFiles/cmTC_ef523.dir/CheckIncludeFile.c.obj
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_ef523.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-07h5eh\\CheckIncludeFile.c"
+        Linking C executable cmTC_ef523.exe
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_ef523.dir\\link.txt --verbose=1
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_ef523.dir/objects.a
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_ef523.dir/objects.a @CMakeFiles\\cmTC_ef523.dir\\objects1.rsp
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_ef523.dir/objects.a -Wl,--no-whole-archive -o cmTC_ef523.exe -Wl,--out-implib,libcmTC_ef523.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_ef523.dir\\linkLibs.rsp
+        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-07h5eh'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:252 (check_include_file)"
+      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
+      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
+    checks:
+      - "Looking for stddef.h"
+    directories:
+      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pxn9m7"
+      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pxn9m7"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
+    buildResult:
+      variable: "HAVE_STDDEF_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pxn9m7'
+        
+        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_6b989/fast
+        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_6b989.dir\\build.make CMakeFiles/cmTC_6b989.dir/build
+        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pxn9m7'
+        Building C object CMakeFiles/cmTC_6b989.dir/CheckIncludeFile.c.obj
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_6b989.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-pxn9m7\\CheckIncludeFile.c"
+        Linking C executable cmTC_6b989.exe
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_6b989.dir\\link.txt --verbose=1
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_6b989.dir/objects.a
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_6b989.dir/objects.a @CMakeFiles\\cmTC_6b989.dir\\objects1.rsp
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_6b989.dir/objects.a -Wl,--no-whole-archive -o cmTC_6b989.exe -Wl,--out-implib,libcmTC_6b989.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_6b989.dir\\linkLibs.rsp
+        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pxn9m7'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:146 (try_compile)"
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:271 (__check_type_size_impl)"
+      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
+      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
+    checks:
+      - "Check size of void*"
+    directories:
+      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ciwjek"
+      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ciwjek"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
+    buildResult:
+      variable: "HAVE_SIZEOF_VOID_PTR"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ciwjek'
+        
+        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_3db60/fast
+        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_3db60.dir\\build.make CMakeFiles/cmTC_3db60.dir/build
+        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ciwjek'
+        Building C object CMakeFiles/cmTC_3db60.dir/SIZEOF_VOID_PTR.c.obj
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_3db60.dir\\SIZEOF_VOID_PTR.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ciwjek\\SIZEOF_VOID_PTR.c"
+        Linking C executable cmTC_3db60.exe
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_3db60.dir\\link.txt --verbose=1
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_3db60.dir/objects.a
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_3db60.dir/objects.a @CMakeFiles\\cmTC_3db60.dir\\objects1.rsp
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_3db60.dir/objects.a -Wl,--no-whole-archive -o cmTC_3db60.exe -Wl,--out-implib,libcmTC_3db60.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_3db60.dir\\linkLibs.rsp
+        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-ciwjek'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "cmake-build-debug/_deps/sfml-src/src/SFML/Window/CMakeLists.txt:334 (check_include_file)"
+    checks:
+      - "Looking for dinput.h"
+    directories:
+      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wi5dw5"
+      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wi5dw5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;;C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
+    buildResult:
+      variable: "DINPUT_H_FOUND"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wi5dw5'
+        
+        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_fb8ce/fast
+        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_fb8ce.dir\\build.make CMakeFiles/cmTC_fb8ce.dir/build
+        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wi5dw5'
+        Building C object CMakeFiles/cmTC_fb8ce.dir/CheckIncludeFile.c.obj
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_fb8ce.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-wi5dw5\\CheckIncludeFile.c"
+        Linking C executable cmTC_fb8ce.exe
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_fb8ce.dir\\link.txt --verbose=1
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_fb8ce.dir/objects.a
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_fb8ce.dir/objects.a @CMakeFiles\\cmTC_fb8ce.dir\\objects1.rsp
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_fb8ce.dir/objects.a -Wl,--no-whole-archive -o cmTC_fb8ce.exe -Wl,--out-implib,libcmTC_fb8ce.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_fb8ce.dir\\linkLibs.rsp
+        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wi5dw5'
+        
+      exitCode: 0
+...
