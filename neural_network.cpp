@@ -114,8 +114,8 @@ double averageError(const std::vector<double>& values) {
 
 int main() {
     // Paths to your MNIST files
-    std::string imageFilePath = "C:\\Users\\nfree\\OneDrive\\Desktop\\NerualNetworkScott\\train-images.idx3-ubyte";
-    std::string labelFilePath = "C:\\Users\\nfree\\OneDrive\\Desktop\\NerualNetworkScott\\train-labels.idx1-ubyte";
+    std::string imageFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-images.idx3-ubyte";
+    std::string labelFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-labels.idx1-ubyte";
 
     // Read images and labels
     int numImages = 100000; // Change this to read as many as you need
@@ -151,7 +151,7 @@ int main() {
         if(count % 100 == 0) {
             cout << "RUN (" << count << "/" << "500) - " << averageError(total_errors) << endl;
         }
-        if(count == 500)
+        if(count == 100)
         {
             unordered_map<int, double> averaged_weights = average(all_weights);
             unordered_map<int, double> averaged_biases = average(all_biases);
@@ -161,7 +161,7 @@ int main() {
             all_biases.clear();
             averaged_biases.clear();
             averaged_weights.clear();
-            cout << "GENERATION COMPLETE - " << averageError(total_errors) << endl;
+            cout << "GENERATION COMPLETE - " << myNN.getCost() << endl;
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             total_errors.clear();
             count = 0;

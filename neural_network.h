@@ -95,6 +95,7 @@ class NeuralNetwork {
     public:
         vector<Node> allNodes;
         unordered_map<int, connection> allConnections;
+        vector<double> averageCost;
         int runs = 0;
         int correct = 0;
 
@@ -195,6 +196,7 @@ class NeuralNetwork {
             // Calculate Error for all Output Nodes
             int output_count = 0;
             double total_error = 0.0;
+            double cost = 0.0;
             for(auto &node : allNodes) {
                 if(node.layer == Node::last_layer) {
                     // Calculate Target Value
@@ -203,8 +205,10 @@ class NeuralNetwork {
                     node.error_value = node.activation_value * (1 - node.activation_value) * (target_val);
                     total_error += std::abs(node.error_value);
                     output_count++;
+                    cost += pow(target_val, 2);
                 }
             }
+            averageCost.emplace_back(cost);
             //cout << "NETWORK RUN (" << runs << ")" << " - TOTAL ERROR: " << total_error << endl;
             return total_error;
         }
@@ -215,7 +219,7 @@ class NeuralNetwork {
                 unordered_map<int, double> newWeights;
                 unordered_map<int, double> newBaises;
                 // Learning Rate 1 for default
-                double learningRate = 0.01;
+                double learningRate = 0.05;
                 // Increment Networks Run Count
                 runs++;
 
@@ -254,6 +258,21 @@ class NeuralNetwork {
 
                 return make_pair(newWeights, newBaises);
             }
+
+        double getCost() {
+            double total_cost = 0.0;
+            double endValue;
+            int count = 0;
+            for(auto cost: averageCost) {
+                total_cost += cost;
+                count++;
+            }
+            endValue = total_cost/count;
+            return endValue;
+
+
+
+        }
 
         void edit_weights(const unordered_map<int, double> new_values)
             {
