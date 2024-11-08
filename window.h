@@ -197,7 +197,7 @@ class Visualizer {
                 //get only the first 20 as to not softlock program
                 int numElements = std::min(20, static_cast<int>(all_layer_nodes.size()));
                 vector<Node> nodes(all_layer_nodes.begin(), all_layer_nodes.begin() + numElements);
-                float nodes_in_layer = nodes.size();
+                int nodes_in_layer = nodes.size();
 
                 float x_pos = x_padding + layer * x_layer_spacing;
                 float total_node_height = (nodes_in_layer - 1.0f) * (window_height / (nodes_in_layer + 1.0f));
@@ -231,22 +231,18 @@ class Visualizer {
                             // Calculate start and end positions
                             sf::Vector2f start_pos(
                                     x_padding + start_node->layer * x_layer_spacing,
-                                    (window_height / 2) - ((network->nodes_in_layer(start_node->layer) - 1)
-                                                           * (window_height /
-                                                              (network->nodes_in_layer(start_node->layer) + 1)) / 2)
-                                    + (start_node->ID % network->nodes_in_layer(start_node->layer))
-                                      * (window_height / (network->nodes_in_layer(start_node->layer) + 1))
+                                    (window_height / 2) - ((nodes_in_layer - 1)
+                                    * (window_height / (nodes_in_layer + 1)) / 2)
+                                    + (start_node->ID % nodes_in_layer)
+                                    * (window_height / nodes_in_layer + 1)
                             );
 
                             sf::Vector2f end_pos(
                                     x_padding + end_node->layer * x_layer_spacing,
-                                    (window_height / 2) -
-                                    ((network->nodes_in_layer(connection.second->end_address->layer) - 1)
-                                     * (window_height /
-                                        (network->nodes_in_layer(connection.second->end_address->layer) + 1)) / 2)
+                                    (window_height / 2) - ((network->nodes_in_layer(connection.second->end_address->layer) - 1)
+                                    * (window_height / (network->nodes_in_layer(connection.second->end_address->layer) + 1)) / 2)
                                     + (end_node->ID % network->nodes_in_layer(connection.second->end_address->layer))
-                                      *
-                                      (window_height / (network->nodes_in_layer(connection.second->end_address->layer) + 1))
+                                    * (window_height / (network->nodes_in_layer(connection.second->end_address->layer) + 1))
                             );
 
                             //make line color green if positive and red if negative
