@@ -114,8 +114,8 @@ double averageError(const std::vector<double>& values) {
 
 int main() {
     // Paths to your MNIST files
-    std::string imageFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-images.idx3-ubyte";
-    std::string labelFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-labels.idx1-ubyte";
+    std::string imageFilePath = "train-images.idx3-ubyte";
+    std::string labelFilePath = "train-labels.idx1-ubyte";
 
     // Read images and labels
     int numImages = 100000; // Change this to read as many as you need

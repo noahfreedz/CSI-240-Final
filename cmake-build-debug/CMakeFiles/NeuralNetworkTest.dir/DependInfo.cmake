@@ -8,11 +8,15 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/nfree/OneDrive/Desktop/NerualNetworkScott/neural_network.cpp" "CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj" "gcc" "CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj.d"
+  "C:/coding shit/AI/CSI-240-Final/neural_network.cpp" "CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj" "gcc" "CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
 set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.
