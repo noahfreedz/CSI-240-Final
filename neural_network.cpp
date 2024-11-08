@@ -1,24 +1,20 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
 #include "neural_network.h"
 #include <vector>
 #include <unordered_map>
-#include <chrono>
-#include <thread>
-
-//#include "window.h"
-//#include <SFML/Graphics.hpp>
-
-using namespace std;
-
 #include <fstream>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
 
-std::vector<std::vector<double>> readMNISTImages(const std::string& filePath, int numImages, int numRows, int numCols) {
-    std::ifstream file(filePath, std::ios::binary);
-    std::vector<std::vector<double>> images;
+//#include "window.h"
+
+using namespace std;
+
+
+vector<vector<double>> readMNISTImages(const string& filePath, int numImages, int numRows, int numCols) {
+    ifstream file(filePath, ios::binary);
+    vector<vector<double>> images;
 
     if (file.is_open()) {
         int magicNumber = 0;
@@ -39,7 +35,7 @@ std::vector<std::vector<double>> readMNISTImages(const std::string& filePath, in
         cols = __builtin_bswap32(cols);
 
         for (int i = 0; i < numImages; ++i) {
-            std::vector<double> image;
+            vector<double> image;
             for (int j = 0; j < numRows * numCols; ++j) {
                 unsigned char pixel = 0;
                 file.read(reinterpret_cast<char*>(&pixel), 1);
@@ -49,14 +45,14 @@ std::vector<std::vector<double>> readMNISTImages(const std::string& filePath, in
         }
         file.close();
     } else {
-        std::cerr << "Failed to open the file: " << filePath << "\n";
+        cerr << "Failed to open the file: " << filePath << "\n";
     }
 
     return images;
 }
-std::vector<int> readMNISTLabels(const std::string& filePath, int numLabels) {
-    std::ifstream file(filePath, std::ios::binary);
-    std::vector<int> labels;
+vector<int> readMNISTLabels(const string& filePath, int numLabels) {
+    ifstream file(filePath, ios::binary);
+    vector<int> labels;
 
     if (file.is_open()) {
         int magicNumber = 0;
@@ -77,53 +73,34 @@ std::vector<int> readMNISTLabels(const std::string& filePath, int numLabels) {
         }
         file.close();
     } else {
-        std::cerr << "Failed to open the file: " << filePath << "\n";
+        cerr << "Failed to open the file: " << filePath << "\n";
     }
 
     return labels;
 }
 
-unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
-{
-    unordered_map<int, double> averagedWeights;
-    int count = 0;
-
-    for (const auto& base : _vector) {
-        count++;
-        for (const auto& pair : base) {
-            averagedWeights[pair.first] += pair.second;
-        }
-    }
-
-    for (auto& weight : averagedWeights) {
-        weight.second = weight.second / count;
-    }
-
-    return averagedWeights;
-}
-
-double averageError(const std::vector<double>& values) {
+double averageError(const vector<double>& values) {
     if (values.empty()) {
         return 0.0; // Return 0 if the vector is empty to avoid division by zero
     }
 
-    double sum = std::accumulate(values.begin(), values.end(), 0.0);
+    double sum = accumulate(values.begin(), values.end(), 0.0);
     return sum / values.size();
 }
 
 
 int main() {
     // Paths to your MNIST files
-    std::string imageFilePath = "train-images.idx3-ubyte";
-    std::string labelFilePath = "train-labels.idx1-ubyte";
+    string imageFilePath = "train-images.idx3-ubyte";
+    string labelFilePath = "train-labels.idx1-ubyte";
 
     // Read images and labels
     int numImages = 100000; // Change this to read as many as you need
     int numRows = 28;
     int numCols = 28;
 
-    std::vector<std::vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
-    std::vector<int> labels = readMNISTLabels(labelFilePath, numImages);
+    vector<vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
+    vector<int> labels = readMNISTLabels(labelFilePath, numImages);
 
     // Create and train the network
     NeuralNetwork myNN(784, 2, 16, 10); // 784 input nodes for 28x28 images
@@ -142,30 +119,7 @@ int main() {
             }
         }
         total_errors.push_back(myNN.run_network(images[i], correct_label_output));
-        pair<unordered_map<int, double>, unordered_map<int, double>> network_output = myNN.backpropigate_network(); // Use the label as the correct node
-        all_weights.emplace_back(network_output.first);
-        all_biases.emplace_back(network_output.second);
-        count++;
-
-        // Average weights if necessary
-        if(count % 100 == 0) {
-            cout << "RUN (" << count << "/" << "500) - " << averageError(total_errors) << endl;
-        }
-        if(count == 100)
-        {
-            unordered_map<int, double> averaged_weights = average(all_weights);
-            unordered_map<int, double> averaged_biases = average(all_biases);
-            myNN.edit_weights(averaged_weights);
-            myNN.edit_biases(averaged_biases);
-            all_weights.clear();
-            all_biases.clear();
-            averaged_biases.clear();
-            averaged_weights.clear();
-            cout << "GENERATION COMPLETE - " << myNN.getCost() << endl;
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            total_errors.clear();
-            count = 0;
-        }
+        myNN.backpropigate_network();
     }
 
     return 0;
