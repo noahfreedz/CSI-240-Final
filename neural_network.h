@@ -205,14 +205,15 @@ class NeuralNetwork {
                     output_count++;
                 }
             }
-            cout << "NETWORK RUN (" << runs << ")" << " - TOTAL ERROR: " << total_error << endl;
+            //cout << "NETWORK RUN (" << runs << ")" << " - TOTAL ERROR: " << total_error << endl;
             return total_error;
         }
 
-        unordered_map<int, double> backpropigate_network()
+        pair<unordered_map<int, double>, unordered_map<int, double>> backpropigate_network()
             {
                 // New Weights To Implement
                 unordered_map<int, double> newWeights;
+                unordered_map<int, double> newBaises;
                 // Learning Rate 1 for default
                 double learningRate = 1;
                 // Increment Networks Run Count
@@ -234,24 +235,48 @@ class NeuralNetwork {
                     }
                 }
 
-                // Determine New Weights for All Connections
+                // Determine New Weights for All Connections and Baises for each node;
                 for (auto connection : allConnections)
                 {
+                    // this is weights
                     double nodeError = connection.second.end_address->error_value;
                     double weightChange = learningRate * nodeError * connection.second.start_address->activation_value;
-                    double tempValue = weightChange + connection.second.weight;
-                    newWeights[connection.second.ID]  = tempValue;
+                    double weightValue = weightChange + connection.second.weight;
+
+                    double baisValue = -1*(learningRate) * nodeError;
+
+
+
+                    newWeights[connection.second.ID]  = weightValue;
                 }
-                return newWeights;
+                for(auto node: allNodes){
+                    if(node.layer != 0)
+                    {
+                      double baisError = -1 *(learningRate)*node.error_value;
+                      double baisVaule = node.bias + baisError;
+                      newBaises[node.ID] = baisVaule;
+                    }
+                }
+                return make_pair(newWeights, newBaises);
             }
 
-        void edit_weights(const unordered_map<int, double> new_weights)
+        void edit_weights(const unordered_map<int, double> newValues)
             {
                 for (auto& connection : allConnections)
                 {
-                     connection.second.weight = new_weights.at(connection.first);
+                     connection.second.weight = newValues.at(connection.first);
                 }
             }
+        void edit_Baises(const unordered_map<int, double> newValues)
+    {
+        for(auto node: allNodes){
+            if(node.layer != 0)
+            {
+                node.bias = newValues.at(node.ID);
+            }
+        }
+
+    }
 };
 
 double getRandom(double min, double max) {

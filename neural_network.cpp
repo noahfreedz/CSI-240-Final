@@ -114,8 +114,8 @@ double averageError(const std::vector<double>& values) {
 
 int main() {
     // Paths to your MNIST files
-    std::string imageFilePath = "C:\\Users\\nfree\\OneDrive\\Desktop\\SCOTTS-BRANCH\\cmake-build-debug\\train-images.idx3-ubyte";
-    std::string labelFilePath = "C:\\Users\\nfree\\OneDrive\\Desktop\\SCOTTS-BRANCH\\cmake-build-debug\\train-labels.idx1-ubyte";
+    std::string imageFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-images.idx3-ubyte";
+    std::string labelFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-labels.idx1-ubyte";
 
     // Read images and labels
     int numImages = 100000; // Change this to read as many as you need
@@ -127,7 +127,8 @@ int main() {
 
     // Create and train the network
     NeuralNetwork myNN(784, 2, 16, 10); // 784 input nodes for 28x28 images
-    std::vector<std::unordered_map<int, double>> allWeights;
+    vector<unordered_map<int, double>> allWeights;
+    vector<unordered_map<int, double>> allBaises;
     int count = 0;
     vector<double> total_errors;
     for (int i = 0; i < images.size(); ++i) {
@@ -141,15 +142,18 @@ int main() {
             }
         }
         total_errors.push_back(myNN.run_network(images[i], correct_label_output));
-        std::unordered_map<int, double> newWeights = myNN.backpropigate_network(); // Use the label as the correct node
-        allWeights.emplace_back(newWeights);
+        pair<unordered_map<int, double>, unordered_map<int, double>> network_output = myNN.backpropigate_network(); // Use the label as the correct node
+        allWeights.emplace_back(network_output.first);
+        allBaises.emplace_back(network_output.second);
         count++;
 
         // Average weights if necessary
         if(count == 500)
         {
-            std::unordered_map<int, double> averagedWeights = average(allWeights);
+            unordered_map<int, double> averagedWeights = average(allWeights);
+            unordered_map<int, double> averagedBaises = average(allBaises);
             myNN.edit_weights(averagedWeights);
+            myNN.edit_Baises(averagedBaises);
             allWeights.clear();
             averagedWeights.clear();
             cout << "GENERATION COMPLETE - " << averageError(total_errors) << endl;
