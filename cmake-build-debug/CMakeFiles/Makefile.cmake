@@ -116,7 +116,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Users/nfree/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/Windows.cmake"
   "C:/Users/nfree/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/WindowsPaths.cmake"
   "C:/Users/nfree/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.27/Modules/ProcessorCount.cmake"
-  "C:/Users/nfree/OneDrive/Desktop/SCOTTS-BRANCH/CMakeLists.txt"
+  "C:/Users/nfree/OneDrive/Desktop/NerualNetworkScott/CMakeLists.txt"
   "CMakeFiles/3.27.8/CMakeCCompiler.cmake"
   "CMakeFiles/3.27.8/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.27.8/CMakeRCCompiler.cmake"

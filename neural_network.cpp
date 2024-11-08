@@ -114,8 +114,8 @@ double averageError(const std::vector<double>& values) {
 
 int main() {
     // Paths to your MNIST files
-    std::string imageFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-images.idx3-ubyte";
-    std::string labelFilePath = "C:\\coding shit\\AI\\CSI-240-Final\\train-labels.idx1-ubyte";
+    std::string imageFilePath = "C:\\Users\\nfree\\OneDrive\\Desktop\\NerualNetworkScott\\train-images.idx3-ubyte";
+    std::string labelFilePath = "C:\\Users\\nfree\\OneDrive\\Desktop\\NerualNetworkScott\\train-labels.idx1-ubyte";
 
     // Read images and labels
     int numImages = 100000; // Change this to read as many as you need
@@ -127,8 +127,8 @@ int main() {
 
     // Create and train the network
     NeuralNetwork myNN(784, 2, 16, 10); // 784 input nodes for 28x28 images
-    vector<unordered_map<int, double>> allWeights;
-    vector<unordered_map<int, double>> allBaises;
+    vector<unordered_map<int, double>> all_weights;
+    vector<unordered_map<int, double>> all_biases;
     int count = 0;
     vector<double> total_errors;
     for (int i = 0; i < images.size(); ++i) {
@@ -143,21 +143,26 @@ int main() {
         }
         total_errors.push_back(myNN.run_network(images[i], correct_label_output));
         pair<unordered_map<int, double>, unordered_map<int, double>> network_output = myNN.backpropigate_network(); // Use the label as the correct node
-        allWeights.emplace_back(network_output.first);
-        allBaises.emplace_back(network_output.second);
+        all_weights.emplace_back(network_output.first);
+        all_biases.emplace_back(network_output.second);
         count++;
 
         // Average weights if necessary
+        if(count % 100 == 0) {
+            cout << "RUN (" << count << "/" << "500) - " << averageError(total_errors) << endl;
+        }
         if(count == 500)
         {
-            unordered_map<int, double> averagedWeights = average(allWeights);
-            unordered_map<int, double> averagedBaises = average(allBaises);
-            myNN.edit_weights(averagedWeights);
-            myNN.edit_Baises(averagedBaises);
-            allWeights.clear();
-            averagedWeights.clear();
+            unordered_map<int, double> averaged_weights = average(all_weights);
+            unordered_map<int, double> averaged_biases = average(all_biases);
+            myNN.edit_weights(averaged_weights);
+            myNN.edit_biases(averaged_biases);
+            all_weights.clear();
+            all_biases.clear();
+            averaged_biases.clear();
+            averaged_weights.clear();
             cout << "GENERATION COMPLETE - " << averageError(total_errors) << endl;
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             total_errors.clear();
             count = 0;
         }

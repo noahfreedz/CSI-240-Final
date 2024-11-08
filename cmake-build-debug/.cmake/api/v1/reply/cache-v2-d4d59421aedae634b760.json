@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/nfree/OneDrive/Desktop/SCOTTS-BRANCH/cmake-build-debug"
+			"value" : "c:/Users/nfree/OneDrive/Desktop/NerualNetworkScott/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -643,7 +643,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/nfree/OneDrive/Desktop/SCOTTS-BRANCH/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/nfree/OneDrive/Desktop/NerualNetworkScott/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -715,7 +715,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/nfree/OneDrive/Desktop/SCOTTS-BRANCH"
+			"value" : "C:/Users/nfree/OneDrive/Desktop/NerualNetworkScott"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1351,7 +1351,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/nfree/OneDrive/Desktop/SCOTTS-BRANCH/cmake-build-debug"
+			"value" : "C:/Users/nfree/OneDrive/Desktop/NerualNetworkScott/cmake-build-debug"
 		},
 		{
 			"name" : "NeuralNetworkTest_IS_TOP_LEVEL",
@@ -1375,7 +1375,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/nfree/OneDrive/Desktop/SCOTTS-BRANCH"
+			"value" : "C:/Users/nfree/OneDrive/Desktop/NerualNetworkScott"
 		},
 		{
 			"name" : "SFML_DOC_DIR",

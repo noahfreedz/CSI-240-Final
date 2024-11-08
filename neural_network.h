@@ -215,7 +215,7 @@ class NeuralNetwork {
                 unordered_map<int, double> newWeights;
                 unordered_map<int, double> newBaises;
                 // Learning Rate 1 for default
-                double learningRate = 1;
+                double learningRate = 0.01;
                 // Increment Networks Run Count
                 runs++;
 
@@ -260,23 +260,22 @@ class NeuralNetwork {
                 return make_pair(newWeights, newBaises);
             }
 
-        void edit_weights(const unordered_map<int, double> newValues)
+        void edit_weights(const unordered_map<int, double> new_values)
             {
                 for (auto& connection : allConnections)
                 {
-                     connection.second.weight = newValues.at(connection.first);
+                     connection.second.weight = new_values.at(connection.first);
                 }
             }
-        void edit_Baises(const unordered_map<int, double> newValues)
-    {
-        for(auto node: allNodes){
-            if(node.layer != 0)
+        void edit_biases(const unordered_map<int, double> new_biases)
             {
-                node.bias = newValues.at(node.ID);
+                for(auto node: allNodes){
+                    if(node.layer != 0)
+                    {
+                        node.bias = new_biases.at(node.ID);
+                    }
+                }
             }
-        }
-
-    }
 };
 
 double getRandom(double min, double max) {

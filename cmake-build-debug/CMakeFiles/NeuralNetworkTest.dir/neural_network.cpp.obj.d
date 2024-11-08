@@ -1,5 +1,5 @@
 CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj: \
- C:\Users\nfree\OneDrive\Desktop\SCOTTS-BRANCH\neural_network.cpp \
+ C:\Users\nfree\OneDrive\Desktop\NerualNetworkScott\neural_network.cpp \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iostream \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/requires_hosted.h \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
@@ -143,7 +143,7 @@ CMakeFiles/NeuralNetworkTest.dir/neural_network.cpp.obj: \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ctime \
- C:\Users\nfree\OneDrive\Desktop\SCOTTS-BRANCH\neural_network.h \
+ C:\Users\nfree\OneDrive\Desktop\NerualNetworkScott\neural_network.h \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/map \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tree.h \
  C:/Users/nfree/AppData/Local/Programs/CLion/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ext/aligned_buffer.h \
