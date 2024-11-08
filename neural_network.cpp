@@ -10,8 +10,9 @@ using namespace std;
 int main() {
     cout << "STARTING MAIN" << endl;
 
-    NeuralNetwork myNN(8, 5, 5, 3);
+    NeuralNetwork myNN(784, 2, 16, 10); // 784 input nodes for 28x28 images
 
     Visualizer visualizer(800, 600, "SFML Window Example", myNN);
     visualizer.run();
 }
+
