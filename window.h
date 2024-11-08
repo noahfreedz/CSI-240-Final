@@ -160,6 +160,7 @@ class Visualizer {
                 }
                 if(count == 500)
                 {
+
                     unordered_map<int, double> averaged_weights = network->average(all_weights);
                     unordered_map<int, double> averaged_biases = network->average(all_biases);
                     network->edit_weights(averaged_weights);

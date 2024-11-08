@@ -5,11 +5,11 @@
 #include <vector>
 #include <cmath>
 #include <cstdlib>
-#include <ctime>
 #include <random>
-#include <list>
+#include <chrono>
+#include <thread>
 #include <unordered_map>
-//#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -86,6 +86,7 @@ public:
     }
 };
 
+
 // Initialize Static Node Variables
 int Node::last_layer = 0;
 int Node::next_ID = 0;
@@ -95,9 +96,9 @@ class NeuralNetwork {
 public:
     vector<Node> allNodes;
     unordered_map<int, connection> allConnections;
+    vector<unordered_map<int, double>> all_weights;
+    vector<unordered_map<int, double>> all_biases;
     vector<double> averageCost;
-    int runs = 0;
-    int correct = 0;
 
     NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count) {
         // Reserve For No Resizing
@@ -213,15 +214,17 @@ public:
         return total_error;
     }
 
-    pair<unordered_map<int, double>, unordered_map<int, double>> backpropigate_network()
+    void backpropigate_network()
     {
         // New Weights To Implement
         unordered_map<int, double> newWeights;
         unordered_map<int, double> newBaises;
         // Learning Rate 1 for default
         double learningRate = 0.05;
+
         // Increment Networks Run Count
         runs++;
+        internal_runs++;
 
         // Loop Through Layers Starting with Second To Last Going Backward
         for(int i = Node::last_layer - 1; 0 < i ; i--)
@@ -256,19 +259,31 @@ public:
             }
         }
 
-        return make_pair(newWeights, newBaises);
+        all_weights.emplace_back(newWeights);
+        all_biases.emplace_back(newBaises);
+        if(internal_runs == betwenn_backprop) {
+            unordered_map<int, double> averaged_weights = average(all_weights);
+            unordered_map<int, double> averaged_biases =average(all_biases);
+            edit_weights(averaged_weights);
+            edit_biases(averaged_biases);
+            internal_runs = 0;
+            this_thread::sleep_for(chrono::milliseconds(1000));
+        }
     }
 
-    double get_cost() {
+    double getCost() {
         double total_cost = 0.0;
-        double end_value;
+        double endValue;
         int count = 0;
         for(auto cost: averageCost) {
             total_cost += cost;
             count++;
         }
-        end_value = total_cost/count;
-        return end_value;
+        endValue = total_cost/count;
+        return endValue;
+
+
+
     }
 
     int nodes_in_layer(int layer) {
@@ -279,6 +294,25 @@ public:
             }
         }
         return count;
+    }
+
+private:
+    void edit_weights(const unordered_map<int, double> new_values)
+    {
+        for (auto& connection : allConnections)
+        {
+            connection.second.weight = new_values.at(connection.first);
+        }
+    }
+
+    void edit_biases(const unordered_map<int, double> new_biases)
+    {
+        for(auto node: allNodes){
+            if(node.layer != 0)
+            {
+                node.bias = new_biases.at(node.ID);
+            }
+        }
     }
 
     unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
@@ -300,41 +334,10 @@ public:
         return averagedWeights;
     }
 
-    double averageError(const std::vector<double>& values) {
-        if (values.empty()) {
-            return 0.0; // Return 0 if the vector is empty to avoid division by zero
-        }
-
-        double sum = std::accumulate(values.begin(), values.end(), 0.0);
-        return sum / values.size();
-    }
-
-    vector<Node> get_nodes_by_layer(int layer) {
-        vector<Node> nodes_in_layer;
-        for(auto &node : allNodes) {
-            if (node.layer == layer) {
-                nodes_in_layer.push_back(node);
-            }
-        }
-        return nodes_in_layer;
-    }
-
-    void edit_weights(const unordered_map<int, double> new_values)
-    {
-        for (auto& connection : allConnections)
-        {
-            connection.second.weight = new_values.at(connection.first);
-        }
-    }
-    void edit_biases(const unordered_map<int, double> new_biases)
-    {
-        for(auto node: allNodes){
-            if(node.layer != 0)
-            {
-                node.bias = new_biases.at(node.ID);
-            }
-        }
-    }
+    int runs = 0;
+    int correct = 0;
+    int internal_runs = 0;
+    int betwenn_backprop = 100;
 };
 
 double getRandom(double min, double max) {

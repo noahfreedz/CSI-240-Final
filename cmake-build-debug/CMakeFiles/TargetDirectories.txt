@@ -1,3 +1,0 @@
-C:/Users/nfree/OneDrive/Desktop/CSI-240-Final/cmake-build-debug/CMakeFiles/NeuralNetworkTest.dir
-C:/Users/nfree/OneDrive/Desktop/CSI-240-Final/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/nfree/OneDrive/Desktop/CSI-240-Final/cmake-build-debug/CMakeFiles/rebuild_cache.dir
