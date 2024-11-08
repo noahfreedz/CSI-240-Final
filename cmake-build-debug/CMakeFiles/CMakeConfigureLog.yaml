@@ -61,8 +61,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i41wtf"
-      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i41wtf"
+      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jlfme8"
+      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jlfme8"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -71,13 +71,13 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i41wtf'
+        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jlfme8'
         
-        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_232f3/fast
-        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_232f3.dir\\build.make CMakeFiles/cmTC_232f3.dir/build
-        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i41wtf'
-        Building C object CMakeFiles/cmTC_232f3.dir/CMakeCCompilerABI.c.obj
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c
+        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_a7205/fast
+        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_a7205.dir\\build.make CMakeFiles/cmTC_a7205.dir/build
+        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jlfme8'
+        Building C object CMakeFiles/cmTC_a7205.dir/CMakeCCompilerABI.c.obj
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c
         Using built-in specs.
         COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe
         Target: x86_64-w64-mingw32
@@ -85,8 +85,8 @@ events:
         Thread model: posix
         Supported LTO compression algorithms: zlib
         gcc version 13.1.0 (GCC) 
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_232f3.dir\\'
-         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles\\cmTC_232f3.dir\\ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\cclvc6DD.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a7205.dir\\'
+         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles\\cmTC_a7205.dir\\ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\cc1OG2Ej.s
         GNU C17 (GCC) version 13.1.0 (x86_64-w64-mingw32)
         	compiled by GNU C version 13.1.0, GMP version 6.2.1, MPFR version 4.2.0-p4, MPC version 1.3.1, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
@@ -104,17 +104,17 @@ events:
          C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include
         End of search list.
         Compiler executable checksum: 2aa4fcf5c9208168c5e2d38a58fc2a97
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_232f3.dir\\'
-         as -v -o CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj C:\\Users\\gking\\AppData\\Local\\Temp\\cclvc6DD.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a7205.dir\\'
+         as -v -o CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj C:\\Users\\gking\\AppData\\Local\\Temp\\cc1OG2Ej.s
         GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40
         COMPILER_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/
         LIBRARY_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.'
-        Linking C executable cmTC_232f3.exe
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_232f3.dir\\link.txt --verbose=1
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_232f3.dir/objects.a
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_232f3.dir/objects.a @CMakeFiles\\cmTC_232f3.dir\\objects1.rsp
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe  -v -Wl,-v -Wl,--whole-archive CMakeFiles\\cmTC_232f3.dir/objects.a -Wl,--no-whole-archive -o cmTC_232f3.exe -Wl,--out-implib,libcmTC_232f3.dll.a -Wl,--major-image-version,0,--minor-image-version,0
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.'
+        Linking C executable cmTC_a7205.exe
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_a7205.dir\\link.txt --verbose=1
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_a7205.dir/objects.a
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_a7205.dir/objects.a @CMakeFiles\\cmTC_a7205.dir\\objects1.rsp
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe  -v -Wl,-v -Wl,--whole-archive CMakeFiles\\cmTC_a7205.dir/objects.a -Wl,--no-whole-archive -o cmTC_a7205.exe -Wl,--out-implib,libcmTC_a7205.dll.a -Wl,--major-image-version,0,--minor-image-version,0
         Using built-in specs.
         COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe
         COLLECT_LTO_WRAPPER=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe
@@ -125,13 +125,13 @@ events:
         gcc version 13.1.0 (GCC) 
         COMPILER_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/
         LIBRARY_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_232f3.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_232f3.'
-         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_232f3.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_232f3.dir/objects.a --no-whole-archive --out-implib libcmTC_232f3.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a7205.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_a7205.'
+         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_a7205.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a7205.dir/objects.a --no-whole-archive --out-implib libcmTC_a7205.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
         collect2 version 13.1.0
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_232f3.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_232f3.dir/objects.a --no-whole-archive --out-implib libcmTC_232f3.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_a7205.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a7205.dir/objects.a --no-whole-archive --out-implib libcmTC_a7205.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
         GNU ld (GNU Binutils) 2.40
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_232f3.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_232f3.'
-        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i41wtf'
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a7205.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_a7205.'
+        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jlfme8'
         
       exitCode: 0
   -
@@ -166,13 +166,13 @@ events:
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
-        ignore line: [Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i41wtf']
+        ignore line: [Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jlfme8']
         ignore line: []
-        ignore line: [Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_232f3/fast]
-        ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_232f3.dir\\build.make CMakeFiles/cmTC_232f3.dir/build]
-        ignore line: [mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-i41wtf']
-        ignore line: [Building C object CMakeFiles/cmTC_232f3.dir/CMakeCCompilerABI.c.obj]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c]
+        ignore line: [Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_a7205/fast]
+        ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_a7205.dir\\build.make CMakeFiles/cmTC_a7205.dir/build]
+        ignore line: [mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-jlfme8']
+        ignore line: [Building C object CMakeFiles/cmTC_a7205.dir/CMakeCCompilerABI.c.obj]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe]
         ignore line: [Target: x86_64-w64-mingw32]
@@ -180,8 +180,8 @@ events:
         ignore line: [Thread model: posix]
         ignore line: [Supported LTO compression algorithms: zlib]
         ignore line: [gcc version 13.1.0 (GCC) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_232f3.dir\\']
-        ignore line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles\\cmTC_232f3.dir\\ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\cclvc6DD.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a7205.dir\\']
+        ignore line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles\\cmTC_a7205.dir\\ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\cc1OG2Ej.s]
         ignore line: [GNU C17 (GCC) version 13.1.0 (x86_64-w64-mingw32)]
         ignore line: [	compiled by GNU C version 13.1.0  GMP version 6.2.1  MPFR version 4.2.0-p4  MPC version 1.3.1  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
@@ -199,8 +199,8 @@ events:
         ignore line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include]
         ignore line: [End of search list.]
         ignore line: [Compiler executable checksum: 2aa4fcf5c9208168c5e2d38a58fc2a97]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_232f3.dir\\']
-        ignore line: [ as -v -o CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj C:\\Users\\gking\\AppData\\Local\\Temp\\cclvc6DD.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a7205.dir\\']
+        ignore line: [ as -v -o CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj C:\\Users\\gking\\AppData\\Local\\Temp\\cc1OG2Ej.s]
         ignore line: [GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40]
         ignore line: [COMPILER_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/]
@@ -210,12 +210,12 @@ events:
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_232f3.dir\\CMakeCCompilerABI.c.']
-        ignore line: [Linking C executable cmTC_232f3.exe]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_232f3.dir\\link.txt --verbose=1]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_232f3.dir/objects.a]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_232f3.dir/objects.a @CMakeFiles\\cmTC_232f3.dir\\objects1.rsp]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe  -v -Wl -v -Wl --whole-archive CMakeFiles\\cmTC_232f3.dir/objects.a -Wl --no-whole-archive -o cmTC_232f3.exe -Wl --out-implib libcmTC_232f3.dll.a -Wl --major-image-version 0 --minor-image-version 0]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a7205.dir\\CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_a7205.exe]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_a7205.dir\\link.txt --verbose=1]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_a7205.dir/objects.a]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_a7205.dir/objects.a @CMakeFiles\\cmTC_a7205.dir\\objects1.rsp]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe  -v -Wl -v -Wl --whole-archive CMakeFiles\\cmTC_a7205.dir/objects.a -Wl --no-whole-archive -o cmTC_a7205.exe -Wl --out-implib libcmTC_a7205.dll.a -Wl --major-image-version 0 --minor-image-version 0]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe]
         ignore line: [COLLECT_LTO_WRAPPER=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe]
@@ -232,14 +232,14 @@ events:
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_232f3.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_232f3.']
-        link line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_232f3.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_232f3.dir/objects.a --no-whole-archive --out-implib libcmTC_232f3.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a7205.exe' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_a7205.']
+        link line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_a7205.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a7205.dir/objects.a --no-whole-archive --out-implib libcmTC_a7205.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe] ==> ignore
           arg [-m] ==> ignore
           arg [i386pep] ==> ignore
           arg [-Bdynamic] ==> search dynamic
           arg [-o] ==> ignore
-          arg [cmTC_232f3.exe] ==> ignore
+          arg [cmTC_a7205.exe] ==> ignore
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o]
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o]
           arg [-LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0] ==> dir [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0]
@@ -250,10 +250,10 @@ events:
           arg [-LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../..] ==> dir [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../..]
           arg [-v] ==> ignore
           arg [--whole-archive] ==> ignore
-          arg [CMakeFiles\\cmTC_232f3.dir/objects.a] ==> ignore
+          arg [CMakeFiles\\cmTC_a7205.dir/objects.a] ==> ignore
           arg [--no-whole-archive] ==> ignore
           arg [--out-implib] ==> ignore
-          arg [libcmTC_232f3.dll.a] ==> ignore
+          arg [libcmTC_a7205.dll.a] ==> ignore
           arg [--major-image-version] ==> ignore
           arg [0] ==> ignore
           arg [--minor-image-version] ==> ignore
@@ -281,7 +281,7 @@ events:
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o]
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
         ignore line: [collect2 version 13.1.0]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_232f3.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_232f3.dir/objects.a --no-whole-archive --out-implib libcmTC_232f3.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_a7205.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a7205.dir/objects.a --no-whole-archive --out-implib libcmTC_a7205.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
         linker tool for 'C': C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/ld.exe
         remove lib [gcc_eh]
         remove lib [msvcrt]
@@ -322,8 +322,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-269xiy"
-      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-269xiy"
+      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zzeio6"
+      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zzeio6"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -333,13 +333,13 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-269xiy'
+        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zzeio6'
         
-        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_cdc46/fast
-        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_cdc46.dir\\build.make CMakeFiles/cmTC_cdc46.dir/build
-        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-269xiy'
-        Building CXX object CMakeFiles/cmTC_cdc46.dir/CMakeCXXCompilerABI.cpp.obj
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp
+        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_f2f79/fast
+        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_f2f79.dir\\build.make CMakeFiles/cmTC_f2f79.dir/build
+        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zzeio6'
+        Building CXX object CMakeFiles/cmTC_f2f79.dir/CMakeCXXCompilerABI.cpp.obj
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp
         Using built-in specs.
         COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe
         Target: x86_64-w64-mingw32
@@ -347,8 +347,8 @@ events:
         Thread model: posix
         Supported LTO compression algorithms: zlib
         gcc version 13.1.0 (GCC) 
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_cdc46.dir\\'
-         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_cdc46.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\ccVoTsKv.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_f2f79.dir\\'
+         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_f2f79.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\ccvp528P.s
         GNU C++17 (GCC) version 13.1.0 (x86_64-w64-mingw32)
         	compiled by GNU C version 13.1.0, GMP version 6.2.1, MPFR version 4.2.0-p4, MPC version 1.3.1, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
@@ -372,17 +372,17 @@ events:
          C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include
         End of search list.
         Compiler executable checksum: e75de627edc3c57e31324b930b15b056
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_cdc46.dir\\'
-         as -v -o CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\gking\\AppData\\Local\\Temp\\ccVoTsKv.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_f2f79.dir\\'
+         as -v -o CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\gking\\AppData\\Local\\Temp\\ccvp528P.s
         GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40
         COMPILER_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/
         LIBRARY_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.'
-        Linking CXX executable cmTC_cdc46.exe
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_cdc46.dir\\link.txt --verbose=1
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_cdc46.dir/objects.a
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_cdc46.dir/objects.a @CMakeFiles\\cmTC_cdc46.dir\\objects1.rsp
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe  -v -Wl,-v -Wl,--whole-archive CMakeFiles\\cmTC_cdc46.dir/objects.a -Wl,--no-whole-archive -o cmTC_cdc46.exe -Wl,--out-implib,libcmTC_cdc46.dll.a -Wl,--major-image-version,0,--minor-image-version,0
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_f2f79.exe
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_f2f79.dir\\link.txt --verbose=1
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_f2f79.dir/objects.a
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_f2f79.dir/objects.a @CMakeFiles\\cmTC_f2f79.dir\\objects1.rsp
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe  -v -Wl,-v -Wl,--whole-archive CMakeFiles\\cmTC_f2f79.dir/objects.a -Wl,--no-whole-archive -o cmTC_f2f79.exe -Wl,--out-implib,libcmTC_f2f79.dll.a -Wl,--major-image-version,0,--minor-image-version,0
         Using built-in specs.
         COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe
         COLLECT_LTO_WRAPPER=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe
@@ -393,13 +393,13 @@ events:
         gcc version 13.1.0 (GCC) 
         COMPILER_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/
         LIBRARY_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_cdc46.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_cdc46.'
-         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_cdc46.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_cdc46.dir/objects.a --no-whole-archive --out-implib libcmTC_cdc46.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_f2f79.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_f2f79.'
+         C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_f2f79.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_f2f79.dir/objects.a --no-whole-archive --out-implib libcmTC_f2f79.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
         collect2 version 13.1.0
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_cdc46.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_cdc46.dir/objects.a --no-whole-archive --out-implib libcmTC_cdc46.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_f2f79.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_f2f79.dir/objects.a --no-whole-archive --out-implib libcmTC_f2f79.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
         GNU ld (GNU Binutils) 2.40
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_cdc46.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_cdc46.'
-        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-269xiy'
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_f2f79.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_f2f79.'
+        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zzeio6'
         
       exitCode: 0
   -
@@ -440,13 +440,13 @@ events:
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
-        ignore line: [Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-269xiy']
+        ignore line: [Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zzeio6']
         ignore line: []
-        ignore line: [Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_cdc46/fast]
-        ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_cdc46.dir\\build.make CMakeFiles/cmTC_cdc46.dir/build]
-        ignore line: [mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-269xiy']
-        ignore line: [Building CXX object CMakeFiles/cmTC_cdc46.dir/CMakeCXXCompilerABI.cpp.obj]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp]
+        ignore line: [Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_f2f79/fast]
+        ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_f2f79.dir\\build.make CMakeFiles/cmTC_f2f79.dir/build]
+        ignore line: [mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zzeio6']
+        ignore line: [Building CXX object CMakeFiles/cmTC_f2f79.dir/CMakeCXXCompilerABI.cpp.obj]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe   -fdiagnostics-color=always   -v -o CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj -c C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe]
         ignore line: [Target: x86_64-w64-mingw32]
@@ -454,8 +454,8 @@ events:
         ignore line: [Thread model: posix]
         ignore line: [Supported LTO compression algorithms: zlib]
         ignore line: [gcc version 13.1.0 (GCC) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_cdc46.dir\\']
-        ignore line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_cdc46.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\ccVoTsKv.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_f2f79.dir\\']
+        ignore line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_f2f79.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -fdiagnostics-color=always -o C:\\Users\\gking\\AppData\\Local\\Temp\\ccvp528P.s]
         ignore line: [GNU C++17 (GCC) version 13.1.0 (x86_64-w64-mingw32)]
         ignore line: [	compiled by GNU C version 13.1.0  GMP version 6.2.1  MPFR version 4.2.0-p4  MPC version 1.3.1  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
@@ -479,8 +479,8 @@ events:
         ignore line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include]
         ignore line: [End of search list.]
         ignore line: [Compiler executable checksum: e75de627edc3c57e31324b930b15b056]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_cdc46.dir\\']
-        ignore line: [ as -v -o CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\gking\\AppData\\Local\\Temp\\ccVoTsKv.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_f2f79.dir\\']
+        ignore line: [ as -v -o CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\gking\\AppData\\Local\\Temp\\ccvp528P.s]
         ignore line: [GNU assembler version 2.40 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.40]
         ignore line: [COMPILER_PATH=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/]
@@ -490,12 +490,12 @@ events:
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_cdc46.dir\\CMakeCXXCompilerABI.cpp.']
-        ignore line: [Linking CXX executable cmTC_cdc46.exe]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_cdc46.dir\\link.txt --verbose=1]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_cdc46.dir/objects.a]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_cdc46.dir/objects.a @CMakeFiles\\cmTC_cdc46.dir\\objects1.rsp]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe  -v -Wl -v -Wl --whole-archive CMakeFiles\\cmTC_cdc46.dir/objects.a -Wl --no-whole-archive -o cmTC_cdc46.exe -Wl --out-implib libcmTC_cdc46.dll.a -Wl --major-image-version 0 --minor-image-version 0]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_f2f79.dir\\CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_f2f79.exe]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_f2f79.dir\\link.txt --verbose=1]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_f2f79.dir/objects.a]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_f2f79.dir/objects.a @CMakeFiles\\cmTC_f2f79.dir\\objects1.rsp]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe  -v -Wl -v -Wl --whole-archive CMakeFiles\\cmTC_f2f79.dir/objects.a -Wl --no-whole-archive -o cmTC_f2f79.exe -Wl --out-implib libcmTC_f2f79.dll.a -Wl --major-image-version 0 --minor-image-version 0]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe]
         ignore line: [COLLECT_LTO_WRAPPER=C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe]
@@ -512,14 +512,14 @@ events:
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_cdc46.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_cdc46.']
-        link line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_cdc46.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_cdc46.dir/objects.a --no-whole-archive --out-implib libcmTC_cdc46.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_f2f79.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_f2f79.']
+        link line: [ C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -m i386pep -Bdynamic -o cmTC_f2f79.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_f2f79.dir/objects.a --no-whole-archive --out-implib libcmTC_f2f79.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe] ==> ignore
           arg [-m] ==> ignore
           arg [i386pep] ==> ignore
           arg [-Bdynamic] ==> search dynamic
           arg [-o] ==> ignore
-          arg [cmTC_cdc46.exe] ==> ignore
+          arg [cmTC_f2f79.exe] ==> ignore
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o]
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o]
           arg [-LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0] ==> dir [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0]
@@ -530,10 +530,10 @@ events:
           arg [-LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../..] ==> dir [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../..]
           arg [-v] ==> ignore
           arg [--whole-archive] ==> ignore
-          arg [CMakeFiles\\cmTC_cdc46.dir/objects.a] ==> ignore
+          arg [CMakeFiles\\cmTC_f2f79.dir/objects.a] ==> ignore
           arg [--no-whole-archive] ==> ignore
           arg [--out-implib] ==> ignore
-          arg [libcmTC_cdc46.dll.a] ==> ignore
+          arg [libcmTC_f2f79.dll.a] ==> ignore
           arg [--major-image-version] ==> ignore
           arg [0] ==> ignore
           arg [--minor-image-version] ==> ignore
@@ -562,7 +562,7 @@ events:
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o]
           arg [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o] ==> obj [C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
         ignore line: [collect2 version 13.1.0]
-        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_cdc46.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_cdc46.dir/objects.a --no-whole-archive --out-implib libcmTC_cdc46.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
+        ignore line: [C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin/ld.exe -m i386pep -Bdynamic -o cmTC_f2f79.exe C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_f2f79.dir/objects.a --no-whole-archive --out-implib libcmTC_f2f79.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/default-manifest.o C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
         linker tool for 'CXX': C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/ld.exe
         remove lib [msvcrt]
         remove lib [msvcrt]
@@ -592,192 +592,3 @@ events:
     message: |
       Running the CXX compiler's linker: "C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/ld.exe" "-v"
       GNU ld (GNU Binutils) 2.40
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:250 (check_include_file)"
-      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
-      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
-    checks:
-      - "Looking for sys/types.h"
-    directories:
-      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-mqy3wj"
-      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-mqy3wj"
-    cmakeVariables:
-      CMAKE_C_FLAGS: ""
-      CMAKE_C_FLAGS_DEBUG: "-g"
-      CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
-      CMAKE_OSX_SYSROOT: ""
-      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
-    buildResult:
-      variable: "HAVE_SYS_TYPES_H"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-mqy3wj'
-        
-        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_0aa5d/fast
-        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_0aa5d.dir\\build.make CMakeFiles/cmTC_0aa5d.dir/build
-        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-mqy3wj'
-        Building C object CMakeFiles/cmTC_0aa5d.dir/CheckIncludeFile.c.obj
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_0aa5d.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-mqy3wj\\CheckIncludeFile.c"
-        Linking C executable cmTC_0aa5d.exe
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_0aa5d.dir\\link.txt --verbose=1
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_0aa5d.dir/objects.a
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_0aa5d.dir/objects.a @CMakeFiles\\cmTC_0aa5d.dir\\objects1.rsp
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_0aa5d.dir/objects.a -Wl,--no-whole-archive -o cmTC_0aa5d.exe -Wl,--out-implib,libcmTC_0aa5d.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_0aa5d.dir\\linkLibs.rsp
-        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-mqy3wj'
-        
-      exitCode: 0
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:251 (check_include_file)"
-      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
-      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
-    checks:
-      - "Looking for stdint.h"
-    directories:
-      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z3gy4j"
-      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z3gy4j"
-    cmakeVariables:
-      CMAKE_C_FLAGS: ""
-      CMAKE_C_FLAGS_DEBUG: "-g"
-      CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
-      CMAKE_OSX_SYSROOT: ""
-      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
-    buildResult:
-      variable: "HAVE_STDINT_H"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z3gy4j'
-        
-        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_5c9a1/fast
-        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_5c9a1.dir\\build.make CMakeFiles/cmTC_5c9a1.dir/build
-        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z3gy4j'
-        Building C object CMakeFiles/cmTC_5c9a1.dir/CheckIncludeFile.c.obj
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_5c9a1.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-z3gy4j\\CheckIncludeFile.c"
-        Linking C executable cmTC_5c9a1.exe
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_5c9a1.dir\\link.txt --verbose=1
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_5c9a1.dir/objects.a
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_5c9a1.dir/objects.a @CMakeFiles\\cmTC_5c9a1.dir\\objects1.rsp
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_5c9a1.dir/objects.a -Wl,--no-whole-archive -o cmTC_5c9a1.exe -Wl,--out-implib,libcmTC_5c9a1.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_5c9a1.dir\\linkLibs.rsp
-        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-z3gy4j'
-        
-      exitCode: 0
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:252 (check_include_file)"
-      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
-      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
-    checks:
-      - "Looking for stddef.h"
-    directories:
-      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zv3fnq"
-      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zv3fnq"
-    cmakeVariables:
-      CMAKE_C_FLAGS: ""
-      CMAKE_C_FLAGS_DEBUG: "-g"
-      CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
-      CMAKE_OSX_SYSROOT: ""
-      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
-    buildResult:
-      variable: "HAVE_STDDEF_H"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zv3fnq'
-        
-        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_ae98c/fast
-        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_ae98c.dir\\build.make CMakeFiles/cmTC_ae98c.dir/build
-        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zv3fnq'
-        Building C object CMakeFiles/cmTC_ae98c.dir/CheckIncludeFile.c.obj
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_ae98c.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-zv3fnq\\CheckIncludeFile.c"
-        Linking C executable cmTC_ae98c.exe
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_ae98c.dir\\link.txt --verbose=1
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_ae98c.dir/objects.a
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_ae98c.dir/objects.a @CMakeFiles\\cmTC_ae98c.dir\\objects1.rsp
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_ae98c.dir/objects.a -Wl,--no-whole-archive -o cmTC_ae98c.exe -Wl,--out-implib,libcmTC_ae98c.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_ae98c.dir\\linkLibs.rsp
-        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-zv3fnq'
-        
-      exitCode: 0
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:146 (try_compile)"
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckTypeSize.cmake:271 (__check_type_size_impl)"
-      - "cmake-build-debug/_deps/sfml-src/cmake/Config.cmake:10 (check_type_size)"
-      - "cmake-build-debug/_deps/sfml-src/CMakeLists.txt:41 (include)"
-    checks:
-      - "Check size of void*"
-    directories:
-      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6ft98r"
-      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6ft98r"
-    cmakeVariables:
-      CMAKE_C_FLAGS: ""
-      CMAKE_C_FLAGS_DEBUG: "-g"
-      CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;"
-      CMAKE_OSX_SYSROOT: ""
-      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
-    buildResult:
-      variable: "HAVE_SIZEOF_VOID_PTR"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6ft98r'
-        
-        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_aa3e2/fast
-        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_aa3e2.dir\\build.make CMakeFiles/cmTC_aa3e2.dir/build
-        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6ft98r'
-        Building C object CMakeFiles/cmTC_aa3e2.dir/SIZEOF_VOID_PTR.c.obj
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_aa3e2.dir\\SIZEOF_VOID_PTR.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-6ft98r\\SIZEOF_VOID_PTR.c"
-        Linking C executable cmTC_aa3e2.exe
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_aa3e2.dir\\link.txt --verbose=1
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_aa3e2.dir/objects.a
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_aa3e2.dir/objects.a @CMakeFiles\\cmTC_aa3e2.dir\\objects1.rsp
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_aa3e2.dir/objects.a -Wl,--no-whole-archive -o cmTC_aa3e2.exe -Wl,--out-implib,libcmTC_aa3e2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_aa3e2.dir\\linkLibs.rsp
-        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-6ft98r'
-        
-      exitCode: 0
-  -
-    kind: "try_compile-v1"
-    backtrace:
-      - "C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.29/Modules/CheckIncludeFile.cmake:90 (try_compile)"
-      - "cmake-build-debug/_deps/sfml-src/src/SFML/Window/CMakeLists.txt:334 (check_include_file)"
-    checks:
-      - "Looking for dinput.h"
-    directories:
-      source: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wcvmat"
-      binary: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wcvmat"
-    cmakeVariables:
-      CMAKE_C_FLAGS: ""
-      CMAKE_C_FLAGS_DEBUG: "-g"
-      CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CPM_modules;;C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/Modules/"
-      CMAKE_OSX_SYSROOT: ""
-      CMAKE_USER_MAKE_RULES_OVERRIDE: "C:/coding shit/AI/CSI-240-Final/cmake-build-debug/_deps/sfml-src/cmake/CompilerOptionsOverride.cmake"
-    buildResult:
-      variable: "DINPUT_H_FOUND"
-      cached: true
-      stdout: |
-        Change Dir: 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wcvmat'
-        
-        Run Build Command(s): C:/Users/gking/AppData/Local/Programs/CLion/bin/cmake/win/x64/bin/cmake.exe -E env VERBOSE=1 C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe -f Makefile cmTC_6d101/fast
-        C:/Users/gking/AppData/Local/Programs/CLion/bin/mingw/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_6d101.dir\\build.make CMakeFiles/cmTC_6d101.dir/build
-        mingw32-make[1]: Entering directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wcvmat'
-        Building C object CMakeFiles/cmTC_6d101.dir/CheckIncludeFile.c.obj
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe   -fdiagnostics-color=always -o CMakeFiles\\cmTC_6d101.dir\\CheckIncludeFile.c.obj -c "C:\\coding shit\\AI\\CSI-240-Final\\cmake-build-debug\\CMakeFiles\\CMakeScratch\\TryCompile-wcvmat\\CheckIncludeFile.c"
-        Linking C executable cmTC_6d101.exe
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_6d101.dir\\link.txt --verbose=1
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\cmake\\win\\x64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_6d101.dir/objects.a
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\ar.exe qc CMakeFiles\\cmTC_6d101.dir/objects.a @CMakeFiles\\cmTC_6d101.dir\\objects1.rsp
-        C:\\Users\\gking\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -Wl,--whole-archive CMakeFiles\\cmTC_6d101.dir/objects.a -Wl,--no-whole-archive -o cmTC_6d101.exe -Wl,--out-implib,libcmTC_6d101.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_6d101.dir\\linkLibs.rsp
-        mingw32-make[1]: Leaving directory 'C:/coding shit/AI/CSI-240-Final/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-wcvmat'
-        
-      exitCode: 0
-...

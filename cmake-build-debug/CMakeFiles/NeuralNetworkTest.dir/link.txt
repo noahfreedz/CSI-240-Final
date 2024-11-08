@@ -1,3 +1,0 @@
-C:\Users\gking\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -E rm -f CMakeFiles\NeuralNetworkTest.dir/objects.a
-C:\Users\gking\AppData\Local\Programs\CLion\bin\mingw\bin\ar.exe qc CMakeFiles\NeuralNetworkTest.dir/objects.a @CMakeFiles\NeuralNetworkTest.dir\objects1.rsp
-C:\Users\gking\AppData\Local\Programs\CLion\bin\mingw\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\NeuralNetworkTest.dir/objects.a -Wl,--no-whole-archive -o NeuralNetworkTest.exe -Wl,--out-implib,libNeuralNetworkTest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\NeuralNetworkTest.dir\linkLibs.rsp
