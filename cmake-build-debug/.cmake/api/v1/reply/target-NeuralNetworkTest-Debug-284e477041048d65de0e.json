@@ -29,7 +29,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 13,
+				"line" : 14,
 				"parent" : 0
 			},
 			{
@@ -41,7 +41,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 6,
+				"line" : 8,
 				"parent" : 0
 			}
 		]
@@ -59,10 +59,6 @@
 			[
 				{
 					"backtrace" : 3,
-					"path" : "c:/SFML/include"
-				},
-				{
-					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "C:/SFML/include"
 				}
@@ -137,8 +133,7 @@
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				1,
-				2
+				1
 			]
 		}
 	],
@@ -153,11 +148,6 @@
 		{
 			"backtrace" : 1,
 			"path" : "neural_network.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "window.h",
 			"sourceGroupIndex" : 1
 		}
 	],
