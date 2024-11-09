@@ -1,16 +1,14 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
 #include <vector>
 #include <unordered_map>
 #include <chrono>
 #include <thread>
 #include <fstream>
-#include <vector>
-#include <iostream>
+#include <numeric> // For std::accumulate
+#include <SFML/Graphics.hpp>
+
 #include "neural_network.h"
 #include "window.h"
-#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -52,6 +50,7 @@ std::vector<std::vector<double>> readMNISTImages(const std::string& filePath, in
 
     return images;
 }
+
 std::vector<int> readMNISTLabels(const std::string& filePath, int numLabels) {
     std::ifstream file(filePath, std::ios::binary);
     std::vector<int> labels;
@@ -81,8 +80,7 @@ std::vector<int> readMNISTLabels(const std::string& filePath, int numLabels) {
     return labels;
 }
 
-unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
-{
+unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector) {
     unordered_map<int, double> averagedWeights;
     int count = 0;
 
@@ -109,7 +107,6 @@ double averageError(const std::vector<double>& values) {
     return sum / values.size();
 }
 
-
 int main() {
     // Create Visualizer
     GraphWindow window(1000, 600, "REBECCA");
@@ -127,55 +124,86 @@ int main() {
     std::vector<std::vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
     std::vector<int> labels = readMNISTLabels(labelFilePath, numImages);
 
-    // Create and train the network
-    NeuralNetwork networkA(784, 2, 16, 10, 0.05); // 784 input nodes for 28x28 images
-    window.setLearningRate(0, 0.05);
-    vector<unordered_map<int, double>> weights_A;
-    vector<unordered_map<int, double>> biases_A;
+    // Create and train the networks
+    NeuralNetwork networkA(784, 2, 16, 10, 0.05); // Learning rate: 0.05
+    NeuralNetwork networkB(784, 2, 16, 10, 0.01); // Learning rate: 0.01
+    NeuralNetwork networkC(784, 2, 16, 10, 0.1);  // Learning rate: 0.1
 
+    // Add networks to the visualizer with learning rates
+    window.setLearningRate(0, 0.05);
+    window.setLearningRate(1, 0.01);
+    window.setLearningRate(2, 0.1);
+
+    vector<unordered_map<int, double>> weights_A, weights_B, weights_C;
+    vector<unordered_map<int, double>> biases_A, biases_B, biases_C;
 
     int count = 0;
-    vector<double> total_errors_A;
+    vector<double> total_errors_A, total_errors_B, total_errors_C;
 
     for (int i = 0; i < images.size(); ++i) {
-        vector<double> correct_label_output;
-        correct_label_output.resize(10);
-        for(int output = 0; output < 10; output++) {
-            if(labels[i] == output) {
-                correct_label_output[output] = 1.0;
-            } else {
-                correct_label_output[output] = 0.0;
-            }
-        }
-        total_errors_A.push_back(networkA.run_network(images[i], correct_label_output));
+        vector<double> correct_label_output(10, 0.0);
+        correct_label_output[labels[i]] = 1.0; // Set the correct output to 1.0 for the label
 
-        pair<unordered_map<int, double>, unordered_map<int, double>> network_outputA = networkA.backpropigate_network();
-        weights_A.emplace_back(network_outputA.first);
-        biases_A.emplace_back(network_outputA.second);
+        // Run networks and collect errors
+        total_errors_A.push_back(networkA.run_network(images[i], correct_label_output));
+        total_errors_B.push_back(networkB.run_network(images[i], correct_label_output));
+        total_errors_C.push_back(networkC.run_network(images[i], correct_label_output));
+
+        // Perform backpropagation and store weights/biases for averaging
+        weights_A.emplace_back(networkA.backpropigate_network().first);
+        biases_A.emplace_back(networkA.backpropigate_network().second);
+
+        weights_B.emplace_back(networkB.backpropigate_network().first);
+        biases_B.emplace_back(networkB.backpropigate_network().second);
+
+        weights_C.emplace_back(networkC.backpropigate_network().first);
+        biases_C.emplace_back(networkC.backpropigate_network().second);
 
         count++;
 
         // Handle Window Events
         window.handleEvents();
-        // Average weights if necessary
-        if(count % 100 == 0) {
+
+        // Print progress every 100 iterations
+        if (count % 100 == 0) {
             cout << "RUN (" << count << "/" << "500) - " << endl;
         }
-        if(count == 500)
-        {
-            unordered_map<int, double> averaged_weights_A = average(weights_A);
-            unordered_map<int, double> averaged_biases_A= average(biases_A);
-            networkA.edit_weights(averaged_weights_A);
-            networkA.edit_biases(averaged_biases_A);
+
+        // Every 500 iterations, average weights, update networks, and visualize cost
+        if (count == 500) {
+            // Update network A
+            networkA.edit_weights(average(weights_A));
+            networkA.edit_biases(average(biases_A));
+            double cost_A = networkA.get_cost();
+            cout << "GENERATION COMPLETE (Network A) - " << cost_A << endl;
+            window.addDataPoint(0, cost_A);
+
+            // Update network B
+            networkB.edit_weights(average(weights_B));
+            networkB.edit_biases(average(biases_B));
+            double cost_B = networkB.get_cost();
+            cout << "GENERATION COMPLETE (Network B) - " << cost_B << endl;
+            window.addDataPoint(1, cost_B);
+
+            // Update network C
+            networkC.edit_weights(average(weights_C));
+            networkC.edit_biases(average(biases_C));
+            double cost_C = networkC.get_cost();
+            cout << "GENERATION COMPLETE (Network C) - " << cost_C << endl;
+            window.addDataPoint(2, cost_C);
+
+            // Clear data and render window
             weights_A.clear();
             biases_A.clear();
-            averaged_weights_A.clear();
-            averaged_biases_A.clear();
-            cout << "GENERATION COMPLETE - " << networkA.get_cost() << endl;
-            window.addDataPoint(0, networkA.get_cost());
-            window.render();
-            //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            weights_B.clear();
+            biases_B.clear();
+            weights_C.clear();
+            biases_C.clear();
             total_errors_A.clear();
+            total_errors_B.clear();
+            total_errors_C.clear();
+
+            window.render();
             count = 0;
         }
     }

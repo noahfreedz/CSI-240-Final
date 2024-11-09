@@ -22,149 +22,120 @@ struct connection {
     Node* start_address;
     Node* end_address;
     double weight;
-    int ID;
-    static int nextID;
+    int ID;  // Assigned by the NeuralNetwork instance
 };
 
+
 class Node {
-    public:
-        static int last_layer;
-        static int next_ID;
-        int ID;
-        int layer;
-        double bias;
-        double activation_value;
-        double error_value = 0;
+public:
+    int ID;
+    int layer;
+    double bias;
+    double activation_value;
+    double error_value = 0;
 
-        // Constructor
-        Node(int node_layer) : activation_value(0.0f){
-            // Define Node Type
-            layer = node_layer;
-            // Give Unique ID
-            ID = next_ID;
-            next_ID++;
-            // Set Random Bias
-            bias = getRandom(-15.0, 15.0);
+    // Constructor
+    Node(int node_layer, int& nextID) : activation_value(0.0), layer(node_layer) {
+        ID = nextID;
+        nextID++;
+        bias = getRandom(-15.0, 15.0);
+    }
 
-        }
-
-        // Node Connection Hashtable
-        unordered_map<int , connection*> forward_connections;
-        unordered_map<int , connection*> backward_connections;
-
+    unordered_map<int, connection*> forward_connections;
+    unordered_map<int, connection*> backward_connections;
 
     void setActivationValue(double x) {
-            if(layer != 0) {
-                cout << "| ERROR - EDITING ACTIVATION VALUE OF NON-INPUT ("<< layer << ") NODE!" << endl;
-                return; // Prevent setting non-input node activation values
-            }
-            activation_value = x;
+        if (layer != 0) {
+            cout << "| ERROR - EDITING ACTIVATION VALUE OF NON-INPUT (" << layer << ") NODE!" << endl;
+            return;
         }
+        activation_value = x;
+    }
 
-    // Calculate Activation Value for Node
     void calculate_node() {
         double connection_total = 0;
-        if(layer != 0)
-        {for (const auto& pair : backward_connections) {
-                //std::cout << pair.second->start_address->ID << ": " << pair.second->weight << std::endl;
+        if (layer != 0) {
+            for (const auto& pair : backward_connections) {
                 connection_total += pair.second->start_address->activation_value * pair.second->weight;
             }
-        }
-        if(layer > 0) {
-            activation_value = sigmoid(connection_total-bias);
+            activation_value = sigmoid(connection_total - bias);
         }
     }
 };
 
-// Initialize Static Node Variables
-int Node::last_layer = 0;
-int Node::next_ID = 0;
-int connection::nextID = 0;
-
 class NeuralNetwork {
-    public:
-        vector<Node> allNodes;
-        unordered_map<int, connection> allConnections;
-        vector<double> average_cost;
-        int runs = 0;
-        int correct = 0;
-        double learning_rate = 0.05;
+public:
+    vector<Node> allNodes;
+    unordered_map<int, connection> allConnections;
+    vector<double> average_cost;
+    int runs = 0;
+    int correct = 0;
+    double learning_rate = 0.05;
 
-        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate=0.05) {
-            // Set Learning Rate
-            learning_rate = _learning_rate;
+    // Instance-specific ID counters
+    int next_ID;  // For nodes
+    int connection_ID;  // For connections
+    int last_layer;
 
-            // Reserve For No Resizing
-            allConnections.reserve(999999);
+    NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate = 0.05)
+            : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0) {
 
-            // Input Layer Nodes
-            for(int n=0; n<iNode_count; n++) {
-                Node newInputNode(0);
-                allNodes.push_back(newInputNode);
-            }
-            Node::last_layer += 1;
-
-            // Hidden Layer(s) Nodes
-            for (int l = 0; l < hLayer_count; l++) {
-                for (int n = 0; n < hNode_count; n++) {
-                    Node newHiddenNode(Node::last_layer);
-                    allNodes.push_back(newHiddenNode);
-                }
-                Node::last_layer += 1;
-            }
-
-            // Output Layer Nodes
-            for(int n=0; n<oNode_count; n++) {
-                Node newOutputNode(Node::last_layer);
-                allNodes.push_back(newOutputNode);
-            }
-
-            // Connections
-            int current_layer = 0;
-            while (current_layer < Node::last_layer) {
-                vector<Node*> start_nodes;
-                vector<Node*> end_nodes;
-
-                // Collect pointers to nodes in the current and next layer
-                for (auto& node : allNodes) {
-                    int layer = node.layer;
-                    if (layer == current_layer) {
-                        start_nodes.push_back(&node);
-                    } else if (layer == current_layer + 1) {
-                        end_nodes.push_back(&node);
-                    }
-                }
-
-                // Make Connections For All Nodes
-                for (auto& start_node : start_nodes)
-                {
-                    for (auto& end_node : end_nodes) {
-                        // Initialize Connection
-                        connection new_connection{};
-
-                        // Unique ID per Connection
-                        new_connection.ID = connection::nextID;
-                        connection::nextID++;
-
-                        // Initialize Connection Values
-                        new_connection.start_address = start_node;
-                        new_connection.end_address = end_node;
-                        new_connection.weight = getRandom(-1.0, 1.0);
-
-                        // Add to All Connections Hash
-                        allConnections[new_connection.ID] = new_connection;
-
-                        // Append to Forward Connections Of Start Node
-                        int start_size = start_node->forward_connections.size();
-                        start_node->forward_connections[start_size] = & allConnections[new_connection.ID];
-                        // Append to Backward Connections Of End Node
-                        int end_size = end_node->backward_connections.size();
-                        end_node->backward_connections[end_size] = & allConnections[new_connection.ID];
-                    }
-                }
-                current_layer++;
-            }
+        // Create input layer nodes
+        for (int n = 0; n < iNode_count; n++) {
+            Node newInputNode(0, next_ID);
+            allNodes.push_back(newInputNode);
         }
+        last_layer++;
+
+        // Create hidden layers
+        for (int l = 0; l < hLayer_count; l++) {
+            for (int n = 0; n < hNode_count; n++) {
+                Node newHiddenNode(last_layer, next_ID);
+                allNodes.push_back(newHiddenNode);
+            }
+            last_layer++;
+        }
+
+        // Create output layer nodes
+        for (int n = 0; n < oNode_count; n++) {
+            Node newOutputNode(last_layer, next_ID);
+            allNodes.push_back(newOutputNode);
+        }
+
+        // Create connections
+        int current_layer = 0;
+        while (current_layer < last_layer) {
+            vector<Node*> start_nodes;
+            vector<Node*> end_nodes;
+
+            // Collect nodes in the current and next layer
+            for (auto& node : allNodes) {
+                if (node.layer == current_layer) {
+                    start_nodes.push_back(&node);
+                } else if (node.layer == current_layer + 1) {
+                    end_nodes.push_back(&node);
+                }
+            }
+
+            // Connect nodes between layers
+            for (auto& start_node : start_nodes) {
+                for (auto& end_node : end_nodes) {
+                    connection new_connection{};
+                    new_connection.ID = connection_ID;
+                    connection_ID++;
+                    new_connection.start_address = start_node;
+                    new_connection.end_address = end_node;
+                    new_connection.weight = getRandom(-1.0, 1.0);
+
+                    allConnections[new_connection.ID] = new_connection;
+                    start_node->forward_connections[start_node->forward_connections.size()] = &allConnections[new_connection.ID];
+                    end_node->backward_connections[end_node->backward_connections.size()] = &allConnections[new_connection.ID];
+                }
+            }
+            current_layer++;
+        }
+    }
+
 
         double run_network(vector<double> inputs, vector<double> correct_outputs) {
             int inputIndex = 0;
@@ -177,7 +148,7 @@ class NeuralNetwork {
 
             // Starting with 2nd Layer, Calculate Activations
             int current_layer = 1;
-            while (current_layer <= Node::last_layer) {
+            while (current_layer <= last_layer) {
                 for (auto &node: allNodes) {
                     int layer = node.layer;
                     if (layer == current_layer) {
@@ -192,7 +163,7 @@ class NeuralNetwork {
             double total_error = 0.0;
             double cost = 0.0;
             for(auto &node : allNodes) {
-                if(node.layer == Node::last_layer) {
+                if(node.layer == last_layer) {
                     // Calculate Target Value
                     double target_val = correct_outputs[output_count] - node.activation_value;
                     // Calculate Node Error Value
@@ -215,10 +186,10 @@ class NeuralNetwork {
                 runs++;
 
                 // Loop Through Layers Starting with Second To Last Going Backward
-                for(int i = Node::last_layer - 1; 0 < i ; i--)
+                for(int i = last_layer - 1; 0 < i ; i--)
                 {
                     for(auto& node: allNodes) {
-                        if (node.layer == i && node.layer != Node::last_layer){
+                        if (node.layer == i && node.layer != last_layer){
                             // Sum Error Values of Previous Layer to Get Error From Current Node
                             double error_sum = 0;
                             for(auto _connection : node.forward_connections) {
@@ -251,16 +222,19 @@ class NeuralNetwork {
             }
 
         double get_cost() {
+            if (average_cost.empty()) return 0.0; // Avoid division by zero
+
             double total_cost = 0.0;
-            double endValue;
-            int count = 0;
-            for(auto cost: average_cost) {
+            for (double cost : average_cost) {
                 total_cost += cost;
-                count++;
             }
-            endValue = total_cost/count;
+
+            double endValue = total_cost / average_cost.size();
+            average_cost.clear(); // Clear after calculation
+
             return endValue;
         }
+
 
         void edit_weights(const unordered_map<int, double> new_values)
             {
