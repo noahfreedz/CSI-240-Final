@@ -10,9 +10,9 @@ CPMAddPackage("gh:SFML/SFML#2.6.1")
 add_executable(NeuralNetworkTest neural_network.cpp neural_network.h window.h
         window.h)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/train-images.idx3-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/train-labels.idx1-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Font.ttf DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/train-images.idx3-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/train-labels.idx1-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Font/Font.ttf DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 # Link SFML libraries
