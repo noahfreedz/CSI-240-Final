@@ -13,7 +13,7 @@ public:
     GraphWindow(unsigned int width, unsigned int height, const std::string& title)
             : window(sf::VideoMode(width, height), title), window_width(width), window_height(height) {
         window.setFramerateLimit(60);
-        if (!font.loadFromFile("C:\\Users\\nfree\\OneDrive\\Desktop\\CSI-240-Final\\Font.ttf")) {
+        if (!font.loadFromFile("Font.ttf")) {
             std::cerr << "Failed to load font\n";
         }
     }
