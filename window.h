@@ -27,6 +27,8 @@ public:
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
+            } else if (event.type == sf::Event::MouseMoved) {
+                mouseX = event.mouseMove.x;
             }
         }
     }
@@ -49,6 +51,7 @@ public:
         drawAxesLabels();
         drawAxisTitles();
         drawKey();
+        drawCursorLineWithMarkers();
         window.display();
     }
 
@@ -57,6 +60,7 @@ private:
     float window_width;
     float window_height;
     sf::Font font;
+    int mouseX = -1; // To track mouse X position
     std::map<int, std::vector<double>> dataSets;
     std::map<int, double> learningRates;
     std::map<int, sf::Color> colors;
@@ -64,7 +68,6 @@ private:
     void drawGraph() {
         if (dataSets.empty()) return;
 
-        // Find global max and min for scaling
         double globalMax = -std::numeric_limits<double>::infinity();
         double globalMin = std::numeric_limits<double>::infinity();
         for (const auto& [id, data] : dataSets) {
@@ -78,7 +81,6 @@ private:
         double midVal2 = globalMin + (globalMax - globalMin) * 0.5;
         double midVal3 = globalMin + (globalMax - globalMin) * 0.75;
 
-        // Draw axes with extra spacing for labels
         sf::Vertex xAxis[] = {
                 sf::Vertex(sf::Vector2f(100, window_height - 80)),
                 sf::Vertex(sf::Vector2f(window_width - 80, window_height - 80))
@@ -93,7 +95,6 @@ private:
 
         double yScale = (window_height - 160) / (globalMax - globalMin);
 
-        // Draw each data set
         for (const auto& [id, data] : dataSets) {
             double xSpacing = (window_width - 180) / static_cast<double>(data.size());
             std::vector<sf::Vertex> points;
@@ -106,6 +107,53 @@ private:
 
             if (!points.empty()) {
                 window.draw(&points[0], points.size(), sf::LinesStrip);
+            }
+        }
+    }
+
+    void drawCursorLineWithMarkers() {
+        if (mouseX < 100 || mouseX > window_width - 80) return;
+
+        sf::Vertex cursorLine[] = {
+                sf::Vertex(sf::Vector2f(mouseX, 50), sf::Color(200, 200, 200)),
+                sf::Vertex(sf::Vector2f(mouseX, window_height - 80), sf::Color(200, 200, 200))
+        };
+        window.draw(cursorLine, 2, sf::Lines);
+
+        double globalMax = -std::numeric_limits<double>::infinity();
+        double globalMin = std::numeric_limits<double>::infinity();
+        for (const auto& [id, data] : dataSets) {
+            double maxVal = *std::max_element(data.begin(), data.end());
+            double minVal = *std::min_element(data.begin(), data.end());
+            if (maxVal > globalMax) globalMax = maxVal;
+            if (minVal < globalMin) globalMin = minVal;
+        }
+
+        double yScale = (window_height - 160) / (globalMax - globalMin);
+        double xSpacing = (window_width - 180) / static_cast<double>(dataSets.begin()->second.size());
+
+        int index = static_cast<int>((mouseX - 100) / xSpacing);
+        if (index < 0 || index >= dataSets.begin()->second.size()) return;
+
+        for (const auto& [id, data] : dataSets) {
+            if (index < data.size()) {
+                double x = 100 + index * xSpacing;
+                double y = window_height - 80 - (data[index] - globalMin) * yScale;
+
+                // Draw a marker at the intersection
+                sf::CircleShape marker(3);
+                marker.setPosition(x - 3, y - 3);
+                marker.setFillColor(colors[id]);
+                window.draw(marker);
+
+                // Draw a text label showing the run and cost
+                sf::Text markerText;
+                markerText.setFont(font);
+                markerText.setString("Run: " + std::to_string(500 * index) + "\nCost: " + formatLabel(data[index]));
+                markerText.setCharacterSize(24);
+                markerText.setFillColor(colors[id]);
+                markerText.setPosition(x + 5, y - 15);
+                window.draw(markerText);
             }
         }
     }
@@ -132,7 +180,6 @@ private:
         drawYAxisLabel(midVal3, 100, window_height - 80 - (midVal3 - globalMin) * ((window_height - 160) / (globalMax - globalMin)));
         drawYAxisLabel(globalMax, 100, 50);
 
-        // Draw up to 6 evenly spaced x-axis labels based on the longest data set
         size_t maxDataSize = 0;
         for (const auto& [id, data] : dataSets) {
             maxDataSize = std::max(maxDataSize, data.size());
@@ -148,17 +195,15 @@ private:
     }
 
     void drawAxisTitles() {
-        // Draw Y-axis title "COST"
         sf::Text yAxisTitle;
         yAxisTitle.setFont(font);
         yAxisTitle.setString("COST");
         yAxisTitle.setCharacterSize(20);
         yAxisTitle.setFillColor(sf::Color::White);
-        yAxisTitle.setPosition(10, (window_height / 2) - (yAxisTitle.getLocalBounds().width / 2)); // Center vertically and move left
-        yAxisTitle.setRotation(-90); // Rotate for vertical text
+        yAxisTitle.setPosition(10, (window_height / 2) - (yAxisTitle.getLocalBounds().width / 2));
+        yAxisTitle.setRotation(-90);
         window.draw(yAxisTitle);
 
-        // Draw X-axis title "RUNS"
         sf::Text xAxisTitle;
         xAxisTitle.setFont(font);
         xAxisTitle.setString("RUNS");
@@ -197,7 +242,6 @@ private:
     }
 
     sf::Color generateColor(int index) {
-        // Generate a color based on the index
         static std::vector<sf::Color> colorPalette = {
                 sf::Color::Red, sf::Color::Green, sf::Color::Blue, sf::Color::Cyan, sf::Color::Magenta, sf::Color::Yellow
         };
@@ -208,9 +252,9 @@ private:
         sf::Text label;
         label.setFont(font);
         label.setString(formatLabel(value));
-        label.setCharacterSize(16); // Increase character size for better visibility
+        label.setCharacterSize(16);
         label.setFillColor(sf::Color::White);
-        label.setPosition(x - 60, y - 10); // Move left to avoid overlapping with "COST"
+        label.setPosition(x - 60, y - 10);
         window.draw(label);
     }
 
@@ -218,9 +262,9 @@ private:
         sf::Text label;
         label.setFont(font);
         label.setString(std::to_string(run));
-        label.setCharacterSize(16); // Increase character size for better visibility
+        label.setCharacterSize(16);
         label.setFillColor(sf::Color::White);
-        label.setPosition(x - 15, y); // Adjust positioning for larger text
+        label.setPosition(x - 15, y);
         window.draw(label);
     }
 
