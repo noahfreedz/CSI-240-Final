@@ -1,20 +1,18 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "neural_network.h"
 #include <vector>
 #include <unordered_map>
 #include <chrono>
 #include <thread>
-
-//#include "window.h"
-//#include <SFML/Graphics.hpp>
-
-using namespace std;
-
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include "neural_network.h"
+#include "window.h"
+#include <SFML/Graphics.hpp>
+
+using namespace std;
 
 std::vector<std::vector<double>> readMNISTImages(const std::string& filePath, int numImages, int numRows, int numCols) {
     std::ifstream file(filePath, std::ios::binary);
@@ -113,6 +111,10 @@ double averageError(const std::vector<double>& values) {
 
 
 int main() {
+    // Create Visualizer
+    GraphWindow window(1000, 600, "REBECCA");
+    window.render();
+
     // Paths to your MNIST files
     std::string imageFilePath = "train-images.idx3-ubyte";
     std::string labelFilePath = "train-labels.idx1-ubyte";
@@ -126,11 +128,15 @@ int main() {
     std::vector<int> labels = readMNISTLabels(labelFilePath, numImages);
 
     // Create and train the network
-    NeuralNetwork myNN(784, 2, 16, 10); // 784 input nodes for 28x28 images
-    vector<unordered_map<int, double>> all_weights;
-    vector<unordered_map<int, double>> all_biases;
+    NeuralNetwork networkA(784, 2, 16, 10, 0.05); // 784 input nodes for 28x28 images
+    window.setLearningRate(0, 0.05);
+    vector<unordered_map<int, double>> weights_A;
+    vector<unordered_map<int, double>> biases_A;
+
+
     int count = 0;
-    vector<double> total_errors;
+    vector<double> total_errors_A;
+
     for (int i = 0; i < images.size(); ++i) {
         vector<double> correct_label_output;
         correct_label_output.resize(10);
@@ -141,29 +147,35 @@ int main() {
                 correct_label_output[output] = 0.0;
             }
         }
-        total_errors.push_back(myNN.run_network(images[i], correct_label_output));
-        pair<unordered_map<int, double>, unordered_map<int, double>> network_output = myNN.backpropigate_network(); // Use the label as the correct node
-        all_weights.emplace_back(network_output.first);
-        all_biases.emplace_back(network_output.second);
+        total_errors_A.push_back(networkA.run_network(images[i], correct_label_output));
+
+        pair<unordered_map<int, double>, unordered_map<int, double>> network_outputA = networkA.backpropigate_network();
+        weights_A.emplace_back(network_outputA.first);
+        biases_A.emplace_back(network_outputA.second);
+
         count++;
 
+        // Handle Window Events
+        window.handleEvents();
         // Average weights if necessary
         if(count % 100 == 0) {
-            cout << "RUN (" << count << "/" << "500) - " << averageError(total_errors) << endl;
+            cout << "RUN (" << count << "/" << "500) - " << endl;
         }
-        if(count == 100)
+        if(count == 500)
         {
-            unordered_map<int, double> averaged_weights = average(all_weights);
-            unordered_map<int, double> averaged_biases = average(all_biases);
-            myNN.edit_weights(averaged_weights);
-            myNN.edit_biases(averaged_biases);
-            all_weights.clear();
-            all_biases.clear();
-            averaged_biases.clear();
-            averaged_weights.clear();
-            cout << "GENERATION COMPLETE - " << myNN.getCost() << endl;
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            total_errors.clear();
+            unordered_map<int, double> averaged_weights_A = average(weights_A);
+            unordered_map<int, double> averaged_biases_A= average(biases_A);
+            networkA.edit_weights(averaged_weights_A);
+            networkA.edit_biases(averaged_biases_A);
+            weights_A.clear();
+            biases_A.clear();
+            averaged_weights_A.clear();
+            averaged_biases_A.clear();
+            cout << "GENERATION COMPLETE - " << networkA.get_cost() << endl;
+            window.addDataPoint(0, networkA.get_cost());
+            window.render();
+            //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            total_errors_A.clear();
             count = 0;
         }
     }

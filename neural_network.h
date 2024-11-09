@@ -14,14 +14,8 @@
 using namespace std;
 
 double getRandom(double min, double max);
-double sigmoid(double x) {
-    double result = 1 / (1 + exp(-x));
+double sigmoid(double x);
 
-    if (result < 0.000000001) {
-        result = 0.0; // Set the minimum value
-    }
-    return result;
-}
 class Node;
 
 struct connection {
@@ -58,6 +52,7 @@ class Node {
         unordered_map<int , connection*> forward_connections;
         unordered_map<int , connection*> backward_connections;
 
+
     void setActivationValue(double x) {
             if(layer != 0) {
                 cout << "| ERROR - EDITING ACTIVATION VALUE OF NON-INPUT ("<< layer << ") NODE!" << endl;
@@ -75,13 +70,8 @@ class Node {
                 connection_total += pair.second->start_address->activation_value * pair.second->weight;
             }
         }
-
-//
         if(layer > 0) {
             activation_value = sigmoid(connection_total-bias);
-        }
-        else {
-            cout << "| ERROR - NODE LAYER IS OUTSIDE NEURAL NETWORK" << endl;
         }
     }
 };
@@ -95,11 +85,15 @@ class NeuralNetwork {
     public:
         vector<Node> allNodes;
         unordered_map<int, connection> allConnections;
-        vector<double> averageCost;
+        vector<double> average_cost;
         int runs = 0;
         int correct = 0;
+        double learning_rate = 0.05;
 
-        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count) {
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate=0.05) {
+            // Set Learning Rate
+            learning_rate = _learning_rate;
+
             // Reserve For No Resizing
             allConnections.reserve(999999);
 
@@ -208,18 +202,15 @@ class NeuralNetwork {
                     cost += pow(target_val, 2);
                 }
             }
-            averageCost.emplace_back(cost);
-            //cout << "NETWORK RUN (" << runs << ")" << " - TOTAL ERROR: " << total_error << endl;
+            average_cost.emplace_back(cost);
             return total_error;
         }
 
         pair<unordered_map<int, double>, unordered_map<int, double>> backpropigate_network()
             {
                 // New Weights To Implement
-                unordered_map<int, double> newWeights;
-                unordered_map<int, double> newBaises;
-                // Learning Rate 1 for default
-                double learningRate = 0.05;
+                unordered_map<int, double> new_weights;
+                unordered_map<int, double> new_biases;
                 // Increment Networks Run Count
                 runs++;
 
@@ -242,36 +233,33 @@ class NeuralNetwork {
                 // Determine New Weights for All Connections and Biases for each node
                 for (auto connection : allConnections) {
                     // Calculate weight change
-                    double nodeError = connection.second.end_address->error_value;
-                    double weightChange = learningRate * nodeError * connection.second.start_address->activation_value;
-                    double weightValue = connection.second.weight + weightChange;
-                    newWeights[connection.second.ID] = weightValue;
+                    double node_error = connection.second.end_address->error_value;
+                    double weight_change = learning_rate * node_error * connection.second.start_address->activation_value;
+                    double weight_value = connection.second.weight + weight_change;
+                    new_weights[connection.second.ID] = weight_value;
                 }
 
                 for (auto& node : allNodes) {
                     if (node.layer != 0) {
                         // Update bias using the node's own error value
-                        double biasValue = node.bias - learningRate * node.error_value;
-                        newBaises[node.ID] = biasValue;
+                        double biasValue = node.bias - learning_rate * node.error_value;
+                        new_biases[node.ID] = biasValue;
                     }
                 }
 
-                return make_pair(newWeights, newBaises);
+                return make_pair(new_weights, new_biases);
             }
 
-        double getCost() {
+        double get_cost() {
             double total_cost = 0.0;
             double endValue;
             int count = 0;
-            for(auto cost: averageCost) {
+            for(auto cost: average_cost) {
                 total_cost += cost;
                 count++;
             }
             endValue = total_cost/count;
             return endValue;
-
-
-
         }
 
         void edit_weights(const unordered_map<int, double> new_values)
@@ -281,6 +269,7 @@ class NeuralNetwork {
                      connection.second.weight = new_values.at(connection.first);
                 }
             }
+
         void edit_biases(const unordered_map<int, double> new_biases)
             {
                 for(auto node: allNodes){
@@ -297,4 +286,13 @@ double getRandom(double min, double max) {
     static std::mt19937 gen(rd());                      // Mersenne Twister generator initialized with random seed
     std::uniform_real_distribution<> dis(min, max);   // Distribution in the range [min, max]
     return dis(gen);                                     // Return Random
+}
+
+double sigmoid(double x) {
+    double result = 1 / (1 + exp(-x));
+
+    if (result < 0.000000001) {
+        result = 0.0; // Set the minimum value
+    }
+    return result;
 }
