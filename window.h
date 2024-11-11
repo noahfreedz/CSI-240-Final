@@ -56,9 +56,11 @@ public:
     }
 
 private:
+
     sf::RenderWindow window;
     float window_width;
     float window_height;
+    int perRunCount = 500;
     sf::Font font;
     int mouseX = -1; // To track mouse X position
     std::map<int, std::vector<double>> dataSets;
@@ -149,7 +151,7 @@ private:
                 // Draw a text label showing the run and cost
                 sf::Text markerText;
                 markerText.setFont(font);
-                markerText.setString("Run: " + std::to_string(500 * index) + "\nCost: " + formatLabel(data[index]));
+                markerText.setString("Run: " + std::to_string(perRunCount * index) + "\nCost: " + formatLabel(data[index]));
                 markerText.setCharacterSize(24);
                 markerText.setFillColor(colors[id]);
                 markerText.setPosition(x + 5, y - 15);
@@ -189,7 +191,7 @@ private:
         if (numLabels > 1) {
             for (size_t i = 0; i < numLabels; ++i) {
                 size_t index = i * (maxDataSize - 1) / (numLabels - 1);
-                drawXAxisLabel(500 * index, 100 + index * ((window_width - 180) / static_cast<double>(maxDataSize)), window_height - 70);
+                drawXAxisLabel(perRunCount * index, 100 + index * ((window_width - 180) / static_cast<double>(maxDataSize)), window_height - 70);
             }
         }
     }
