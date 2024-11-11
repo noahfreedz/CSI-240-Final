@@ -122,23 +122,23 @@ vector<double> generateStartingBiases(int number_hidden_layers, int number_node_
 }
 
 unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
- {
-     unordered_map<int, double> averagedWeights;
-     int count = 0;
+{
+    unordered_map<int, double> averagedWeights;
+    int count = 0;
 
-     for (const auto& base : _vector) {
-         count++;
-         for (const auto& pair : base) {
-             averagedWeights[pair.first] += pair.second;
-         }
-     }
+    for (const auto& base : _vector) {
+        count++;
+        for (const auto& pair : base) {
+            averagedWeights[pair.first] += pair.second;
+        }
+    }
 
-     for (auto& weight : averagedWeights) {
-         weight.second = weight.second / count;
-     }
+    for (auto& weight : averagedWeights) {
+        weight.second = weight.second / count;
+    }
 
-     return averagedWeights;
- }
+    return averagedWeights;
+}
 
 double averageError(const std::vector<double>& values) {
      if (values.empty()) {
@@ -149,7 +149,7 @@ double averageError(const std::vector<double>& values) {
      return sum / values.size();
  }
 
-void trainNetwork(NeuralNetwork& network, vector<double>& total_errors, vector<unordered_map<int, double>> _weights,vector<unordered_map<int, double>> _bias, const vector<double>& input, const vector<double>& correct_output) {
+void trainNetwork(NeuralNetwork& network, vector<double>& total_errors, vector<unordered_map<int, double>>& _weights,vector<unordered_map<int, double>>& _bias, const vector<double>& input, const vector<double>& correct_output) {
 
 
     total_errors.push_back(network.run_network(input, correct_output));
@@ -203,8 +203,9 @@ int main() {
     vector<unordered_map<int, double>> biases_A, biases_B, biases_C;
 
     vector<double> total_errors_A, total_errors_B, total_errors_C;
+    while (true) {
+        int i = getRandom(0, images.size());
 
-    for (int i = 0; i < images.size(); ++i) {
         vector<double> correct_label_output(10, 0.0);
         correct_label_output[labels[i]] = 1.0;
 
@@ -229,7 +230,7 @@ int main() {
         window.handleEvents();
 
         // Every 500 iterations, average weights, update networks, and visualize cost
-        if (count == 500) {
+        if (count == 100) {
             // Update and visualize network A
             networkA.edit_weights(average(weights_A));
             networkA.edit_biases(average(biases_A));
@@ -252,6 +253,12 @@ int main() {
             window.addDataPoint(2, cost_C);
 
             // Clear data and render window
+            weights_A.clear();
+            weights_B.clear();
+            weights_C.clear();
+            biases_A.clear();
+            biases_B.clear();
+            biases_C.clear();
             total_errors_A.clear();
             total_errors_B.clear();
             total_errors_C.clear();

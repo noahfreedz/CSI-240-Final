@@ -90,7 +90,7 @@ namespace Rebecca{
 
             int runs = 0;
             int correct = 0;
-            double learning_rate = 0.05;
+            double learning_rate;
 
             int backprop_count = 0;
             int upper_backprop_count = 500;
@@ -101,7 +101,9 @@ namespace Rebecca{
             int last_layer;
 
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate)
-                    : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0) {
+                    : next_ID(0), connection_ID(0), last_layer(0) {
+
+                learning_rate = _learning_rate;
 
                 // Create input layer nodes
                 for (int n = 0; n < iNode_count; n++) {
@@ -162,6 +164,8 @@ namespace Rebecca{
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
                 vector<double>_startingWeights, vector<double> _startingBiases)
                     : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0) {
+
+                learning_rate = _learning_rate;
 
                 // Create input layer nodes
                 for (int n = 0; n < iNode_count; n++) {
@@ -267,6 +271,7 @@ namespace Rebecca{
                     unordered_map<int, double> newBaises;
                     // Learning Rate 1 for default
                     double learningRate = 0.05;
+
                     // Increment Networks Run Count
                     runs++;
 
@@ -290,7 +295,7 @@ namespace Rebecca{
                     for (auto connection : allConnections) {
                         // Calculate weight change
                         double nodeError = connection.second.end_address->error_value;
-                        double weightChange = learningRate * nodeError * connection.second.start_address->activation_value;
+                        double weightChange =  this->learning_rate * nodeError * connection.second.start_address->activation_value;
                         double weightValue = connection.second.weight + weightChange;
                         newWeights[connection.second.ID] = weightValue;
                     }
@@ -298,7 +303,7 @@ namespace Rebecca{
                     for (auto& node : allNodes) {
                         if (node.layer != 0) {
                             // Update bias using the node's own error value
-                            double biasValue = node.bias - learningRate * node.error_value;
+                            double biasValue = node.bias - this->learning_rate * node.error_value;
                             newBaises[node.ID] = biasValue;
                         }
                     }
