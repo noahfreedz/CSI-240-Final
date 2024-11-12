@@ -60,7 +60,7 @@ private:
     sf::RenderWindow window;
     float window_width;
     float window_height;
-    int perRunCount = 500;
+    int perRunCount = 100;
     sf::Font font;
     int mouseX = -1; // To track mouse X position
     std::map<int, std::vector<double>> dataSets;

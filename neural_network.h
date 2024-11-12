@@ -3,6 +3,9 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <numeric>
+#include <thread>
+#include <mutex>
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -11,9 +14,14 @@
 #include <unordered_map>
 //#include <SFML/Graphics.hpp>
 
+
 using namespace std;
 
 namespace Rebecca{
+
+    mutex data_mutex;
+
+    class NeuralNetwork;
 
     inline double getRandom(double min, double max) {
         static std::random_device rd;                            // Seed source
@@ -112,8 +120,12 @@ namespace Rebecca{
 
     class NeuralNetwork {
         public:
+            int ID;
+            static int nextID;
+
+            NeuralNetwork(){}
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate)
-                    : next_ID(0), connection_ID(0), last_layer(0) {
+                    : next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
 
                 learning_rate = _learning_rate;
 
@@ -175,7 +187,7 @@ namespace Rebecca{
 
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
                 vector<double>_startingWeights, vector<double> _startingBiases)
-                    : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0) {
+                    : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
 
                 // Create input layer nodes
                 for (int n = 0; n < iNode_count; n++) {
@@ -274,7 +286,7 @@ namespace Rebecca{
             return total_error;
         }
 
-            pair<unordered_map<int, double>, unordered_map<int, double>> backpropigate_network()
+            void backpropigate_network()
                 {
                     // New Weights To Implement
                     unordered_map<int, double> newWeights;
@@ -321,6 +333,8 @@ namespace Rebecca{
                     weights_.push_back(newWeights);
                     biases_.push_back(newBaises);
 
+                    backprop_count++;
+
                     if(backprop_count == upper_backprop_count) {
                         edit_weights(average(weights_));
                         edit_biases(average(biases_));
@@ -329,10 +343,6 @@ namespace Rebecca{
                         biases_.clear();
                         backprop_count = 0;
                     }
-
-                    backprop_count++;
-
-                    return make_pair(newWeights, newBaises);
                 }
 
             double getCost() {
@@ -387,6 +397,64 @@ namespace Rebecca{
                         }
                     }
                 }
+    };
+
+    int NeuralNetwork::nextID = 0;
+
+    class ThreadNetworks
+    {
+        public:
+            ThreadNetworks( int number_networks, double lower_learing_rate,
+               double upper_learing_rate, vector<double>& _startingWeights,
+               vector<double>& _startingBiases, int input_node_count,
+               int hidden_layer_count_, int node_per_hidden_layer, int output_node_count) {
+                networks_.reserve(number_networks);
+                for(int i = 0; i < number_networks; i++) {
+
+                    double learning_rate_step = abs((upper_learing_rate- lower_learing_rate) / number_networks - 1);
+
+                    networks_.push_back(std::make_unique<NeuralNetwork>(input_node_count, hidden_layer_count_, node_per_hidden_layer,
+                     output_node_count, lower_learing_rate + (i * learning_rate_step), _startingWeights, _startingBiases));
+
+                }
+            }
+
+            void runThreading(vector<double>& image, vector<double>& correct_label_output) {
+                    vector<thread> threads;
+                for (auto& network : networks_) {
+                    threads.emplace_back([this, &network, &image, &correct_label_output]() {
+                        trainNetwork(*network, image, correct_label_output);
+                    });
+                }
+
+                    // Join each thread
+                    for (auto& t : threads) {
+                        t.join();
+                    }
+                }
+
+            static void trainNetwork(NeuralNetwork& network, const vector<double>& input, const vector<double>& correct_output) {
+
+                    network.run_network(input, correct_output);
+
+                    // Lock data access to prevent race conditions during weight updates
+                    lock_guard< mutex> guard(data_mutex);
+                    network.backpropigate_network();
+                }
+
+            void PrintCost() {
+                for(auto& network : networks_) {
+
+                    cout << "The Cost for Netowrk "<< network->ID<<" :"<<network->getCost() << endl;
+                }
+
+            }
+
+    private:
+        int NetworkID = 0;
+        int ThreadID = 0;
+
+        vector<std::unique_ptr<NeuralNetwork>> networks_;
     };
 
 }
