@@ -31,6 +31,34 @@ namespace Rebecca{
         return result;
     }
 
+    unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
+    {
+        unordered_map<int, double> averagedWeights;
+        int count = 0;
+
+        for (const auto& base : _vector) {
+            count++;
+            for (const auto& pair : base) {
+                averagedWeights[pair.first] += pair.second;
+            }
+        }
+
+        for (auto& weight : averagedWeights) {
+            weight.second = weight.second / count;
+        }
+
+        return averagedWeights;
+    }
+
+    double averageError(const std::vector<double>& values) {
+        if (values.empty()) {
+            return 0.0; // Return 0 if the vector is empty to avoid division by zero
+        }
+
+        double sum = std::accumulate(values.begin(), values.end(), 0.0);
+        return sum / values.size();
+    }
+
     class Node;
 
     struct connection {
@@ -84,24 +112,6 @@ namespace Rebecca{
 
     class NeuralNetwork {
         public:
-            vector<Node> allNodes;
-            unordered_map<int, connection> allConnections;
-            vector<double> average_cost;
-            vector<unordered_map<int, double>> weights_, biases_;
-
-
-            int runs = 0;
-            int correct = 0;
-            double learning_rate;
-
-            int backprop_count = 0;
-            int upper_backprop_count = 500;
-
-            // Instance-specific ID counters
-            int next_ID;  // For nodes
-            int connection_ID;  // For connections
-            int last_layer;
-
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate)
                     : next_ID(0), connection_ID(0), last_layer(0) {
 
@@ -311,6 +321,15 @@ namespace Rebecca{
                     weights_.push_back(newWeights);
                     biases_.push_back(newBaises);
 
+                    if(backprop_count == upper_backprop_count) {
+                        edit_weights(average(weights_));
+                        edit_biases(average(biases_));
+
+                        weights_.clear();
+                        biases_.clear();
+                        backprop_count = 0;
+                    }
+
                     backprop_count++;
 
                     return make_pair(newWeights, newBaises);
@@ -330,6 +349,26 @@ namespace Rebecca{
 
 
             }
+
+    private:
+
+            vector<Node> allNodes;
+            unordered_map<int, connection> allConnections;
+            vector<double> average_cost;
+            vector<unordered_map<int, double>> weights_;
+            vector<unordered_map<int, double>> biases_;
+
+            int runs = 0;
+            int correct = 0;
+            double learning_rate;
+
+            int backprop_count = 0;
+            int upper_backprop_count = 100;
+
+            // Instance-specific ID counters
+            int next_ID;  // For nodes
+            int connection_ID;  // For connections
+            int last_layer;
 
             void edit_weights(const unordered_map<int, double>& new_values)
                 {

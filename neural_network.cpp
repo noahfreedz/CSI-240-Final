@@ -121,43 +121,14 @@ vector<double> generateStartingBiases(int number_hidden_layers, int number_node_
     return startingBiases;
 }
 
-unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
-{
-    unordered_map<int, double> averagedWeights;
-    int count = 0;
-
-    for (const auto& base : _vector) {
-        count++;
-        for (const auto& pair : base) {
-            averagedWeights[pair.first] += pair.second;
-        }
-    }
-
-    for (auto& weight : averagedWeights) {
-        weight.second = weight.second / count;
-    }
-
-    return averagedWeights;
-}
-
-double averageError(const std::vector<double>& values) {
-     if (values.empty()) {
-         return 0.0; // Return 0 if the vector is empty to avoid division by zero
-     }
-
-     double sum = std::accumulate(values.begin(), values.end(), 0.0);
-     return sum / values.size();
- }
-
-void trainNetwork(NeuralNetwork& network, vector<double>& total_errors, vector<unordered_map<int, double>>& _weights,vector<unordered_map<int, double>>& _bias, const vector<double>& input, const vector<double>& correct_output) {
+void trainNetwork(NeuralNetwork& network, vector<double>& total_errors,
+    const vector<double>& input, const vector<double>& correct_output) {
 
 
     total_errors.push_back(network.run_network(input, correct_output));
     // Lock data access to prevent race conditions during weight updates
      lock_guard< mutex> guard(data_mutex);
      auto network_return = network.backpropigate_network();
-     _weights.push_back(network_return.first);
-     _bias.push_back(network_return.second);
 }
 
 int main() {
@@ -168,7 +139,7 @@ int main() {
      string labelFilePath = "set1-labels.idx1-ubyte";
 
     // Read images and labels
-    int numImages = 20000;
+    int numImages = 200000;
     int numRows = 28;
     int numCols = 28;
 
@@ -202,9 +173,6 @@ int main() {
 
      int count = 0;
 
-    vector<unordered_map<int, double>> weights_A, weights_B, weights_C;
-    vector<unordered_map<int, double>> biases_A, biases_B, biases_C;
-
     vector<double> total_errors_A, total_errors_B, total_errors_C;
     while (true) {
         int i = getRandom(0, images.size());
@@ -213,14 +181,11 @@ int main() {
         correct_label_output[labels[i]] = 1.0;
 
         // Launch threads for each network
-         thread threadA(trainNetwork,  ref(networkA),  ref(total_errors_A),  ref(weights_A),
-                             ref(biases_A), images[i], correct_label_output);
+         thread threadA(trainNetwork,  ref(networkA),  ref(total_errors_A), images[i], correct_label_output);
 
-         thread threadB(trainNetwork,  ref(networkB),  ref(total_errors_B),  ref(weights_B),
-                             ref(biases_B), images[i], correct_label_output);
+         thread threadB(trainNetwork,  ref(networkB),  ref(total_errors_B), images[i], correct_label_output);
 
-         thread threadC(trainNetwork,  ref(networkC),  ref(total_errors_C),  ref(weights_C),
-                             ref(biases_C), images[i], correct_label_output);
+         thread threadC(trainNetwork,  ref(networkC),  ref(total_errors_C), images[i], correct_label_output);
 
         // Join threads
         threadA.join();
@@ -235,33 +200,21 @@ int main() {
         // Every 500 iterations, average weights, update networks, and visualize cost
         if (count == 100) {
             // Update and visualize network A
-            networkA.edit_weights(average(weights_A));
-            networkA.edit_biases(average(biases_A));
             double cost_A = networkA.getCost();
-            cout << "GENERATION COMPLETE (Network A) - " << cost_A << endl;
+            //cout << "GENERATION COMPLETE (Network A) - " << cost_A << endl;
             window.addDataPoint(0, cost_A);
 
             // Update and visualize network B
-            networkB.edit_weights(average(weights_B));
-            networkB.edit_biases(average(biases_B));
             double cost_B = networkB.getCost();
-            cout << "GENERATION COMPLETE (Network B) - " << cost_B << endl;
+            //cout << "GENERATION COMPLETE (Network B) - " << cost_B << endl;
             window.addDataPoint(1, cost_B);
 
             // Update and visualize network C
-            networkC.edit_weights(average(weights_C));
-            networkC.edit_biases(average(biases_C));
             double cost_C = networkC.getCost();
-            cout << "GENERATION COMPLETE (Network C) - " << cost_C << endl;
+            //cout << "GENERATION COMPLETE (Network C) - " << cost_C << endl;
             window.addDataPoint(2, cost_C);
 
             // Clear data and render window
-            weights_A.clear();
-            weights_B.clear();
-            weights_C.clear();
-            biases_A.clear();
-            biases_B.clear();
-            biases_C.clear();
             total_errors_A.clear();
             total_errors_B.clear();
             total_errors_C.clear();
