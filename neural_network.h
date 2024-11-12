@@ -6,6 +6,7 @@
 #include <numeric>
 #include <thread>
 #include <mutex>
+
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -13,6 +14,8 @@
 #include <list>
 #include <unordered_map>
 //#include <SFML/Graphics.hpp>
+
+#include "window.h"
 
 
 using namespace std;
@@ -404,18 +407,19 @@ namespace Rebecca{
     class ThreadNetworks
     {
         public:
-            ThreadNetworks( int number_networks, double lower_learing_rate,
+            ThreadNetworks(GraphWindow &window, int number_networks, double lower_learing_rate,
                double upper_learing_rate, vector<double>& _startingWeights,
                vector<double>& _startingBiases, int input_node_count,
                int hidden_layer_count_, int node_per_hidden_layer, int output_node_count) {
+
                 networks_.reserve(number_networks);
+                window_ = &window;
+                double learning_rate_step = abs((upper_learing_rate) / number_networks);
                 for(int i = 0; i < number_networks; i++) {
-
-                    double learning_rate_step = abs((upper_learing_rate- lower_learing_rate) / number_networks - 1);
-
                     networks_.push_back(std::make_unique<NeuralNetwork>(input_node_count, hidden_layer_count_, node_per_hidden_layer,
                      output_node_count, lower_learing_rate + (i * learning_rate_step), _startingWeights, _startingBiases));
 
+                    window_->setLearningRate(networks_.back()->ID, lower_learing_rate + (i * learning_rate_step));
                 }
             }
 
@@ -426,7 +430,6 @@ namespace Rebecca{
                         trainNetwork(*network, image, correct_label_output);
                     });
                 }
-
                     // Join each thread
                     for (auto& t : threads) {
                         t.join();
@@ -445,14 +448,17 @@ namespace Rebecca{
             void PrintCost() {
                 for(auto& network : networks_) {
 
-                    cout << "The Cost for Netowrk "<< network->ID<<" :"<<network->getCost() << endl;
+                    window_->addDataPoint(network->ID,network->getCost());
                 }
+                window_->render();
 
             }
 
     private:
         int NetworkID = 0;
         int ThreadID = 0;
+
+        GraphWindow* window_;
 
         vector<std::unique_ptr<NeuralNetwork>> networks_;
     };

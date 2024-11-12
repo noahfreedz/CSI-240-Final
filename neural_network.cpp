@@ -119,17 +119,7 @@ vector<double> generateStartingBiases(int number_hidden_layers, int number_node_
     return startingBiases;
 }
 
-// void trainNetwork(NeuralNetwork& network, vector<double>& total_errors, vector<unordered_map<int, double>>& _weights,vector<unordered_map<int, double>>& _bias, const vector<double>& input, const vector<double>& correct_output) {
-//
-//
-//     network.run_network(input, correct_output);
-//     // Lock data access to prevent race conditions during weight updates
-//      lock_guard< mutex> guard(data_mutex);
-//       network.backpropigate_network();
-// }
-
 int main() {
-    // Create Visualizer
 
     // Paths to MNIST files
      string imageFilePath = "set1-images.idx3-ubyte";
@@ -141,36 +131,25 @@ int main() {
     int numCols = 28;
 
     // setting up vectors for images and labels
-     vector< vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
-     vector<int> labels = readMNISTLabels(labelFilePath, numImages);
+    vector< vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
+    vector<int> labels = readMNISTLabels(labelFilePath, numImages);
 
-    // GraphWindow window(1000, 600, "REBECCA");
-    // window.render();
+    GraphWindow window(1000, 600, "REBECCA");
+
 
     int input_layer = 784;
     int output_layer = 10;
     int number_hidden_layers = 2;
     int number_node_per_hidden = 16;
 
-     vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
-     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
+    vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
+    vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
-    // // Create networks with different learning rates
-    // NeuralNetwork networkA(input_layer, number_hidden_layers, number_node_per_hidden,
-    //                        output_layer, 0.05, startingWeights, startingBiases); // Learning rate: 0.05
-    // NeuralNetwork networkB(input_layer, number_hidden_layers, number_node_per_hidden,
-    //                        output_layer, 0.01, startingWeights, startingBiases); // Learning rate: 0.01
-    // NeuralNetwork networkC(input_layer, number_hidden_layers, number_node_per_hidden,
-    //                        output_layer, 0.1,  startingWeights, startingBiases);  // Learning rate: 0.1
-
-    // Add networks to the visualizer
-    // window.setLearningRate(0, 0.05);
-    // window.setLearningRate(1, 0.01);
-    // window.setLearningRate(2, 0.1);
-
-     int count = 0;
-    ThreadNetworks allNetworks( 5, 0.01, 0.1, startingWeights, startingBiases, input_layer,
+    int count = 0;
+    ThreadNetworks allNetworks(window, 5, 0.01, 0.1, startingWeights, startingBiases, input_layer,
               number_hidden_layers,number_node_per_hidden, output_layer);
+
+    window.render();
 
     while (true) {
         int i = getRandom(0, images.size());
@@ -178,56 +157,14 @@ int main() {
         vector<double> correct_label_output(10, 0.0);
         correct_label_output[labels[i]] = 1.0;
 
-        // // Launch threads for each network
-        //  thread threadA(trainNetwork,  ref(networkA),  ref(total_errors_A),  ref(weights_A),
-        //                      ref(biases_A), images[i], correct_label_output);
-        //
-        //  thread threadB(trainNetwork,  ref(networkB),  ref(total_errors_B),  ref(weights_B),
-        //                      ref(biases_B), images[i], correct_label_output);
-        //
-        //  thread threadC(trainNetwork,  ref(networkC),  ref(total_errors_C),  ref(weights_C),
-        //                      ref(biases_C), images[i], correct_label_output);
-
-        // Join threads
-        // threadA.join();
-        // threadB.join();
-        // threadC.join();
         allNetworks.runThreading(images[i], correct_label_output);
 
         count++;
 
-        // Handle Window Events
-       // window.handleEvents();
 
-        // Every 500 iterations, average weights, update networks, and visualize cost
-        if (count == 1) {
+        if (count == 100) {
             allNetworks.PrintCost();
-            // // Update and visualize network A
-            // //networkA.edit_weights(average(weights_A));
-            // //networkA.edit_biases(average(biases_A));
-            // double cost_A = networkA.getCost();
-            // //cout << "GENERATION COMPLETE (Network A) - " << cost_A << endl;
-            // window.addDataPoint(0, cost_A);
-            //
-            // // Update and visualize network B
-            // //networkB.edit_weights(average(weights_B));
-            // //networkB.edit_biases(average(biases_B));
-            // double cost_B = networkB.getCost();
-            // //cout << "GENERATION COMPLETE (Network B) - " << cost_B << endl;
-            // window.addDataPoint(1, cost_B);
-            //
-            // // Update and visualize network C
-            // //networkC.edit_weights(average(weights_C));
-            // //networkC.edit_biases(average(biases_C));
-            // double cost_C = networkC.getCost();
-            // cout << "GENERATION COMPLETE (Network C) - " << cost_C << endl;
-            // window.addDataPoint(2, cost_C);
-            //
-            // // Clear data and render window
-            // total_errors_A.clear();
-            // total_errors_B.clear();
-            // total_errors_C.clear();
-
+            window.handleEvents();
             count = 0;
         }
 
