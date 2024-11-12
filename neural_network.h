@@ -24,6 +24,7 @@ namespace Rebecca{
 
     mutex data_mutex;
 
+    class Node;
     class NeuralNetwork;
 
     inline double getRandom(double min, double max) {
@@ -60,17 +61,6 @@ namespace Rebecca{
 
         return averagedWeights;
     }
-
-    double averageError(const std::vector<double>& values) {
-        if (values.empty()) {
-            return 0.0; // Return 0 if the vector is empty to avoid division by zero
-        }
-
-        double sum = std::accumulate(values.begin(), values.end(), 0.0);
-        return sum / values.size();
-    }
-
-    class Node;
 
     struct connection {
         Node* start_address;
@@ -125,8 +115,11 @@ namespace Rebecca{
         public:
             int ID;
             static int nextID;
+            int vauge_correct_count = 0;
+            int precise_correct_count = 0;
+            int total_outputs = 0;
 
-            NeuralNetwork(){}
+            //NeuralNetwork(){}
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate)
                     : next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
 
@@ -273,10 +266,43 @@ namespace Rebecca{
             int output_count = 0;
             double total_error = 0.0;
             double cost = 0.0;
+            bool vauge_network_correct = true;
+            bool precise_network_correct = true;
             for(auto &node : allNodes) {
                 if(node.layer == last_layer) {
+                    // Calculate Correct
+                    if(vauge_network_correct) {
+                        if(correct_outputs[output_count] == 1.0) {
+                            if(node.activation_value <= 0.9) {
+                                vauge_network_correct = false;
+                            }
+                        } else if (correct_outputs[output_count] == 0.0) {
+                            if(node.activation_value > 0.3) {
+                                vauge_network_correct = false;
+                            }
+                        }
+                    }
+
+                    // Calculate Correct
+                    if(precise_network_correct) {
+                        if(correct_outputs[output_count] == 1.0) {
+                            if(node.activation_value < 0.9) {
+                                precise_network_correct = false;
+                            }
+                        }
+                        else if (correct_outputs[output_count] == 0.0) {
+                            if(node.activation_value > 0.1) {
+                                precise_network_correct = false;
+                            }
+                        }
+                        else {
+                            cout << "OUTPUT NOT RECOGNIZED: " << correct_outputs[output_count] << endl;
+                        }
+                    }
+
                     // Calculate Target Value
                     double target_val = correct_outputs[output_count] - node.activation_value;
+
                     // Calculate Node Error Value
                     node.error_value = node.activation_value * (1 - node.activation_value) * (target_val);
                     total_error += std::abs(node.error_value);
@@ -284,8 +310,14 @@ namespace Rebecca{
                     cost += pow(target_val, 2);
                 }
             }
+            if(vauge_network_correct) {
+                vauge_correct_count++;
+            }
+            if(precise_network_correct) {
+                precise_correct_count++;
+            }
+            total_outputs++;
             average_cost.emplace_back(cost);
-            //cout << "NETWORK RUN (" << runs << ")" << " - TOTAL ERROR: " << total_error << endl;
             return total_error;
         }
 
@@ -356,13 +388,14 @@ namespace Rebecca{
                     total_cost += cost;
                     count++;
                 }
+                average_cost.clear();
                 endValue = total_cost/count;
                 return endValue;
-
-
-
             }
 
+            double getLearningRate() {
+                return learning_rate;
+            }
     private:
 
             vector<Node> allNodes;
@@ -407,20 +440,24 @@ namespace Rebecca{
     class ThreadNetworks
     {
         public:
-            ThreadNetworks(GraphWindow &window, int number_networks, double lower_learing_rate,
-               double upper_learing_rate, vector<double>& _startingWeights,
+            ThreadNetworks(GraphWindow &window, int number_networks, double lower_learning_rate,
+               double upper_learning_rate, vector<double>& _startingWeights,
                vector<double>& _startingBiases, int input_node_count,
                int hidden_layer_count_, int node_per_hidden_layer, int output_node_count) {
 
                 networks_.reserve(number_networks);
                 window_ = &window;
-                double learning_rate_step = abs((upper_learing_rate) / number_networks);
-                for(int i = 0; i < number_networks; i++) {
-                    networks_.push_back(std::make_unique<NeuralNetwork>(input_node_count, hidden_layer_count_, node_per_hidden_layer,
-                     output_node_count, lower_learing_rate + (i * learning_rate_step), _startingWeights, _startingBiases));
+                double learning_rate_step = abs((upper_learning_rate - lower_learning_rate) / (number_networks-1));
+                for (int i = 0; i < number_networks; i++) {
+                    double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
 
-                    window_->setLearningRate(networks_.back()->ID, lower_learing_rate + (i * learning_rate_step));
+                    networks_.push_back(std::make_unique<NeuralNetwork>(
+                            input_node_count, hidden_layer_count_, node_per_hidden_layer,
+                            output_node_count, current_learning_rate, _startingWeights, _startingBiases));
+
+                    window_->setLearningRate(networks_.back()->ID, current_learning_rate);
                 }
+
             }
 
             void runThreading(vector<double>& image, vector<double>& correct_label_output) {
@@ -430,11 +467,11 @@ namespace Rebecca{
                         trainNetwork(*network, image, correct_label_output);
                     });
                 }
-                    // Join each thread
-                    for (auto& t : threads) {
-                        t.join();
-                    }
+                // Join each thread
+                for (auto& t : threads) {
+                    t.join();
                 }
+            }
 
             static void trainNetwork(NeuralNetwork& network, const vector<double>& input, const vector<double>& correct_output) {
 
@@ -442,16 +479,22 @@ namespace Rebecca{
 
                     // Lock data access to prevent race conditions during weight updates
                     lock_guard< mutex> guard(data_mutex);
+
                     network.backpropigate_network();
                 }
 
             void PrintCost() {
                 for(auto& network : networks_) {
-
                     window_->addDataPoint(network->ID,network->getCost());
+                    cout << network->getLearningRate() << ": (VAUGE) " << network->vauge_correct_count << "/100 (PRECISE) " << network-> precise_correct_count << "/100" << endl;
+                    network->vauge_correct_count = 0;
+                    network->precise_correct_count = 0;
                 }
-                window_->render();
+            }
 
+            void render() {
+                window_->render();
+                window_->handleEvents();
             }
 
     private:

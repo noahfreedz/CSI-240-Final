@@ -136,7 +136,6 @@ int main() {
 
     GraphWindow window(1000, 600, "REBECCA");
 
-
     int input_layer = 784;
     int output_layer = 10;
     int number_hidden_layers = 2;
@@ -146,10 +145,8 @@ int main() {
     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     int count = 0;
-    ThreadNetworks allNetworks(window, 5, 0.01, 0.1, startingWeights, startingBiases, input_layer,
+    ThreadNetworks allNetworks(window, 5, 0.01, 10, startingWeights, startingBiases, input_layer,
               number_hidden_layers,number_node_per_hidden, output_layer);
-
-    window.render();
 
     while (true) {
         int i = getRandom(0, images.size());
@@ -161,15 +158,14 @@ int main() {
 
         count++;
 
-
         if (count == 100) {
             allNetworks.PrintCost();
-            window.handleEvents();
             count = 0;
         }
 
-       // window.render();
-
+        // Render
+        window.render();
+        window.handleEvents();
     }
 
     return 0;
