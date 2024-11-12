@@ -168,7 +168,7 @@ int main() {
      string labelFilePath = "set1-labels.idx1-ubyte";
 
     // Read images and labels
-    int numImages = 200000;
+    int numImages = 20000;
     int numRows = 28;
     int numCols = 28;
 
@@ -188,9 +188,12 @@ int main() {
      vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     // Create networks with different learning rates
-    NeuralNetwork networkA(input_layer, number_hidden_layers, number_node_per_hidden, output_layer, 0.05, startingWeights,startingBiases); // Learning rate: 0.05
-    NeuralNetwork networkB(input_layer, number_hidden_layers, number_node_per_hidden, output_layer, 0.01, startingWeights,startingBiases); // Learning rate: 0.01
-    NeuralNetwork networkC(input_layer, number_hidden_layers, number_node_per_hidden, output_layer, 0.1, startingWeights,startingBiases);  // Learning rate: 0.1
+    NeuralNetwork networkA(input_layer, number_hidden_layers, number_node_per_hidden,
+                           output_layer, 0.05, startingWeights, startingBiases); // Learning rate: 0.05
+    NeuralNetwork networkB(input_layer, number_hidden_layers, number_node_per_hidden,
+                           output_layer, 0.01, startingWeights, startingBiases); // Learning rate: 0.01
+    NeuralNetwork networkC(input_layer, number_hidden_layers, number_node_per_hidden,
+                           output_layer, 0.1,  startingWeights, startingBiases);  // Learning rate: 0.1
 
     // Add networks to the visualizer
     window.setLearningRate(0, 0.05);

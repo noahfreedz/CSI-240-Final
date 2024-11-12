@@ -87,6 +87,8 @@ namespace Rebecca{
             vector<Node> allNodes;
             unordered_map<int, connection> allConnections;
             vector<double> average_cost;
+            vector<unordered_map<int, double>> weights_, biases_;
+
 
             int runs = 0;
             int correct = 0;
@@ -164,8 +166,6 @@ namespace Rebecca{
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
                 vector<double>_startingWeights, vector<double> _startingBiases)
                     : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0) {
-
-                learning_rate = _learning_rate;
 
                 // Create input layer nodes
                 for (int n = 0; n < iNode_count; n++) {
@@ -308,6 +308,11 @@ namespace Rebecca{
                         }
                     }
 
+                    weights_.push_back(newWeights);
+                    biases_.push_back(newBaises);
+
+                    backprop_count++;
+
                     return make_pair(newWeights, newBaises);
                 }
 
@@ -326,7 +331,7 @@ namespace Rebecca{
 
             }
 
-            void edit_weights(const unordered_map<int, double> new_values)
+            void edit_weights(const unordered_map<int, double>& new_values)
                 {
                     for (auto& connection : allConnections)
                     {
@@ -334,7 +339,7 @@ namespace Rebecca{
                     }
                 }
 
-            void edit_biases(const unordered_map<int, double> new_biases)
+            void edit_biases(const unordered_map<int, double>& new_biases)
                 {
                     for(auto node: allNodes){
                         if(node.layer != 0)
