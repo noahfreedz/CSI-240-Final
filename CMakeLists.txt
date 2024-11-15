@@ -10,7 +10,9 @@ include(get_cpm.cmake)
 CPMAddPackage("gh:SFML/SFML#2.6.1")
 
 # Add the executable with the main file and any additional sources/headers
-add_executable(NeuralNetworkTest neural_network.cpp neural_network.h window.h)
+add_executable(NeuralNetworkTest neural_network.cpp neural_network.h window.h
+        main.cpp
+        window.cpp)
 
 # Copy necessary data files to the build directory
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/set1-images.idx3-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
