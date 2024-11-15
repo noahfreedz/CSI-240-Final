@@ -1,11 +1,13 @@
-#include "window.h"
+#include "neural_network.h"
 
 
 
 using namespace std;
+using namespace Rebecca;
 
-GraphWindow::GraphWindow(unsigned int width, unsigned int height, const std::string& title)
+GraphWindow::GraphWindow(unsigned int width, unsigned int height, const string& title, ThreadNetworks* _allNetworks)
             : window(sf::VideoMode(width, height), title), window_width(width), window_height(height) {
+        allNetworks = _allNetworks;
         window.setFramerateLimit(60);
         if (!font.loadFromFile("Font.ttf")) {
             std::cerr << "Failed to load font\n";
@@ -19,13 +21,20 @@ bool GraphWindow:: isOpen() const {
 void GraphWindow:: handleEvents() {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == sf::Event::Closed)
+            {
                 window.close();
-            } else if (event.type == sf::Event::MouseMoved) {
+            }
+            else if (event.type == sf::Event::MouseMoved)
+            {
                 mouseX = event.mouseMove.x;
             }
+            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+               window.close();
+                run_network = false;
+            }
         }
-    }
+}
 
 void GraphWindow:: addDataPoint(int lineID, double value) {
         if (dataSets.find(lineID) == dataSets.end()) {

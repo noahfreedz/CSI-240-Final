@@ -5,11 +5,8 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
-#include <numeric> // For  accumulate
-#include <mutex> // For synchronizing data access
 
 #include "neural_network.h"
-#include "window.h"
 
 using namespace std;
 using  namespace Rebecca;
@@ -134,8 +131,6 @@ int main() {
     vector< vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
     vector<int> labels = readMNISTLabels(labelFilePath, numImages);
 
-    GraphWindow window(1000, 600, "REBECCA");
-
     int input_layer = 784;
     int output_layer = 10;
     int number_hidden_layers = 5;
@@ -145,11 +140,15 @@ int main() {
     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     int count = 0;
-    ThreadNetworks allNetworks(window, 5, 0.01, 10, startingWeights, startingBiases, input_layer,
+    ThreadNetworks allNetworks(5, 0.01, 10, startingWeights, startingBiases, input_layer,
               number_hidden_layers,number_node_per_hidden, output_layer);
 
+    GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
-    while (true) {
+    allNetworks.SetWindow(window_);
+
+
+    while (window_.run_network) {
         int i = getRandom(0, images.size());
 
         vector<double> correct_label_output(10, 0.0);
@@ -165,8 +164,8 @@ int main() {
         }
 
         // Render
-        window.render();
-        window.handleEvents();
+        window_.render();
+        window_.handleEvents();
     }
 
     return 0;

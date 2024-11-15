@@ -1,27 +1,10 @@
 #include "neural_network.h"
 
-
 using namespace Rebecca;
 
+mutex data_mutex;
 
-unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
-    {
-        unordered_map<int, double> averagedWeights;
-        int count = 0;
-
-        for (const auto& base : _vector) {
-            count++;
-            for (const auto& pair : base) {
-                averagedWeights[pair.first] += pair.second;
-            }
-        }
-
-        for (auto& weight : averagedWeights) {
-            weight.second = weight.second / count;
-        }
-
-        return averagedWeights;
-    }
+int NeuralNetwork::nextID = 0;
 
 Node::Node(int node_layer, int& nextID, double _bais) : activation_value(0.0), layer(node_layer) {
             ID = nextID;
@@ -118,10 +101,10 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
                 vector<double>_startingWeights, vector<double> _startingBiases)
                     : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
 
-                string weight_file = "outputWeights.bin";
-                string bais_file = "outputBiases.bin";
-                auto weigths = loadData(weight_file);
-                cout << weigths[67] << endl;
+                // string weight_file = "outputWeights.bin";
+                // string bais_file = "outputBiases.bin";
+                // auto weigths = loadData(weight_file);
+                // cout << weigths[67] << endl;
                 // Create input layer nodes
                 for (int n = 0; n < iNode_count; n++) {
                     Node newInputNode(0, next_ID);
@@ -424,13 +407,12 @@ unordered_map<int, double>  NeuralNetwork::loadData(const string& filename) {
                 return data;
             }
 
-ThreadNetworks::ThreadNetworks(GraphWindow &window, int number_networks, double lower_learning_rate,
+ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
                double upper_learning_rate, vector<double>& _startingWeights,
                vector<double>& _startingBiases, int input_node_count,
                int hidden_layer_count_, int node_per_hidden_layer, int output_node_count) {
 
                 networks_.reserve(number_networks);
-                window_ = &window;
                 double learning_rate_step = abs((upper_learning_rate - lower_learning_rate) / (number_networks-1));
                 for (int i = 0; i < number_networks; i++) {
                     double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
@@ -438,13 +420,20 @@ ThreadNetworks::ThreadNetworks(GraphWindow &window, int number_networks, double 
                     networks_.push_back(make_unique<NeuralNetwork>(
                             input_node_count, hidden_layer_count_, node_per_hidden_layer,
                             output_node_count, current_learning_rate, _startingWeights, _startingBiases));
-
-                    window_->setLearningRate(networks_.back()->ID, current_learning_rate);
                 }
 
             }
 
-void  ThreadNetworks::runThreading(vector<double>& image, vector<double>& correct_label_output) {
+void ThreadNetworks:: SetWindow(GraphWindow &window) {
+    window_ = &window;
+    for(auto& network : networks_) {
+        window_->setLearningRate(network->ID, network->getLearningRate());
+    }
+
+
+}
+
+void ThreadNetworks::runThreading(vector<double>& image, vector<double>& correct_label_output) {
                     vector<thread> threads;
                 for (auto& network : networks_) {
                     threads.emplace_back([this, &network, &image, &correct_label_output]() {
@@ -467,7 +456,7 @@ void ThreadNetworks::trainNetwork(NeuralNetwork& network, const vector<double>& 
                     network.backpropigate_network();
                 }
 
-void  ThreadNetworks::PrintCost() {
+void ThreadNetworks::PrintCost() {
                 for(auto& network : networks_) {
                     window_->addDataPoint(network->ID,network->getCost());
                     cout << network->getLearningRate() << ": (VAUGE) " << network->vauge_correct_count << "/100 (PRECISE) " << network-> precise_correct_count << "/100" << endl;
@@ -476,11 +465,11 @@ void  ThreadNetworks::PrintCost() {
                 }
             }
 
-void  ThreadNetworks::render() {
+void ThreadNetworks::render() {
                 window_->render();
                 window_->handleEvents();
             }
 
-void  ThreadNetworks:: deleteNetworks() {
+void ThreadNetworks:: deleteNetworks() {
                 cout << "Deleting networks" << endl;
             }
