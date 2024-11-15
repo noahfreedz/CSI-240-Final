@@ -1,4 +1,6 @@
 #include "neural_network.h"
+#include "window.h"
+#include "grid.h"
 
 using namespace Rebecca;
 
@@ -138,15 +140,9 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
                         }
                     }
 
-                    // Connect nodes between layers
-                    for (auto& start_node : start_nodes) {
-                        for (auto& end_node : end_nodes) {
-                            connection new_connection{};
-                            new_connection.ID = connection_ID;
-                            connection_ID++;
-                            new_connection.start_address = start_node;
-                            new_connection.end_address = end_node;
-                            new_connection.weight = _startingWeights[new_connection.ID];
+int main() {
+    Grid myGrid;
+    vector<vector<double>> finalGrid = myGrid.getGridOfSquares();
 
                             allConnections[new_connection.ID] = new_connection;
                             start_node->forward_connections[start_node->forward_connections.size()] = &allConnections[new_connection.ID];
@@ -552,22 +548,9 @@ void ThreadNetworks:: SetWindow(GraphWindow &window) {
     for(auto& network : networks_) {
         window_->setLearningRate(network->ID, network->getLearningRate());
     }
-
-
+    return 0;
 }
 
-void ThreadNetworks::runThreading(vector<double>& image, vector<double>& correct_label_output) {
-                    vector<thread> threads;
-                for (auto& network : networks_) {
-                    threads.emplace_back([this, &network, &image, &correct_label_output]() {
-                        trainNetwork(*network, image, correct_label_output);
-                    });
-                }
-                // Join each thread
-                for (auto& t : threads) {
-                    t.join();
-                }
-            }
 
 void ThreadNetworks::trainNetwork(NeuralNetwork& network, const vector<double>& input, const vector<double>& correct_output) {
 
