@@ -158,6 +158,9 @@ namespace Rebecca {
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
                 vector<double>_startingWeights, vector<double> _startingBiases);
 
+            NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
+               vector<double>_startingWeights, vector<double> _startingBiases, string WeightFilePath, string BaisFilePath);
+
             ~NeuralNetwork();
             double run_network(vector<double> inputs, vector<double> correct_outputs);
 
