@@ -69,6 +69,52 @@ namespace Rebecca {
         return averagedWeights;
     }
 
+    inline void saveData(const unordered_map<int, double>& data, const string& filename)
+    {
+        ofstream outFile(filename, ios::binary);
+        if (!outFile) {
+            cerr << "Error opening file for writing\n";
+            return;
+        }
+
+        // Write the size of the vector first
+        size_t dataSize = data.size();
+        outFile.write(reinterpret_cast<const char*>(&dataSize), sizeof(dataSize));
+
+        // Write each pair of ID and double value
+        for (const auto& pair : data) {
+            outFile.write(reinterpret_cast<const char*>(&pair.first), sizeof(pair.first));
+            outFile.write(reinterpret_cast<const char*>(&pair.second), sizeof(pair.second));
+        }
+
+        outFile.close();
+    }
+
+    inline unordered_map<int, double> loadData(const string& filename) {
+        unordered_map<int, double> data;
+        ifstream inFile(filename, ios::binary);
+        if (!inFile) {
+            cerr << "Error: Could not open file for reading\n";
+            return data;
+        }
+
+        // Read the size of the map (originally the vector size)
+        size_t dataSize;
+        inFile.read(reinterpret_cast<char*>(&dataSize), sizeof(dataSize));
+
+        // Read each pair of ID and double value and insert it into the map
+        for (size_t i = 0; i < dataSize; ++i) {
+            int id;
+            double value;
+            inFile.read(reinterpret_cast<char*>(&id), sizeof(id));
+            inFile.read(reinterpret_cast<char*>(&value), sizeof(value));
+            data[id] = value;  // Insert into the unordered_map
+        }
+
+        inFile.close();
+        return data;
+    }
+
     struct connection {
         Node* start_address;
         Node* end_address;
@@ -159,6 +205,9 @@ namespace Rebecca {
                 vector<double>_startingWeights, vector<double> _startingBiases);
 
             NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
+               unordered_map<int, double>_startingWeights, unordered_map<int, double> _startingBiases);
+
+            NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
                vector<double>_startingWeights, vector<double> _startingBiases, string WeightFilePath, string BaisFilePath);
 
             ~NeuralNetwork();
@@ -179,6 +228,8 @@ namespace Rebecca {
             vector<unordered_map<int, double>> weights_;
             vector<unordered_map<int, double>> biases_;
 
+            friend class ThreadNetworks;
+
             int runs = 0;
             int correct = 0;
             double learning_rate;
@@ -194,10 +245,6 @@ namespace Rebecca {
             void edit_weights(const unordered_map<int, double>& new_values);
 
             void edit_biases(const unordered_map<int, double>& new_biases);
-
-            void saveData(const unordered_map<int, double>& data, const string& filename);
-
-            unordered_map<int, double> loadData(const string& filename);
     };
 
     class ThreadNetworks
@@ -207,6 +254,12 @@ namespace Rebecca {
                double upper_learning_rate, vector<double>& _startingWeights,
                vector<double>& _startingBiases, int input_node_count,
                int hidden_layer_count_, int node_per_hidden_layer, int output_node_count);
+
+            ThreadNetworks(int number_networks, double lower_learning_rate, double upper_learning_rate,
+                           vector<double> &_startingWeights, vector<double> &_startingBiases, int input_node_count,
+                           int hidden_layer_count_, int node_per_hidden_layer, int output_node_count,
+                           string WeightFilePath,
+                           string BaisFilePath);
 
             void SetWindow(GraphWindow &window);
 

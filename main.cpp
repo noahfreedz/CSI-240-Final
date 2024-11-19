@@ -11,6 +11,8 @@
 using namespace std;
 using  namespace Rebecca;
 
+string DIR = "../network/";
+
 vector< vector<double>> readMNISTImages(const  string& filePath, int numImages, int numRows, int numCols) {
      ifstream file(filePath,  ios::binary);
      vector< vector<double>> images;
@@ -140,13 +142,13 @@ int main() {
     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     int count = 0;
-    ThreadNetworks allNetworks(5, 0.01, 10, startingWeights, startingBiases, input_layer,
-              number_hidden_layers,number_node_per_hidden, output_layer);
+    ThreadNetworks allNetworks(5, 0.01, 0.1, startingWeights, startingBiases, input_layer,
+              number_hidden_layers,number_node_per_hidden,
+              output_layer);
 
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
     allNetworks.SetWindow(window_);
-
 
     while (window_.run_network) {
         int i = getRandom(0, images.size());
