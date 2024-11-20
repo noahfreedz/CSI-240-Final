@@ -135,16 +135,16 @@ int main() {
 
     int input_layer = 784;
     int output_layer = 10;
-    int number_hidden_layers = 5;
-    int number_node_per_hidden = 32;
+    int number_hidden_layers = 2;
+    int number_node_per_hidden = 128;
 
     vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     int count = 0;
-    ThreadNetworks allNetworks(5, 0.01, 0.1, startingWeights, startingBiases, input_layer,
+    ThreadNetworks allNetworks(5, 0.1, 1, startingWeights, startingBiases, input_layer,
               number_hidden_layers,number_node_per_hidden,
-              output_layer);
+              output_layer, DIR +"outputWeights4.bin", DIR +"outputBiases4.bin");
 
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
