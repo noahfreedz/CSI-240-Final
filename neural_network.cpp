@@ -332,7 +332,6 @@ double NeuralNetwork:: run_network(vector<double> inputs, vector<double> correct
             bool precise_network_correct = true;
             for(auto &node : allNodes) {
                 if(node.layer == last_layer) {
-                    // Calculate Correct
                     if(vauge_network_correct) {
                         if(correct_outputs[output_count] == 1.0) {
                             if(node.activation_value <= 0.9) {
@@ -553,10 +552,6 @@ void ThreadNetworks::runThreading(vector<double>& image, vector<double>& correct
 void ThreadNetworks::trainNetwork(NeuralNetwork& network, const vector<double>& input, const vector<double>& correct_output) {
 
                     network.run_network(input, correct_output);
-
-                    // Lock data access to prevent race conditions during weight updates
-                    lock_guard< mutex> guard(data_mutex);
-
                     network.backpropigate_network();
                 }
 

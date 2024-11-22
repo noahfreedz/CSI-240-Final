@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(NeuralNetworkTest)
+project(Test)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -11,6 +12,8 @@ CPMAddPackage("gh:SFML/SFML#2.6.1")
 
 # Add the executable with the main file and any additional sources/headers
 add_executable(NeuralNetworkTest main.cpp neural_network.cpp neural_network.h
+        window.cpp)
+add_executable(Test Testing.cpp neural_network.cpp neural_network.h
         window.cpp)
 
 # Copy necessary data files to the build directory
@@ -26,3 +29,4 @@ file(COPY ${SFML_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Link SFML libraries to the executable
 target_link_libraries(NeuralNetworkTest sfml-graphics sfml-window sfml-system)
+target_link_libraries(Test sfml-graphics sfml-window sfml-system)
