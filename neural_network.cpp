@@ -1,4 +1,5 @@
 #include "neural_network.h"
+#include "grid.h"
 
 using namespace Rebecca;
 
@@ -101,61 +102,46 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
                 vector<double>_startingWeights, vector<double> _startingBiases)
                     : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
 
-                // Create input layer nodes
-                for (int n = 0; n < iNode_count; n++) {
-                    Node newInputNode(0, next_ID);
-                    allNodes.push_back(newInputNode);
-                }
-                last_layer++;
+    // Create input layer nodes
+    for (int n = 0; n < iNode_count; n++) {
+        Node newInputNode(0, next_ID);
+        allNodes.push_back(newInputNode);
+    }
+    last_layer++;
 
-                // Create hidden layers
-                for (int l = 0; l < hLayer_count; l++) {
-                    for (int n = 0; n < hNode_count; n++) {
-                        Node newHiddenNode(l+1, next_ID, _startingBiases[n*(l+1)]);
-                        allNodes.push_back(newHiddenNode);
-                    }
-                    last_layer++;
-                }
+    // Create hidden layers
+    for (int l = 0; l < hLayer_count; l++) {
+        for (int n = 0; n < hNode_count; n++) {
+            Node newHiddenNode(l + 1, next_ID, _startingBiases[n * (l + 1)]);
+            allNodes.push_back(newHiddenNode);
+        }
+        last_layer++;
+    }
 
-                // Create output layer nodes
-                for (int n = 0; n < oNode_count; n++) {
-                    Node newOutputNode(last_layer, next_ID, _startingBiases[n+(hLayer_count*hNode_count)]);
-                    allNodes.push_back(newOutputNode);
-                }
+    // Create output layer nodes
+    for (int n = 0; n < oNode_count; n++) {
+        Node newOutputNode(last_layer, next_ID, _startingBiases[n + (hLayer_count * hNode_count)]);
+        allNodes.push_back(newOutputNode);
+    }
 
-                // Create connections
-                int current_layer = 0;
-                while (current_layer < last_layer) {
-                    vector<Node*> start_nodes;
-                    vector<Node*> end_nodes;
+    // Create connections
+    int current_layer = 0;
+    while (current_layer < last_layer) {
+        vector<Node *> start_nodes;
+        vector<Node *> end_nodes;
 
-                    // Collect nodes in the current and next layer
-                    for (auto& node : allNodes) {
-                        if (node.layer == current_layer) {
-                            start_nodes.push_back(&node);
-                        } else if (node.layer == current_layer + 1) {
-                            end_nodes.push_back(&node);
-                        }
-                    }
-
-                    // Connect nodes between layers
-                    for (auto& start_node : start_nodes) {
-                        for (auto& end_node : end_nodes) {
-                            connection new_connection{};
-                            new_connection.ID = connection_ID;
-                            connection_ID++;
-                            new_connection.start_address = start_node;
-                            new_connection.end_address = end_node;
-                            new_connection.weight = _startingWeights[new_connection.ID];
-
-                            allConnections[new_connection.ID] = new_connection;
-                            start_node->forward_connections[start_node->forward_connections.size()] = &allConnections[new_connection.ID];
-                            end_node->backward_connections[end_node->backward_connections.size()] = &allConnections[new_connection.ID];
-                        }
-                    }
-                    current_layer++;
-                }
+        // Collect nodes in the current and next layer
+        for (auto &node: allNodes) {
+            if (node.layer == current_layer) {
+                start_nodes.push_back(&node);
+            } else if (node.layer == current_layer + 1) {
+                end_nodes.push_back(&node);
             }
+        }
+    }
+
+
+}
 
 NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
                 unordered_map<int, double>_startingWeights, unordered_map<int, double> _startingBiases)
@@ -552,22 +538,8 @@ void ThreadNetworks:: SetWindow(GraphWindow &window) {
     for(auto& network : networks_) {
         window_->setLearningRate(network->ID, network->getLearningRate());
     }
-
-
 }
 
-void ThreadNetworks::runThreading(vector<double>& image, vector<double>& correct_label_output) {
-                    vector<thread> threads;
-                for (auto& network : networks_) {
-                    threads.emplace_back([this, &network, &image, &correct_label_output]() {
-                        trainNetwork(*network, image, correct_label_output);
-                    });
-                }
-                // Join each thread
-                for (auto& t : threads) {
-                    t.join();
-                }
-            }
 
 void ThreadNetworks::trainNetwork(NeuralNetwork& network, const vector<double>& input, const vector<double>& correct_output) {
 
