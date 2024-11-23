@@ -7,22 +7,14 @@ set(CMAKE_CXX_STANDARD 17)
 # Include CPM for package management
 include(get_cpm.cmake)
 
-#raylib includes
-include(cmake/compiler_check.cmake)
-
-
 # Add SFML as a dependency using CPM
 CPMAddPackage("gh:SFML/SFML#2.6.1")
 
-#add raylib
-CPMAddPackage("gh:raysan5/raylib#5.0")
-#CPMAddPackage("gh:raysan5/raygui#4.0")
-#CPMAddPackage("gh:raysan5/rpng#1.0")
-
-
 # Add the executable with the main file and any additional sources/headers
-add_executable(NeuralNetworkTest main.cpp neural_network.cpp neural_network.h
-        window.cpp grid.h grid.cpp)
+add_executable(MakeNewNetwork Make_New_Netwroks.cpp neural_network.cpp neural_network.h
+        window.cpp)
+add_executable(Test Testing.cpp neural_network.cpp neural_network.h
+        window.cpp)
 
 # Copy necessary data files to the build directory
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/set1-images.idx3-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
@@ -36,4 +28,5 @@ file(GLOB SFML_DLLS "${SFML_DLL_PATH}/*.dll")
 file(COPY ${SFML_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Link SFML libraries to the executable
-target_link_libraries(NeuralNetworkTest sfml-graphics sfml-window sfml-system raylib)
+target_link_libraries(MakeNewNetwork sfml-graphics sfml-window sfml-system)
+target_link_libraries(Test sfml-graphics sfml-window sfml-system)
