@@ -16,6 +16,9 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <ctime>
+#include <string>
+#include <filesystem>
 
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
@@ -26,6 +29,7 @@
 
 
 using namespace std;
+using namespace filesystem;
 
 namespace Rebecca {
 
@@ -191,60 +195,62 @@ namespace Rebecca {
         };
 
     class NeuralNetwork {
-        public:
-            int ID;
-            static int nextID;
-            int vauge_correct_count = 0;
-            int precise_correct_count = 0;
-            int total_outputs = 0;
+    public:
+        int ID;
+        static int nextID;
+        int vauge_correct_count = 0;
+        int precise_correct_count = 0;
+        int total_outputs = 0;
 
-            //NeuralNetwork(){}
-            NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate);
+        //NeuralNetwork(){}
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate);
 
-            NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-                vector<double>_startingWeights, vector<double> _startingBiases);
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
+            vector<double>_startingWeights, vector<double> _startingBiases);
 
-            NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-               unordered_map<int, double>_startingWeights, unordered_map<int, double> _startingBiases);
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
+           unordered_map<int, double>_startingWeights, unordered_map<int, double> _startingBiases);
 
-            NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-               vector<double>_startingWeights, vector<double> _startingBiases, string WeightFilePath, string BaisFilePath);
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
+           vector<double>_startingWeights, vector<double> _startingBiases, string WeightFilePath, string BaisFilePath);
 
-            ~NeuralNetwork();
-            double run_network(vector<double> inputs, vector<double> correct_outputs);
+        ~NeuralNetwork();
+        double run_network(vector<double> inputs, vector<double> correct_outputs);
 
-            void backpropigate_network();
+        void backpropigate_network();
 
-            pair< unordered_map<int, double>, unordered_map<int, double>> getWeightsAndBiases();
+        pair< unordered_map<int, double>, unordered_map<int, double>> getWeightsAndBiases();
 
-            double getCost();
+        double getCost();
 
-            double getLearningRate();
+        double getLearningRate();
     private:
 
-            vector<Node> allNodes;
-            unordered_map<int, connection> allConnections;
-            vector<double> average_cost;
-            vector<unordered_map<int, double>> weights_;
-            vector<unordered_map<int, double>> biases_;
+        vector<Node> allNodes;
+        unordered_map<int, connection> allConnections;
+        vector<double> average_cost;
+        vector<unordered_map<int, double>> weights_;
+        vector<unordered_map<int, double>> biases_;
 
-            friend class ThreadNetworks;
+        friend class ThreadNetworks;
 
-            int runs = 0;
-            int correct = 0;
-            double learning_rate;
+        int runs = 0;
+        int correct = 0;
+        double learning_rate;
 
-            int backprop_count = 0;
-            int upper_backprop_count = 100;
+        int backprop_count = 0;
+        int upper_backprop_count = 100;
 
-            // Instance-specific ID counters
-            int next_ID;  // For nodes
-            int connection_ID;  // For connections
-            int last_layer;
+        // Instance-specific ID counters
+        int next_ID;  // For nodes
+        int connection_ID;  // For connections
+        int last_layer;
 
-            void edit_weights(const unordered_map<int, double>& new_values);
+        void edit_weights(const unordered_map<int, double>& new_values);
 
-            void edit_biases(const unordered_map<int, double>& new_biases);
+        void edit_biases(const unordered_map<int, double>& new_biases);
+
+        void saveNetworkData();
     };
 
     class ThreadNetworks

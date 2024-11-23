@@ -286,22 +286,8 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
             }
 
 NeuralNetwork::~NeuralNetwork() {
-                weights_.clear();
-                biases_.clear();
-                backprop_count = 0;
-
-
-                string weight_file = "../network/outputWeights" +to_string(ID) +".bin";
-
-                string bais_file = "../network/outputBiases" +to_string(ID) + ".bin";
-
-                auto weights_and_biases = getWeightsAndBiases();
-
-
-                saveData(weights_and_biases.first, weight_file);
-                saveData(weights_and_biases.second, bais_file);
-
-            }
+            saveNetworkData();
+}
 
 double NeuralNetwork:: run_network(vector<double> inputs, vector<double> correct_outputs) {
             int inputIndex = 0;
@@ -347,12 +333,12 @@ double NeuralNetwork:: run_network(vector<double> inputs, vector<double> correct
                     // Calculate Correct
                     if(precise_network_correct) {
                         if(correct_outputs[output_count] == 1.0) {
-                            if(node.activation_value <= 9.0) {
+                            if(node.activation_value < 0.9) {
                                 precise_network_correct = false;
                             }
                         }
                         else if (correct_outputs[output_count] == 0.0) {
-                            if(node.activation_value >= 0.1) {
+                            if(node.activation_value > 0.1) {
                                 precise_network_correct = false;
                             }
                         }
@@ -486,6 +472,40 @@ void  NeuralNetwork::edit_biases(const unordered_map<int, double>& new_biases)
                     }
                 }
 
+void NeuralNetwork:: saveNetworkData() {
+    // Clear previous data
+    weights_.clear();
+    biases_.clear();
+    backprop_count = 0;
+    double cost = getCost();
+    // Get current date and time
+    auto now = chrono::system_clock::to_time_t(chrono::system_clock::now());
+    tm local_time;
+    localtime_s(&local_time, &now);
+
+    // Format date and time
+    stringstream ss;
+    ss << put_time(&local_time, "%Y-%m-%d_%H-%M-%S");
+
+    // Generate directory name with date, time, and cost
+    string dir_name = "../network/" + ss.str() + "_Cost_" + to_string(cost);
+
+    // Create the directory
+    if (!exists(dir_name)) {
+        create_directory(dir_name);
+    }
+
+    // Define file paths
+    string weight_file = dir_name + "/Weights.bin";
+    string bias_file = dir_name + "/Biases.bin";
+
+    // Get weights and biases
+    auto weights_and_biases = getWeightsAndBiases();
+
+    // Save weights and biases to the new directory
+    saveData(weights_and_biases.first, weight_file);
+    saveData(weights_and_biases.second, bias_file);
+}
 
 ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
                double upper_learning_rate, vector<double>& _startingWeights,
