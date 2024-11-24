@@ -142,10 +142,9 @@ int main() {
     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     int count = 0;
-    ThreadNetworks allNetworks(5, 0.1, 1, startingWeights, startingBiases, input_layer,
+    ThreadNetworks allNetworks(5, 1, 10, startingWeights, startingBiases, input_layer,
               number_hidden_layers,number_node_per_hidden,
               output_layer);
-
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
     allNetworks.SetWindow(window_);
@@ -160,7 +159,7 @@ int main() {
 
         count++;
 
-        if (count == 100) {
+        if (count == 500) {
             allNetworks.PrintCost();
             count = 0;
         }

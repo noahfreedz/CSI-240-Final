@@ -377,7 +377,6 @@ void NeuralNetwork:: backpropigate_network()
                     double learningRate = 0.05;
 
                     // Increment Networks Run Count
-                    runs++;
 
                     // Loop Through Layers Starting with Second To Last Going Backward
                     for(int i =last_layer - 1; 0 < i ; i--)
@@ -420,6 +419,9 @@ void NeuralNetwork:: backpropigate_network()
                     if(backprop_count == upper_backprop_count) {
                         edit_weights(average(weights_));
                         edit_biases(average(biases_));
+                        runs++;
+                        backprop_count = 0;
+                        learning_rate = LearingRateDeacy(learning_rate);
                     }
                 }
 
@@ -507,17 +509,24 @@ void NeuralNetwork:: saveNetworkData() {
     saveData(weights_and_biases.second, bias_file);
 }
 
+double NeuralNetwork:: LearingRateDeacy(double learning_rate) {
+
+    double decay_factor = pow(static_cast<double>(runs) / (totalRuns+runs), 2);
+    learning_rate *= decay_factor;
+    return learning_rate;
+}
+
 ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
-               double upper_learning_rate, vector<double>& _startingWeights,
-               vector<double>& _startingBiases, int input_node_count,
+               double upper_learning_rate, int input_node_count,
                int hidden_layer_count_, int node_per_hidden_layer,
-               int output_node_count, string WeightFilePath, string BaisFilePath) {
+               int output_node_count, const string& WeightFilePath, const string &BaisFilePath) {
 
                 auto weigths = loadData(WeightFilePath);
                 auto bais = loadData(BaisFilePath);
 
                 networks_.reserve(number_networks);
                 double learning_rate_step = abs((upper_learning_rate - lower_learning_rate) / (number_networks-1));
+
                 for (int i = 0; i < number_networks; i++) {
                     double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
 
@@ -552,8 +561,6 @@ void ThreadNetworks:: SetWindow(GraphWindow &window) {
     for(auto& network : networks_) {
         window_->setLearningRate(network->ID, network->getLearningRate());
     }
-
-
 }
 
 void ThreadNetworks::runThreading(vector<double>& image, vector<double>& correct_label_output) {
@@ -570,7 +577,6 @@ void ThreadNetworks::runThreading(vector<double>& image, vector<double>& correct
             }
 
 void ThreadNetworks::trainNetwork(NeuralNetwork& network, const vector<double>& input, const vector<double>& correct_output) {
-
                     network.run_network(input, correct_output);
                     network.backpropigate_network();
                 }

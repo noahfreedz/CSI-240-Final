@@ -27,7 +27,6 @@
 #include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/CircleShape.hpp"
 
-
 using namespace std;
 using namespace filesystem;
 
@@ -232,6 +231,8 @@ namespace Rebecca {
         vector<unordered_map<int, double>> weights_;
         vector<unordered_map<int, double>> biases_;
 
+        int totalRuns = 100;
+
         friend class ThreadNetworks;
 
         int runs = 0;
@@ -239,7 +240,7 @@ namespace Rebecca {
         double learning_rate;
 
         int backprop_count = 0;
-        int upper_backprop_count = 100;
+        int upper_backprop_count = 500;
 
         // Instance-specific ID counters
         int next_ID;  // For nodes
@@ -251,6 +252,8 @@ namespace Rebecca {
         void edit_biases(const unordered_map<int, double>& new_biases);
 
         void saveNetworkData();
+
+        double LearingRateDeacy(double learning_rate);
     };
 
     class ThreadNetworks
@@ -261,11 +264,10 @@ namespace Rebecca {
                vector<double>& _startingBiases, int input_node_count,
                int hidden_layer_count_, int node_per_hidden_layer, int output_node_count);
 
-            ThreadNetworks(int number_networks, double lower_learning_rate, double upper_learning_rate,
-                           vector<double> &_startingWeights, vector<double> &_startingBiases, int input_node_count,
+            ThreadNetworks(int number_networks, double lower_learning_rate, double upper_learning_rate, int input_node_count,
                            int hidden_layer_count_, int node_per_hidden_layer, int output_node_count,
-                           string WeightFilePath,
-                           string BaisFilePath);
+                           const string& WeightFilePath,
+                           const string &BaisFilePath);
 
             void SetWindow(GraphWindow &window);
 

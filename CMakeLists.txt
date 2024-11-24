@@ -20,6 +20,7 @@ add_executable(Test Testing.cpp neural_network.cpp neural_network.h
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/set1-images.idx3-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/set1-labels.idx1-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Font/Font.ttf DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 # Define the path to the SFML library directory
 set(SFML_DLL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-debug/_deps/sfml-build/lib")
 
