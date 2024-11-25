@@ -13,12 +13,21 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include <future>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
 #include <ctime>
 #include <string>
 #include <filesystem>
+#include <vector>
+#include <thread>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
+#include <functional>
+#include <memory>
 
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
@@ -45,11 +54,9 @@ namespace Rebecca {
     }
 
     inline double sigmoid(double x) {
-        double result = 1 / (1 + exp(-x));
-
-        if (result < 0.000000001) {
-            result = 0.0; // Set the minimum value
-        }
+        if (x > 88.0) return 1.0;
+        if (x < -88.0) return 0.0;
+        double result = 1.0 / (1.0 + std::exp(-x));
         return result;
     }
 
@@ -97,7 +104,7 @@ namespace Rebecca {
         unordered_map<int, double> data;
         ifstream inFile(filename, ios::binary);
         if (!inFile) {
-            cerr << "Error: Could not open file for reading\n";
+            cerr << "Error: Could not open file for reading" << filename << endl;;
             return data;
         }
 
@@ -193,6 +200,39 @@ namespace Rebecca {
             std::string formatLabel(double value);
         };
 
+    class ThreadPool {
+    public:
+        ThreadPool(size_t numThreads = std::max(1u, std::thread::hardware_concurrency() - 1));
+        ~ThreadPool();
+
+        template<class F, class... Args>
+        auto enqueue(F&& f, Args&&... args)
+            -> std::future<typename std::result_of<F(Args...)>::type> {
+            using return_type = typename std::result_of<F(Args...)>::type;
+
+            auto task = std::make_shared<std::packaged_task<return_type()>>(
+                std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+
+            std::future<return_type> res = task->get_future();
+            {
+                std::unique_lock<std::mutex> lock(queueMutex);
+                if(stop)
+                    throw std::runtime_error("enqueue on stopped ThreadPool");
+
+                tasks.emplace([task](){ (*task)(); });
+            }
+            condition.notify_one();
+            return res;
+        }
+
+    private:
+        std::vector<std::thread> workers;
+        std::queue<std::function<void()>> tasks;
+        std::mutex queueMutex;
+        std::condition_variable condition;
+        bool stop;
+    };
+
     class NeuralNetwork {
     public:
         int ID;
@@ -210,8 +250,8 @@ namespace Rebecca {
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
            unordered_map<int, double>_startingWeights, unordered_map<int, double> _startingBiases);
 
-        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-           vector<double>_startingWeights, vector<double> _startingBiases, string WeightFilePath, string BaisFilePath);
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count,
+    double _learning_rate,const string& FilePath);
 
         ~NeuralNetwork();
         double run_network(vector<double> inputs, vector<double> correct_outputs);
@@ -223,6 +263,15 @@ namespace Rebecca {
         double getCost();
 
         double getLearningRate();
+
+        void saveWeightsAndBiases(const string& filename);
+        void loadWeightsAndBiases(const string& filename);
+
+        void updateStatistics(double output, double error) {
+            std::lock_guard<std::mutex> lock(statsMutex);
+            // Update network statistics
+            average_cost.push_back(output);
+        }
     private:
 
         vector<Node> allNodes;
@@ -230,6 +279,7 @@ namespace Rebecca {
         vector<double> average_cost;
         vector<unordered_map<int, double>> weights_;
         vector<unordered_map<int, double>> biases_;
+            std::mutex statsMutex;
 
         int totalRuns = 100;
 
@@ -240,7 +290,7 @@ namespace Rebecca {
         double learning_rate;
 
         int backprop_count = 0;
-        int upper_backprop_count = 500;
+        int upper_backprop_count = 100;
 
         // Instance-specific ID counters
         int next_ID;  // For nodes
@@ -254,40 +304,53 @@ namespace Rebecca {
         void saveNetworkData();
 
         double LearingRateDeacy(double learning_rate);
+
+        void clearConnections();
+        void clearNodes();
     };
 
-    class ThreadNetworks
-    {
-        public:
-            ThreadNetworks(int number_networks, double lower_learning_rate,
-               double upper_learning_rate, vector<double>& _startingWeights,
-               vector<double>& _startingBiases, int input_node_count,
-               int hidden_layer_count_, int node_per_hidden_layer, int output_node_count);
+    class ThreadNetworks {
+    public:
+        ThreadNetworks(int number_networks, double lower_learning_rate,
+                      double upper_learning_rate, std::vector<double>& startingWeights,
+                      std::vector<double>& startingBiases, int input_node_count,
+                      int hidden_layer_count, int node_per_hidden_layer,
+                      int output_node_count);
 
-            ThreadNetworks(int number_networks, double lower_learning_rate, double upper_learning_rate, int input_node_count,
-                           int hidden_layer_count_, int node_per_hidden_layer, int output_node_count,
-                           const string& WeightFilePath,
-                           const string &BaisFilePath);
+        ThreadNetworks(int number_networks, double lower_learning_rate,
+                      double upper_learning_rate, int input_node_count,
+                      int hidden_layer_count_, int node_per_hidden_layer,
+                      int output_node_count, const std::string& WeightFilePath,
+                      const std::string& BaisFilePath);
 
-            void SetWindow(GraphWindow &window);
-
-            void runThreading(vector<double>& image, vector<double>& correct_label_output);
-
-            void trainNetwork(NeuralNetwork& network, const vector<double>& input, const vector<double>& correct_output);
-
-            void PrintCost();
-
-            void render();
-            void deleteNetworks();
-
+        void SetWindow(GraphWindow& window) { window_ = &window; }
+        void runThreading(const std::vector<double>& image, const std::vector<double>& correct_label_output);
+        void PrintCost();
+        void render() { if (window_) window_->render(); }
+        bool isRunning() const { return !shouldStop; }
+        void stop() { shouldStop = true; }
 
     private:
         int NetworkID = 0;
-        int ThreadID = 0;
+        std::vector<std::unique_ptr<NeuralNetwork>> networks_;
+        GraphWindow* window_{nullptr};
+        ThreadPool threadPool;
+        std::mutex resultsMutex;
+        std::mutex costMutex;
+        const size_t batchSize;
+        std::atomic<bool> shouldStop{false};
+        std::atomic<bool> costUpdateInProgress{false};
 
-        GraphWindow* window_;
+        std::vector<double> networkOutputs;
+        std::vector<double> networkErrors;
+        std::vector<bool> processingComplete;
+        std::atomic<size_t> processedNetworks{0};
 
-        vector<unique_ptr<NeuralNetwork>> networks_;
+        void trainNetwork(size_t networkIndex, const std::vector<double>& input,
+                         const std::vector<double>& correct_output);
+        void synchronizeResults();
+        static size_t calculateOptimalBatchSize(size_t numNetworks);
     };
 
-}
+};
+

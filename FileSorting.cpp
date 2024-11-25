@@ -5,6 +5,7 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
+#include <queue>
 
 #include "neural_network.h"
 
@@ -81,48 +82,13 @@ vector<int> readMNISTLabels(const  string& filePath, int numLabels) {
     return labels;
 }
 
-vector<double> generateStartingWeights(int input_layer, int number_hidden_layers, int number_node_per_hidden, int output_layer) {
-     vector<double> startingWeights;
-
-    // Weights for connections from input layer to first hidden layer
-    for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
-        startingWeights.push_back(getRandom(-1, 1));
-    }
-
-    // Weights for connections between hidden layers
-    for (int i = 0; i < (number_hidden_layers - 1) * number_node_per_hidden * number_node_per_hidden; i++) {
-        startingWeights.push_back(getRandom(-1, 1));
-    }
-
-    // Weights for connections from last hidden layer to output layer
-    for (int i = 0; i < number_node_per_hidden * output_layer; i++) {
-        startingWeights.push_back(getRandom(-1, 1));
-    }
-
-    return startingWeights;
-}
-
-vector<double> generateStartingBiases(int number_hidden_layers, int number_node_per_hidden, int output_layer) {
-     vector<double> startingBiases;
-
-    // Biases for hidden layers
-    for (int i = 0; i < number_hidden_layers * number_node_per_hidden; i++) {
-        startingBiases.push_back(getRandom(-15.0,15.0));
-    }
-
-    // Biases for output layer
-    for (int i = 0; i < output_layer; i++) {
-        startingBiases.push_back(getRandom(-15.0,15.0));
-    }
-
-    return startingBiases;
-}
-
 int main() {
 
     // Paths to MNIST files
-     string imageFilePath = "set1-images.idx3-ubyte";
-     string labelFilePath = "set1-labels.idx1-ubyte";
+     string imageFilePath = "Testing-Data-Images.idx3-ubyte";
+     string labelFilePath = "TestingData-labels.idx1-ubyte";
+
+    queue<string> filePaths;
 
     // Read images and labels
     int numImages = 200000;
@@ -130,7 +96,7 @@ int main() {
     int numCols = 28;
 
     // setting up vectors for images and labels
-    vector< vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
+    vector<vector<double>> images = readMNISTImages(imageFilePath, numImages, numRows, numCols);
     vector<int> labels = readMNISTLabels(labelFilePath, numImages);
 
     int input_layer = 784;
@@ -138,39 +104,44 @@ int main() {
     int number_hidden_layers = 2;
     int number_node_per_hidden = 128;
 
-    vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
-    vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
+    for (const auto& entry : directory_iterator(DIR)) {
+        filePaths.push(entry.path().filename().string());
+    }
 
-    int count = 0;
-    ThreadNetworks allNetworks(5, 0.03, 0.13, input_layer,
-              number_hidden_layers,number_node_per_hidden,
-              output_layer, DIR+"Best/Weights.bin",
-              DIR + "Best/Biases.bin");
+    unordered_map<string, int> Points;
+
+    while(!filePaths.empty())
+    {
+        int points = 0;
+        string filePath = filePaths.front();
+        filePaths.pop();
 
 
-    GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
+        NeuralNetwork network(input_layer, number_hidden_layers,number_node_per_hidden,
+                  output_layer, 1.0, DIR + filePath +"/Network.bin");
 
-    allNetworks.SetWindow(window_);
 
-    while (window_.run_network) {
-        int i = getRandom(0, images.size());
-
-        vector<double> correct_label_output(10, 0.0);
-        correct_label_output[labels[i]] = 1.0;
-
-        allNetworks.runThreading(images[i], correct_label_output);
-
-        count++;
-
-        if (count == 100) {
-            allNetworks.PrintCost();
-            count = 0;
+        if(network.getCost() <= 1.0) {
+            points += 2;
         }
 
-        // Render
-        window_.render();
-        window_.handleEvents();
+        for(int i = 0; i < 28; i ++) {
+            vector<double> correct_label_output(10, 0.0);
+            correct_label_output[labels[i]] = 1.0;
+            network.run_network(images[i], correct_label_output);
+        }
+
+        points += network.precise_correct_count*10;
+        points += network.vauge_correct_count*5;
+
+        Points[filePath] = points;
+    };
+
+    for(auto net : Points) {
+        cout << "File Name :" << net.first << " Number Points :"<< net.second << "\n";
     }
+
+
 
     return 0;
 }

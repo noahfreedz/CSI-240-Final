@@ -148,17 +148,13 @@ int main() {
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
     allNetworks.SetWindow(window_);
-
+    allNetworks.PrintCost();
     while (window_.run_network) {
         int i = getRandom(0, images.size());
-
         vector<double> correct_label_output(10, 0.0);
         correct_label_output[labels[i]] = 1.0;
-
         allNetworks.runThreading(images[i], correct_label_output);
-
         count++;
-
         if (count == 500) {
             allNetworks.PrintCost();
             count = 0;
@@ -168,6 +164,5 @@ int main() {
         window_.render();
         window_.handleEvents();
     }
-
     return 0;
 }

@@ -13,13 +13,22 @@ CPMAddPackage("gh:SFML/SFML#2.6.1")
 # Add the executable with the main file and any additional sources/headers
 add_executable(MakeNewNetwork Make_New_Netwroks.cpp neural_network.cpp neural_network.h
         window.cpp)
-add_executable(Test Testing.cpp neural_network.cpp neural_network.h
+add_executable(Test FileSorting.cpp neural_network.cpp neural_network.h
         window.cpp)
 
 # Copy necessary data files to the build directory
+#coping in the training data
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/set1-images.idx3-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/set1-labels.idx1-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+#the testing data
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/Testing-Data-Images.idx3-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/TestingData-labels.idx1-ubyte DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+#the font for the window
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Font/Font.ttf DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+
+
+
 
 # Define the path to the SFML library directory
 set(SFML_DLL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-debug/_deps/sfml-build/lib")
