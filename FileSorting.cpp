@@ -12,81 +12,42 @@
 using namespace std;
 using  namespace Rebecca;
 
-string DIR = "../network/";
+struct Point_System {
+    int _precise_correct_count = 0;
+    int _vauge_correct_count = 0;
+    float _cost = 0.0f;
+    int _total_points = 0;
 
-vector< vector<double>> readMNISTImages(const  string& filePath, int numImages, int numRows, int numCols) {
-     ifstream file(filePath,  ios::binary);
-     vector< vector<double>> images;
+    Point_System() = default;
 
-    if (file.is_open()) {
-        int magicNumber = 0;
-        int numberOfImages = 0;
-        int rows = 0;
-        int cols = 0;
-
-        // Read and convert the magic number and header values
-        file.read(reinterpret_cast<char*>(&magicNumber), 4);
-        file.read(reinterpret_cast<char*>(&numberOfImages), 4);
-        file.read(reinterpret_cast<char*>(&rows), 4);
-        file.read(reinterpret_cast<char*>(&cols), 4);
-
-        // Convert from big-endian to little-endian if needed
-        magicNumber = __builtin_bswap32(magicNumber);
-        numberOfImages = __builtin_bswap32(numberOfImages);
-        rows = __builtin_bswap32(rows);
-        cols = __builtin_bswap32(cols);
-
-        for (int i = 0; i < numImages; ++i) {
-             vector<double> image;
-            for (int j = 0; j < numRows * numCols; ++j) {
-                unsigned char pixel = 0;
-                file.read(reinterpret_cast<char*>(&pixel), 1);
-                image.push_back(static_cast<double>(pixel) / 255.0); // Normalize to [0, 1]
-            }
-            images.push_back(image);
+    Point_System(int precise_correct_count, int vauge_correct_count, float cost)
+        : _precise_correct_count(precise_correct_count), _vauge_correct_count(vauge_correct_count), _cost(cost) {
+        _total_points += _precise_correct_count * 10;
+        _total_points += _vauge_correct_count * 5;
+        if (_cost <= 1.0) {
+            _total_points += 2;
         }
-        file.close();
-    } else {
-         cerr << "Failed to open the file: " << filePath << "\n";
     }
 
-    return images;
-}
-
-vector<int> readMNISTLabels(const  string& filePath, int numLabels) {
-     ifstream file(filePath,  ios::binary);
-     vector<int> labels;
-
-    if (file.is_open()) {
-        int magicNumber = 0;
-        int numberOfLabels = 0;
-
-        // Read and convert the magic number and header values
-        file.read(reinterpret_cast<char*>(&magicNumber), 4);
-        file.read(reinterpret_cast<char*>(&numberOfLabels), 4);
-
-        // Convert from big-endian to little-endian if needed
-        magicNumber = __builtin_bswap32(magicNumber);
-        numberOfLabels = __builtin_bswap32(numberOfLabels);
-
-        for (int i = 0; i < numLabels; ++i) {
-            unsigned char label = 0;
-            file.read(reinterpret_cast<char*>(&label), 1);
-            labels.push_back(static_cast<int>(label));
-        }
-        file.close();
-    } else {
-         cerr << "Failed to open the file: " << filePath << "\n";
+    bool operator>=(int i) const {
+        return _total_points >= i;
     }
+};
 
-    return labels;
+ostream& operator<<(ostream& lhs, const Point_System& rhs){
+    lhs << "Total Points: " << rhs._total_points
+        << " Precise: " << rhs._precise_correct_count
+        << " Vague Points: " << rhs._vauge_correct_count
+        << " Cost: " << rhs._cost;
+    return lhs;
 }
+
+
 
 int main() {
-
     // Paths to MNIST files
-     string imageFilePath = "Testing-Data-Images.idx3-ubyte";
-     string labelFilePath = "TestingData-labels.idx1-ubyte";
+    string imageFilePath = "Testing-Data-Images.idx3-ubyte";
+    string labelFilePath = "TestingData-labels.idx1-ubyte";
 
     queue<string> filePaths;
 
@@ -108,40 +69,25 @@ int main() {
         filePaths.push(entry.path().filename().string());
     }
 
-    unordered_map<string, int> Points;
+    unordered_map<string, Point_System> Points;
 
     while(!filePaths.empty())
     {
-        int points = 0;
         string filePath = filePaths.front();
         filePaths.pop();
-
-
         NeuralNetwork network(input_layer, number_hidden_layers,number_node_per_hidden,
-                  output_layer, 1.0, DIR + filePath +"/Network.bin");
-
-
-        if(network.getCost() <= 1.0) {
-            points += 2;
-        }
-
-        for(int i = 0; i < 28; i ++) {
+                  output_layer, 1.0, DIR + filePath +"/Network.bin", 100);
+        for(int i = 0; i < 100; i ++) {
             vector<double> correct_label_output(10, 0.0);
             correct_label_output[labels[i]] = 1.0;
             network.run_network(images[i], correct_label_output);
         }
+        Points.emplace(filePath, Point_System(network.precise_correct_count, network.vauge_correct_count, network.getCost()));
 
-        points += network.precise_correct_count*10;
-        points += network.vauge_correct_count*5;
-
-        Points[filePath] = points;
     };
 
     for(auto net : Points) {
-        cout << "File Name :" << net.first << " Number Points :"<< net.second << "\n";
+        if(net.second >= 3) {cout << "File Name :" << net.first << " Point Break Down :" << net.second << "\n";}
+        }
+        return 0;
     }
-
-
-
-    return 0;
-}

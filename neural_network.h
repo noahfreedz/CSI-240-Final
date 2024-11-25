@@ -45,6 +45,7 @@ namespace Rebecca {
     class Node;
     class NeuralNetwork;
 
+    inline string DIR = "../network/";
 
     inline double getRandom(double min, double max) {
         static random_device rd;                            // Seed source
@@ -79,50 +80,109 @@ namespace Rebecca {
         return averagedWeights;
     }
 
-    inline void saveData(const unordered_map<int, double>& data, const string& filename)
-    {
-        ofstream outFile(filename, ios::binary);
-        if (!outFile) {
-            cerr << "Error opening file for writing\n";
-            return;
+    inline vector< vector<double>> readMNISTImages(const  string& filePath, int numImages, int numRows, int numCols) {
+     ifstream file(filePath,  ios::binary);
+     vector< vector<double>> images;
+
+    if (file.is_open()) {
+        int magicNumber = 0;
+        int numberOfImages = 0;
+        int rows = 0;
+        int cols = 0;
+
+        // Read and convert the magic number and header values
+        file.read(reinterpret_cast<char*>(&magicNumber), 4);
+        file.read(reinterpret_cast<char*>(&numberOfImages), 4);
+        file.read(reinterpret_cast<char*>(&rows), 4);
+        file.read(reinterpret_cast<char*>(&cols), 4);
+
+        // Convert from big-endian to little-endian if needed
+        magicNumber = __builtin_bswap32(magicNumber);
+        numberOfImages = __builtin_bswap32(numberOfImages);
+        rows = __builtin_bswap32(rows);
+        cols = __builtin_bswap32(cols);
+
+        for (int i = 0; i < numImages; ++i) {
+             vector<double> image;
+            for (int j = 0; j < numRows * numCols; ++j) {
+                unsigned char pixel = 0;
+                file.read(reinterpret_cast<char*>(&pixel), 1);
+                image.push_back(static_cast<double>(pixel) / 255.0); // Normalize to [0, 1]
+            }
+            images.push_back(image);
         }
-
-        // Write the size of the vector first
-        size_t dataSize = data.size();
-        outFile.write(reinterpret_cast<const char*>(&dataSize), sizeof(dataSize));
-
-        // Write each pair of ID and double value
-        for (const auto& pair : data) {
-            outFile.write(reinterpret_cast<const char*>(&pair.first), sizeof(pair.first));
-            outFile.write(reinterpret_cast<const char*>(&pair.second), sizeof(pair.second));
-        }
-
-        outFile.close();
+        file.close();
+    } else {
+         cerr << "Failed to open the file: " << filePath << "\n";
     }
 
-    inline unordered_map<int, double> loadData(const string& filename) {
-        unordered_map<int, double> data;
-        ifstream inFile(filename, ios::binary);
-        if (!inFile) {
-            cerr << "Error: Could not open file for reading" << filename << endl;;
-            return data;
+    return images;
+}
+
+    inline vector<int> readMNISTLabels(const  string& filePath, int numLabels) {
+         ifstream file(filePath,  ios::binary);
+         vector<int> labels;
+
+        if (file.is_open()) {
+            int magicNumber = 0;
+            int numberOfLabels = 0;
+
+            // Read and convert the magic number and header values
+            file.read(reinterpret_cast<char*>(&magicNumber), 4);
+            file.read(reinterpret_cast<char*>(&numberOfLabels), 4);
+
+            // Convert from big-endian to little-endian if needed
+            magicNumber = __builtin_bswap32(magicNumber);
+            numberOfLabels = __builtin_bswap32(numberOfLabels);
+
+            for (int i = 0; i < numLabels; ++i) {
+                unsigned char label = 0;
+                file.read(reinterpret_cast<char*>(&label), 1);
+                labels.push_back(static_cast<int>(label));
+            }
+            file.close();
+        } else {
+             cerr << "Failed to open the file: " << filePath << "\n";
         }
 
-        // Read the size of the map (originally the vector size)
-        size_t dataSize;
-        inFile.read(reinterpret_cast<char*>(&dataSize), sizeof(dataSize));
+        return labels;
+    }
 
-        // Read each pair of ID and double value and insert it into the map
-        for (size_t i = 0; i < dataSize; ++i) {
-            int id;
-            double value;
-            inFile.read(reinterpret_cast<char*>(&id), sizeof(id));
-            inFile.read(reinterpret_cast<char*>(&value), sizeof(value));
-            data[id] = value;  // Insert into the unordered_map
+    inline vector<double> generateStartingWeights(int input_layer, int number_hidden_layers, int number_node_per_hidden, int output_layer) {
+         vector<double> startingWeights;
+
+        // Weights for connections from input layer to first hidden layer
+        for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
+            startingWeights.push_back(getRandom(-1, 1));
         }
 
-        inFile.close();
-        return data;
+        // Weights for connections between hidden layers
+        for (int i = 0; i < (number_hidden_layers - 1) * number_node_per_hidden * number_node_per_hidden; i++) {
+            startingWeights.push_back(getRandom(-1, 1));
+        }
+
+        // Weights for connections from last hidden layer to output layer
+        for (int i = 0; i < number_node_per_hidden * output_layer; i++) {
+            startingWeights.push_back(getRandom(-1, 1));
+        }
+
+        return startingWeights;
+    }
+
+    inline vector<double> generateStartingBiases(int number_hidden_layers, int number_node_per_hidden, int output_layer) {
+         vector<double> startingBiases;
+
+        // Biases for hidden layers
+        for (int i = 0; i < number_hidden_layers * number_node_per_hidden; i++) {
+            startingBiases.push_back(getRandom(-15.0,15.0));
+        }
+
+        // Biases for output layer
+        for (int i = 0; i < output_layer; i++) {
+            startingBiases.push_back(getRandom(-15.0,15.0));
+        }
+
+        return startingBiases;
     }
 
     struct connection {
@@ -233,16 +293,13 @@ namespace Rebecca {
         int total_outputs = 0;
 
         //NeuralNetwork(){}
-        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate);
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate, int backprop_after);
 
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-            vector<double>_startingWeights, vector<double> _startingBiases);
-
-        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-           unordered_map<int, double>_startingWeights, unordered_map<int, double> _startingBiases);
+            vector<double>_startingWeights, vector<double> _startingBiases, int backprop_after );
 
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count,
-    double _learning_rate,const string& FilePath);
+    double _learning_rate,const string& FilePath, int backprop_after);
 
         ~NeuralNetwork();
         double run_network(vector<double> inputs, vector<double> correct_outputs);
@@ -281,7 +338,7 @@ namespace Rebecca {
         double learning_rate;
 
         int backprop_count = 0;
-        int upper_backprop_count = 100;
+        int upper_backprop_count;
 
         // Instance-specific ID counters
         int next_ID;  // For nodes
@@ -306,13 +363,12 @@ namespace Rebecca {
                       double upper_learning_rate, std::vector<double>& startingWeights,
                       std::vector<double>& startingBiases, int input_node_count,
                       int hidden_layer_count, int node_per_hidden_layer,
-                      int output_node_count);
+                      int output_node_count, int backprop_after);
 
         ThreadNetworks(int number_networks, double lower_learning_rate,
-                      double upper_learning_rate, int input_node_count,
-                      int hidden_layer_count_, int node_per_hidden_layer,
-                      int output_node_count, const std::string& WeightFilePath,
-                      const std::string& BaisFilePath);
+                             double upper_learning_rate, int input_node_count,
+                             int hidden_layer_count_, int node_per_hidden_layer,
+                             int output_node_count, const string& FilePath, int backprop_after);
 
         void SetWindow(GraphWindow& window) { window_ = &window; }
         void runThreading(const std::vector<double>& image, const std::vector<double>& correct_label_output);

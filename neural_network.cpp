@@ -6,6 +6,7 @@ mutex data_mutex;
 
 int NeuralNetwork::nextID = 0;
 
+
 Node::Node(int node_layer, int& nextID, double _bais) : activation_value(0.0), layer(node_layer) {
             ID = nextID;
             nextID++;
@@ -36,11 +37,10 @@ void  Node::calculate_node() {
             }
         }
 
-NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate)
-                    : next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
+NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate, int backprop_after )
+                    : next_ID(0), connection_ID(0), last_layer(0), ID(nextID++), upper_backprop_count(backprop_after) {
 
                 learning_rate = _learning_rate;
-
                 // Create input layer nodes
                 for (int n = 0; n < iNode_count; n++) {
                     Node newInputNode(0, next_ID);
@@ -98,8 +98,8 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
             }
 
 NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-                vector<double>_startingWeights, vector<double> _startingBiases)
-                    : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
+                vector<double>_startingWeights, vector<double> _startingBiases, int backprop_after)
+                    : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++), upper_backprop_count(backprop_after) {
 
                 // Create input layer nodes
                 for (int n = 0; n < iNode_count; n++) {
@@ -156,71 +156,10 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
                     current_layer++;
                 }
             }
-
-NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate,
-                unordered_map<int, double>_startingWeights, unordered_map<int, double> _startingBiases)
-                    : learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++) {
-
-                // Create input layer nodes
-                for (int n = 0; n < iNode_count; n++) {
-                    Node newInputNode(0, next_ID);
-                    allNodes.push_back(newInputNode);
-                }
-                last_layer++;
-
-                // Create hidden layers
-                for (int l = 0; l < hLayer_count; l++) {
-                    for (int n = 0; n < hNode_count; n++) {
-                        Node newHiddenNode(l+1, next_ID, _startingBiases[n*(l+1)]);
-                        allNodes.push_back(newHiddenNode);
-                    }
-                    last_layer++;
-                }
-
-                // Create output layer nodes
-                for (int n = 0; n < oNode_count; n++) {
-                    Node newOutputNode(last_layer, next_ID, _startingBiases[n+(hLayer_count*hNode_count)]);
-                    allNodes.push_back(newOutputNode);
-                }
-
-                // Create connections
-                int current_layer = 0;
-                while (current_layer < last_layer) {
-                    vector<Node*> start_nodes;
-                    vector<Node*> end_nodes;
-
-                    // Collect nodes in the current and next layer
-                    for (auto& node : allNodes) {
-                        if (node.layer == current_layer) {
-                            start_nodes.push_back(&node);
-                        } else if (node.layer == current_layer + 1) {
-                            end_nodes.push_back(&node);
-                        }
-                    }
-
-                    // Connect nodes between layers
-                    for (auto& start_node : start_nodes) {
-                        for (auto& end_node : end_nodes) {
-                            connection new_connection{};
-                            new_connection.ID = connection_ID;
-                            connection_ID++;
-                            new_connection.start_address = start_node;
-                            new_connection.end_address = end_node;
-                            new_connection.weight = _startingWeights[new_connection.ID];
-
-                            allConnections[new_connection.ID] = new_connection;
-                            start_node->forward_connections[start_node->forward_connections.size()] = &allConnections[new_connection.ID];
-                            end_node->backward_connections[end_node->backward_connections.size()] = &allConnections[new_connection.ID];
-                        }
-                    }
-                    current_layer++;
-                }
-            }
-
 
 NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count,
-    double _learning_rate,const string& FilePath)
-    :learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++)
+    double _learning_rate,const string& FilePath, int backprop_after)
+    :learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++),upper_backprop_count(backprop_after)
 {
 
     for (int n = 0; n < iNode_count; n++) {
@@ -635,7 +574,7 @@ ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
                              double upper_learning_rate, std::vector<double>& startingWeights,
                              std::vector<double>& startingBiases, int input_node_count,
                              int hidden_layer_count, int node_per_hidden_layer,
-                             int output_node_count)
+                             int output_node_count, int backprop_after)
     : threadPool(std::thread::hardware_concurrency() - 1),
       batchSize(calculateOptimalBatchSize(number_networks)) {
 
@@ -650,20 +589,16 @@ ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
         double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
         networks_.push_back(std::make_unique<NeuralNetwork>(
             input_node_count, hidden_layer_count, node_per_hidden_layer,
-            output_node_count, current_learning_rate, startingWeights, startingBiases));
+            output_node_count, current_learning_rate, startingWeights, startingBiases,backprop_after));
     }
 }
 
 ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
                              double upper_learning_rate, int input_node_count,
                              int hidden_layer_count_, int node_per_hidden_layer,
-                             int output_node_count, const std::string& WeightFilePath,
-                             const std::string& BaisFilePath)
+                             int output_node_count, const string& FilePath, int backprop_after)
     : threadPool(std::thread::hardware_concurrency() - 1),
       batchSize(calculateOptimalBatchSize(number_networks)) {
-
-    auto weights = loadData(WeightFilePath);
-    auto bias = loadData(BaisFilePath);
 
     networks_.reserve(number_networks);
     networkOutputs.resize(number_networks, 0.0);
@@ -674,9 +609,9 @@ ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
 
     for (int i = 0; i < number_networks; i++) {
         double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
-        networks_.push_back(std::make_unique<NeuralNetwork>(
+        networks_.push_back(make_unique<NeuralNetwork>(
             input_node_count, hidden_layer_count_, node_per_hidden_layer,
-            output_node_count, current_learning_rate, weights, bias));
+            output_node_count, current_learning_rate, FilePath, backprop_after));
     }
 }
 
