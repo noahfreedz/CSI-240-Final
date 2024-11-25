@@ -153,52 +153,43 @@ namespace Rebecca {
     };
 
     class GraphWindow {
-        public:
-            bool run_network = true;
+    public:
+        bool run_network = true;
 
-            GraphWindow(unsigned int width, unsigned int height, const string& title, ThreadNetworks* _allNetworks);
+        GraphWindow(unsigned int width, unsigned int height, const std::string& title, ThreadNetworks* _allNetworks);
+        ~GraphWindow();  // Added destructor
 
-            bool isOpen() const;
+        bool isOpen() const;
+        void handleEvents();
+        void addDataPoint(int lineID, double value);
+        void setLearningRate(int lineID, double learningRate);
+        void render();
 
-            void handleEvents();
+    private:
+        sf::RenderWindow window;
+        float window_width;
+        float window_height;
+        int perRunCount = 500;
+        sf::Font font;
+        ThreadNetworks* allNetworks;
+        int mouseX = -1;
+        std::map<int, std::vector<double>> dataSets;
+        std::map<int, double> learningRates;
+        std::map<int, sf::Color> colors;
+        std::mutex dataMutex;  // Added for thread safety
+        bool isInitialized = false;  // Added for initialization checking
 
-            void addDataPoint(int lineID, double value);
-
-            void setLearningRate(int lineID, double learningRate);
-
-            void render();
-
-        private:
-
-            sf::RenderWindow window;
-            float window_width;
-            float window_height;
-            int perRunCount = 500;
-            sf::Font font;
-            ThreadNetworks* allNetworks;
-            int mouseX = -1; // To track mouse X position
-            std::map<int, std::vector<double>> dataSets;
-            std::map<int, double> learningRates;
-            std::map<int, sf::Color> colors;
-
-            void drawGraph();
-
-            void drawCursorLineWithMarkers();
-
-            void drawAxesLabels();
-
-            void drawAxisTitles();
-
-            void drawKey();
-
-            sf::Color generateColor(int index);
-
-            void drawYAxisLabel(double value, float x, float y);
-
-            void drawXAxisLabel(int run, float x, float y);
-
-            std::string formatLabel(double value);
-        };
+        void drawGraph();
+        void drawCursorLineWithMarkers();
+        void drawAxesLabels();
+        void drawAxisTitles();
+        void drawKey();
+        sf::Color generateColor(int index);
+        void drawYAxisLabel(double value, float x, float y);
+        void drawXAxisLabel(int run, float x, float y);
+        std::string formatLabel(double value);
+        bool validateDataPoint(double value) const;
+    };
 
     class ThreadPool {
     public:
