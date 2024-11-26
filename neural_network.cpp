@@ -13,11 +13,17 @@ Node::Node(int node_layer, int& nextID, double _bais) : activation_value(0.0), l
             bias = _bais;
         }
 
-Node:: Node(int node_layer, int& nextID) : activation_value(0.0), layer(node_layer) {
+Node:: Node(int node_layer, int& nextID) : activation_value(0.0), layer(node_layer)
+{
             ID = nextID;
             nextID++;
-            bias = getRandom(-15, 15);
-        }
+            if(layer != 0) {
+                bias = getRandom(-15, 15);
+             }
+            else {
+                bias = 0;
+            }
+}
 
 void Node:: setActivationValue(double x) {
             if (layer != 0) {
@@ -224,7 +230,7 @@ NeuralNetwork::~NeuralNetwork()
     clearNodes();
 }
 
-double NeuralNetwork:: run_network(vector<double> inputs, vector<double> correct_outputs) {
+void NeuralNetwork:: run_network(vector<double> inputs, vector<double> correct_outputs) {
             int inputIndex = 0;
             for (auto& node : allNodes) {
                 if (node.layer == 0) {
@@ -298,10 +304,15 @@ double NeuralNetwork:: run_network(vector<double> inputs, vector<double> correct
             if(precise_network_correct) {
                 precise_correct_count++;
             }
-            total_outputs++;
             average_cost.emplace_back(cost);
-            return total_error;
         }
+
+void NeuralNetwork:: resetStatistics() {
+    std::lock_guard<std::mutex> lock(statsMutex);
+    average_cost.clear();
+    precise_correct_count = 0;
+    vauge_correct_count = 0;
+}
 
 void NeuralNetwork:: backpropigate_network()
                 {
@@ -375,17 +386,31 @@ pair< unordered_map<int, double>, unordered_map<int, double>>  NeuralNetwork:: g
             }
 
 double NeuralNetwork:: getCost() {
-                double total_cost = 0.0;
-                double endValue;
-                int count = 0;
-                for(auto cost: average_cost) {
-                    total_cost += cost;
-                    count++;
-                }
-                average_cost.clear();
-                endValue = total_cost/count;
-                return endValue;
-            }
+    std::lock_guard<std::mutex> lock(cost_mutex);
+    if (average_cost.empty()) {
+        return current_cost;
+    }
+
+    double total_cost = 0.0;
+    int count = 0;
+
+    for (double cost : average_cost) {
+        if (std::isfinite(cost)) {
+            total_cost += cost;
+            count++;
+        }
+    }
+
+    if (count == 0) {
+        return current_cost;
+    }
+
+    current_cost = total_cost / count;
+    cost_sample_count = count;
+
+    average_cost.clear();
+    return current_cost;
+}
 
 double NeuralNetwork:: getLearningRate() {
                 return learning_rate;
@@ -513,7 +538,7 @@ void NeuralNetwork::loadWeightsAndBiases(const string& filename) {
     std::cout << "Weights and biases loaded from " << filename << std::endl;
 }
 
-double NeuralNetwork:: LearingRateDeacy(double learning_rate) {
+double NeuralNetwork:: LearingRateDeacy(double learning_rate) const {
 
     if (totalRuns + runs <= 0) return learning_rate;
 
@@ -579,8 +604,6 @@ ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
       batchSize(calculateOptimalBatchSize(number_networks)) {
 
     networks_.reserve(number_networks);
-    networkOutputs.resize(number_networks, 0.0);
-    networkErrors.resize(number_networks, 0.0);
     processingComplete.resize(number_networks, false);
 
     double learning_rate_step = (upper_learning_rate - lower_learning_rate) / (number_networks - 1);
@@ -601,17 +624,14 @@ ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
       batchSize(calculateOptimalBatchSize(number_networks)) {
 
     networks_.reserve(number_networks);
-    networkOutputs.resize(number_networks, 0.0);
-    networkErrors.resize(number_networks, 0.0);
     processingComplete.resize(number_networks, false);
 
     double learning_rate_step = abs((upper_learning_rate - lower_learning_rate) / (number_networks - 1));
 
     for (int i = 0; i < number_networks; i++) {
         double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
-        networks_.push_back(make_unique<NeuralNetwork>(
-            input_node_count, hidden_layer_count_, node_per_hidden_layer,
-            output_node_count, current_learning_rate, FilePath, backprop_after));
+        networks_.push_back(make_unique<NeuralNetwork>(input_node_count, hidden_layer_count_,node_per_hidden_layer,
+                  output_node_count, current_learning_rate, FilePath, backprop_after));
     }
 }
 
@@ -619,32 +639,44 @@ void ThreadNetworks::runThreading(const std::vector<double>& image,
                                 const std::vector<double>& correct_label_output) {
     if (shouldStop || costUpdateInProgress) return;
 
-    std::fill(processingComplete.begin(), processingComplete.end(), false);
-    processedNetworks.store(0);
+    {
+        std::lock_guard<std::mutex> lock(resultsMutex);
+        std::fill(processingComplete.begin(), processingComplete.end(), false);
+        processedNetworks.store(0);
+    }
 
     size_t total = networks_.size();
     const auto timeout = std::chrono::seconds(5);
     const auto startTime = std::chrono::steady_clock::now();
 
-    // Process networks in batches
-    for (size_t i = 0; i < total && !shouldStop; i += batchSize) {
-        size_t batchEnd = std::min(i + batchSize, total);
-        std::vector<std::future<void>> batchFutures;
+    std::vector<std::future<void>> allFutures;
+    allFutures.reserve(total);
 
-        // Submit batch tasks
-        for (size_t j = i; j < batchEnd && !shouldStop; ++j) {
-            auto future = threadPool.enqueue([this, j, &image, &correct_label_output] {
+    // Submit all tasks at once with better error handling
+    for (size_t i = 0; i < total && !shouldStop; ++i) {
+        auto future = threadPool.enqueue([this, i, &image, &correct_label_output] {
+            try {
                 if (!shouldStop) {
-                    trainNetwork(j, image, correct_label_output);
-                    processedNetworks.fetch_add(1);
+                    if (i >= networks_.size()) {
+                        throw std::runtime_error("Network index out of bounds");
+                    }
+                    trainNetwork(i, image, correct_label_output);
+                    processedNetworks.fetch_add(1, std::memory_order_relaxed);
                 }
-            });
-            batchFutures.push_back(std::move(future));
-        }
+            } catch (const std::exception& e) {
+                std::lock_guard<std::mutex> lock(resultsMutex);
+                std::cerr << "Critical error in network " << i << ": " << e.what() << std::endl;
+                shouldStop = true;
+            }
+        });
+        allFutures.push_back(std::move(future));
+    }
 
-        // Wait for batch completion with timeout
-        for (auto& future : batchFutures) {
-            if (future.wait_for(std::chrono::milliseconds(100)) == std::future_status::timeout) {
+    // Wait for completion with timeout
+    for (auto& future : allFutures) {
+        if (future.valid()) {
+            auto status = future.wait_for(std::chrono::milliseconds(100));
+            if (status == std::future_status::timeout) {
                 if (std::chrono::steady_clock::now() - startTime > timeout) {
                     shouldStop = true;
                     break;
@@ -652,41 +684,24 @@ void ThreadNetworks::runThreading(const std::vector<double>& image,
             }
         }
     }
-
-    if (!shouldStop) {
-        synchronizeResults();
-    }
 }
 
 void ThreadNetworks::trainNetwork(size_t networkIndex, const std::vector<double>& input,
                                 const std::vector<double>& correct_output) {
-    try {
-        if (networkIndex >= networks_.size()) return;
-
-        auto& network = networks_[networkIndex];
-        double output = network->run_network(input, correct_output);
-
-        {
-            std::lock_guard<std::mutex> lock(resultsMutex);
-            networkOutputs[networkIndex] = output;
-            processingComplete[networkIndex] = true;
-        }
-
-        network->backpropigate_network();
-
-    } catch (const std::exception& e) {
-        std::cerr << "Error in network " << networkIndex << ": " << e.what() << std::endl;
-    }
-}
-
-void ThreadNetworks::synchronizeResults() {
     std::lock_guard<std::mutex> lock(resultsMutex);
 
-    for (size_t i = 0; i < networks_.size(); ++i) {
-        if (processingComplete[i]) {
-            networks_[i]->updateStatistics(networkOutputs[i], networkErrors[i]);
-        }
+    if (networkIndex >= networks_.size()) {
+        throw std::runtime_error("Invalid network index");
     }
+
+    auto& network = networks_[networkIndex];
+    if (!network) {
+        throw std::runtime_error("Null network pointer");
+    }
+
+    network->run_network(input, correct_output);
+    processingComplete[networkIndex] = true;
+    network->backpropigate_network();
 }
 
 void ThreadNetworks::PrintCost() {
@@ -711,10 +726,10 @@ void ThreadNetworks::PrintCost() {
 
                 std::cout << network->getLearningRate() << ": (VAGUE) "
                          << network->vauge_correct_count << "/100 (PRECISE) "
-                         << network->precise_correct_count << "/100" << std::endl;
+                         << network->precise_correct_count << "/100 "
+                        <<  "Cost : " << network->getCost() << std::endl;
 
-                network->vauge_correct_count = 0;
-                network->precise_correct_count = 0;
+                network->resetStatistics();
             }
         }
     } catch (const std::exception& e) {

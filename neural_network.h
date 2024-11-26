@@ -290,7 +290,6 @@ namespace Rebecca {
         static int nextID;
         int vauge_correct_count = 0;
         int precise_correct_count = 0;
-        int total_outputs = 0;
 
         //NeuralNetwork(){}
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate, int backprop_after);
@@ -299,11 +298,13 @@ namespace Rebecca {
             vector<double>_startingWeights, vector<double> _startingBiases, int backprop_after );
 
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count,
-    double _learning_rate,const string& FilePath, int backprop_after);
+        double _learning_rate,const string& FilePath, int backprop_after);
 
         ~NeuralNetwork();
-        double run_network(vector<double> inputs, vector<double> correct_outputs);
 
+        void run_network(vector<double> inputs, vector<double> correct_outputs);
+
+        void resetStatistics();
         void backpropigate_network();
 
         pair< unordered_map<int, double>, unordered_map<int, double>> getWeightsAndBiases();
@@ -314,17 +315,15 @@ namespace Rebecca {
 
         void saveWeightsAndBiases(const string& filename);
         void loadWeightsAndBiases(const string& filename);
-
-        void updateStatistics(double output, double error) {
-            std::lock_guard<std::mutex> lock(statsMutex);
-            // Update network statistics
-            average_cost.push_back(output);
-        }
     private:
+
+        mutable std::mutex cost_mutex;
+        std::vector<double> average_cost;
+        double current_cost = 0.0;
+        int cost_sample_count = 0;
 
         vector<Node> allNodes;
         unordered_map<int, connection> allConnections;
-        vector<double> average_cost;
         vector<unordered_map<int, double>> weights_;
         vector<unordered_map<int, double>> biases_;
             std::mutex statsMutex;
@@ -332,10 +331,10 @@ namespace Rebecca {
         int totalRuns = 100;
 
         friend class ThreadNetworks;
-
-        int runs = 0;
+  int runs = 0;
         int correct = 0;
         double learning_rate;
+
 
         int backprop_count = 0;
         int upper_backprop_count;
@@ -351,7 +350,7 @@ namespace Rebecca {
 
         void saveNetworkData();
 
-        double LearingRateDeacy(double learning_rate);
+        double LearingRateDeacy(double learning_rate) const;
 
         void clearConnections();
         void clearNodes();
@@ -379,23 +378,23 @@ namespace Rebecca {
 
     private:
         int NetworkID = 0;
+
         std::vector<std::unique_ptr<NeuralNetwork>> networks_;
         GraphWindow* window_{nullptr};
         ThreadPool threadPool;
+
         std::mutex resultsMutex;
         std::mutex costMutex;
         const size_t batchSize;
+
         std::atomic<bool> shouldStop{false};
         std::atomic<bool> costUpdateInProgress{false};
-
-        std::vector<double> networkOutputs;
-        std::vector<double> networkErrors;
         std::vector<bool> processingComplete;
         std::atomic<size_t> processedNetworks{0};
 
         void trainNetwork(size_t networkIndex, const std::vector<double>& input,
                          const std::vector<double>& correct_output);
-        void synchronizeResults();
+
         static size_t calculateOptimalBatchSize(size_t numNetworks);
     };
 

@@ -18,7 +18,7 @@ int main() {
      string labelFilePath = "set1-labels.idx1-ubyte";
 
     // Read images and labels
-    int numImages = 200000;
+    int numImages = 60000;
     int numRows = 28;
     int numCols = 28;
 
@@ -42,13 +42,16 @@ int main() {
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
     allNetworks.SetWindow(window_);
-    allNetworks.PrintCost();
-    while (window_.run_network) {
-        int i = getRandom(0, images.size());
+    int i = 0;
+    while (window_.run_network && i < 60000) {
+
         vector<double> correct_label_output(10, 0.0);
         correct_label_output[labels[i]] = 1.0;
         allNetworks.runThreading(images[i], correct_label_output);
+
         count++;
+        i++;
+
         if (count == runs_tell_backprop) {
             allNetworks.PrintCost();
             count = 0;

@@ -37,7 +37,7 @@ struct Point_System {
 ostream& operator<<(ostream& lhs, const Point_System& rhs){
     lhs << "Total Points: " << rhs._total_points
         << " Precise: " << rhs._precise_correct_count
-        << " Vague Points: " << rhs._vauge_correct_count
+        << " Vague: " << rhs._vauge_correct_count
         << " Cost: " << rhs._cost;
     return lhs;
 }
@@ -52,7 +52,7 @@ int main() {
     queue<string> filePaths;
 
     // Read images and labels
-    int numImages = 200000;
+    int numImages = 60000;
     int numRows = 28;
     int numCols = 28;
 
@@ -75,19 +75,28 @@ int main() {
     {
         string filePath = filePaths.front();
         filePaths.pop();
-        NeuralNetwork network(input_layer, number_hidden_layers,number_node_per_hidden,
-                  output_layer, 1.0, DIR + filePath +"/Network.bin", 100);
-        for(int i = 0; i < 100; i ++) {
+        NeuralNetwork network(input_layer, number_hidden_layers, number_node_per_hidden,
+                  output_layer, 1.0, DIR + filePath + "/Network.bin", 100);
+
+        // Reset network statistics before evaluation
+        network.resetStatistics();
+
+        // Run evaluation
+        for(int i = 0; i < 50; i++) {
             vector<double> correct_label_output(10, 0.0);
             correct_label_output[labels[i]] = 1.0;
             network.run_network(images[i], correct_label_output);
         }
-        Points.emplace(filePath, Point_System(network.precise_correct_count, network.vauge_correct_count, network.getCost()));
 
-    };
+        // Get final statistics after all runs
+        double final_cost = network.getCost();  // New method to get properly averaged cost
+        Points.emplace(filePath, Point_System(network.precise_correct_count,
+                                            network.vauge_correct_count,
+                                            final_cost));
+    }
 
     for(auto net : Points) {
-        if(net.second >= 3) {cout << "File Name :" << net.first << " Point Break Down :" << net.second << "\n";}
+        if(net.second >= 0) {cout << "File Name :" << net.first << " Point Break Down :" << net.second << "\n";}
         }
         return 0;
     }

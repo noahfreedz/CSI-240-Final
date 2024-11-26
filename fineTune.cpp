@@ -19,7 +19,7 @@ int main() {
      string labelFilePath = "set1-labels.idx1-ubyte";
 
     // Read images and labels
-    int numImages = 200000;
+    int numImages = 60000;
     int numRows = 28;
     int numCols = 28;
 
@@ -33,30 +33,32 @@ int main() {
     int number_node_per_hidden = 128;
     int runs_tell_backprop = 100;
 
-    vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
-    vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
+    // vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
+    // vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     int count = 0;
     ThreadNetworks allNetworks(5, .01, .1,  input_layer,
               number_hidden_layers,number_node_per_hidden,
-              output_layer, DIR+"0.260907/Network.bin", runs_tell_backprop);
+              output_layer, DIR+"1.968492/Network.bin", runs_tell_backprop);
 
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
     allNetworks.SetWindow(window_);
-    allNetworks.PrintCost();
-    while (window_.run_network) {
-        int i = getRandom(0, images.size());
+    int i = 0;
+    while (window_.run_network && i < 60000) {
+
         vector<double> correct_label_output(10, 0.0);
         correct_label_output[labels[i]] = 1.0;
         allNetworks.runThreading(images[i], correct_label_output);
+
         count++;
+        i++;
+
         if (count == runs_tell_backprop) {
             allNetworks.PrintCost();
             count = 0;
         }
 
-        // Render
         window_.render();
         window_.handleEvents();
     }
