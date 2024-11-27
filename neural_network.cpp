@@ -395,47 +395,102 @@ void NeuralNetwork:: resetStatistics() {
 
 void NeuralNetwork::backpropigate_network()
 {
-    // Maps to store new weights and biases
+    // If this is first run, initialize momentum maps
+    if (weight_momentum.empty()) {
+        for (auto& connection : allConnections) {
+            weight_momentum[connection.second.ID] = 0.0;
+        }
+        for (auto& node : allNodes) {
+            if (node.layer != 0) {
+                bias_momentum[node.ID] = 0.0;
+            }
+        }
+    }
+
+    // New weights and biases to implement
     unordered_map<int, double> newWeights;
     unordered_map<int, double> newBiases;
 
-    // Calculate new weights
+    // Store raw changes for batch averaging
+    unordered_map<int, double> rawWeightChanges;
+    unordered_map<int, double> rawBiasChanges;
+
+    // Calculate weight changes
     for (auto& connection : allConnections) {
-        // Get error from end node (already calculated in run_network)
         double nodeError = connection.second.end_address->error_value;
+        // Calculate raw weight change
+        double rawChange = learning_rate * nodeError * connection.second.start_address->activation_value;
 
-        // Calculate weight change using:
-        // learning_rate * error * activation_value_of_start_node
-        double weightChange = learning_rate * nodeError * connection.second.start_address->activation_value;
+        // Store raw change for batch averaging
+        rawWeightChanges[connection.second.ID] = rawChange;
 
-        // Update weight by adding the change
-        double weightValue = connection.second.weight + weightChange;
-        newWeights[connection.second.ID] = weightValue;
+        // Apply momentum to actual weight update
+        double weightChange = momentum_factor * weight_momentum[connection.second.ID] + rawChange;
+        weight_momentum[connection.second.ID] = weightChange;
+
+        // Store the complete new weight
+        newWeights[connection.second.ID] = connection.second.weight + weightChange;
     }
 
-    // Calculate new biases
+    // Calculate bias changes
     for (auto& node : allNodes) {
-        if (node.layer != 0) {  // Skip input layer as it has no bias
-            // Use error value already calculated in run_network
-            double biasChange = learning_rate * node.error_value;
-            // Update bias by adding the change
+        if (node.layer != 0) {
+            // Calculate raw bias change
+            double rawChange = learning_rate * node.error_value;
+
+            // Store raw change for batch averaging
+            rawBiasChanges[node.ID] = rawChange;
+
+            // Apply momentum to actual bias update
+            double biasChange = momentum_factor * bias_momentum[node.ID] + rawChange;
+            bias_momentum[node.ID] = biasChange;
+
+            // Store the complete new bias
             newBiases[node.ID] = node.bias + biasChange;
         }
     }
 
-    // Apply new weights and biases
-    edit_weights(newWeights);
-    edit_biases(newBiases);
+    // Store the raw changes for batch averaging
+    weights_.push_back(rawWeightChanges);
+    biases_.push_back(rawBiasChanges);
 
-    // Update backprop count and handle learning rate decay
     backprop_count++;
+
     if(backprop_count == upper_backprop_count) {
+        // Average the raw changes
+        unordered_map<int, double> avgWeightChanges = average(weights_);
+        unordered_map<int, double> avgBiasChanges = average(biases_);
+
+        // Apply averaged changes with momentum
+        for (auto& pair : avgWeightChanges) {
+            int id = pair.first;
+            double avgChange = pair.second;
+            double finalChange = momentum_factor * weight_momentum[id] + avgChange;
+            weight_momentum[id] = finalChange;
+            newWeights[id] = allConnections[id].weight + finalChange;
+        }
+
+        for (auto& pair : avgBiasChanges) {
+            int id = pair.first;
+            double avgChange = pair.second;
+            double finalChange = momentum_factor * bias_momentum[id] + avgChange;
+            bias_momentum[id] = finalChange;
+            newBiases[id] = find_node_by_id(id)->bias + finalChange;
+        }
+
+        // Apply final weights and biases
+        edit_weights(newWeights);
+        edit_biases(newBiases);
+
+        // Clear the vectors for next batch
+        weights_.clear();
+        biases_.clear();
+
+        // Reduce momentum factor gradually
+        momentum_factor = max(0.5, momentum_factor * 0.999);
+
         runs++;
-
-        // Apply learning rate decay
         learning_rate -= LearingRateDeacy(learning_rate);
-
-        // Ensure learning rate doesn't go too low
         learning_rate = std::max(learning_rate, 0.00001);
 
         backprop_count = 0;

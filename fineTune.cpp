@@ -39,7 +39,7 @@ int main() {
     int count = 0;
     ThreadNetworks allNetworks(5, .01, .1,  input_layer,
               number_hidden_layers,number_node_per_hidden,
-              output_layer, DIR+"0.894786/Network.bin", runs_tell_backprop);
+              output_layer, DIR+"1.820964/Network.bin", runs_tell_backprop);
 
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 

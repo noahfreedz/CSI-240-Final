@@ -75,13 +75,13 @@ int main() {
         string filePath = filePaths.front();
         filePaths.pop();
         NeuralNetwork network(input_layer, number_hidden_layers, number_node_per_hidden,
-                  output_layer, 1.0, DIR + filePath + "/Network.bin", 100, true);
+                  output_layer, 1.0, DIR + filePath + "/Network.bin", 105, true);
 
         // Reset network statistics before evaluation
         network.resetStatistics();
 
         // Run evaluation
-        for(int i = 0; i < 50; i++) {
+        for(int i = 0; i < 100; i++) {
             vector<double> correct_label_output(10, 0.0);
             correct_label_output[labels[i]] = 1.0;
             network.run_network(images[i], correct_label_output);

@@ -329,17 +329,22 @@ namespace Rebecca {
         vector<Node> allNodes;
         bool fileSorting = false;
         unordered_map<int, connection> allConnections;
+
         vector<unordered_map<int, double>> weights_;
         vector<unordered_map<int, double>> biases_;
-            std::mutex statsMutex;
+
+        unordered_map<int, double> weight_momentum;
+        unordered_map<int, double> bias_momentum;
+        double momentum_factor = 0.9;
+
+        std::mutex statsMutex;
 
         int totalRuns = 100;
 
         friend class ThreadNetworks;
-  int runs = 0;
+        int runs = 0;
         int correct = 0;
         double learning_rate;
-
 
         int backprop_count = 0;
         int upper_backprop_count;
@@ -359,6 +364,13 @@ namespace Rebecca {
 
         void clearConnections();
         void clearNodes();
+
+        Node* find_node_by_id(int id) {
+            for (auto& node : allNodes) {
+                if (node.ID == id) return &node;
+            }
+            return nullptr;
+        }
     };
 
     class ThreadNetworks {
