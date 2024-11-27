@@ -18,7 +18,7 @@ Node:: Node(int node_layer, int& nextID) : activation_value(0.0), layer(node_lay
             ID = nextID;
             nextID++;
             if(layer != 0) {
-                bias = getRandom(-15, 15);
+                bias = getRandom(-1.0,1.0);
              }
             else {
                 bias = 0;
@@ -92,7 +92,7 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
                             connection_ID++;
                             new_connection.start_address = start_node;
                             new_connection.end_address = end_node;
-                            new_connection.weight = getRandom(-1.0, 1.0);
+                            new_connection.weight = getRandom(-2, 2);
 
                             allConnections[new_connection.ID] = new_connection;
                             start_node->forward_connections[start_node->forward_connections.size()] = &allConnections[new_connection.ID];
@@ -223,89 +223,168 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
     loadWeightsAndBiases(FilePath);
 }
 
+NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count,
+        double _learning_rate,const string& FilePath, int backprop_after, bool fileSorting)
+    :learning_rate(_learning_rate), next_ID(0), connection_ID(0), last_layer(0), ID(nextID++),upper_backprop_count(backprop_after),
+    fileSorting(fileSorting)
+{
+
+    for (int n = 0; n < iNode_count; n++) {
+        Node newInputNode(0, next_ID);
+        allNodes.push_back(newInputNode);
+    }
+    last_layer++;
+
+    // Create hidden layers
+    for (int l = 0; l < hLayer_count; l++) {
+        for (int n = 0; n < hNode_count; n++) {
+            Node newHiddenNode(l+1, next_ID, 0);
+            allNodes.push_back(newHiddenNode);
+        }
+        last_layer++;
+    }
+
+    // Create output layer nodes
+    for (int n = 0; n < oNode_count; n++) {
+        Node newOutputNode(last_layer, next_ID, 0);
+        allNodes.push_back(newOutputNode);
+    }
+    // Connections
+    int current_layer = 0;
+    while (current_layer < last_layer) {
+        vector<Node*> start_nodes;
+        vector<Node*> end_nodes;
+
+        // Collect nodes in the current and next layers
+        for (auto& node : allNodes) {
+            if (node.layer == current_layer) {
+                start_nodes.push_back(&node);
+            } else if (node.layer == current_layer + 1) {
+                end_nodes.push_back(&node);
+            }
+        }
+
+        // Connect nodes between layers
+        for (auto& start_node : start_nodes) {
+            for (auto& end_node : end_nodes) {
+                connection new_connection{};
+                new_connection.ID = connection_ID++;
+                new_connection.start_address = start_node;
+                new_connection.end_address = end_node;
+                new_connection.weight = 0; // Assign weight dynamically
+
+                allConnections[new_connection.ID] = new_connection;
+                start_node->forward_connections[start_node->forward_connections.size()] = &allConnections[new_connection.ID];
+                end_node->backward_connections[end_node->backward_connections.size()] = &allConnections[new_connection.ID];
+            }
+        }
+        current_layer++;
+    }
+
+    loadWeightsAndBiases(FilePath);
+}
+
 NeuralNetwork::~NeuralNetwork()
 {
-    saveNetworkData();
+    if(!fileSorting) {
+        saveNetworkData();
+    }
     clearConnections();
     clearNodes();
 }
 
-void NeuralNetwork:: run_network(vector<double> inputs, vector<double> correct_outputs) {
-            int inputIndex = 0;
-            for (auto& node : allNodes) {
-                if (node.layer == 0) {
-                    node.setActivationValue(inputs[inputIndex]);
-                    inputIndex++;
-                }
-            }
-
-            // Starting with 2nd Layer, Calculate Activations
-            int current_layer = 1;
-            while (current_layer <= last_layer) {
-                for (auto &node: allNodes) {
-                    int layer = node.layer;
-                    if (layer == current_layer) {
-                        node.calculate_node();
-                    }
-                }
-                current_layer++;
-            }
-
-            // Calculate Error for all Output Nodes
-            int output_count = 0;
-            double total_error = 0.0;
-            double cost = 0.0;
-            bool vauge_network_correct = true;
-            bool precise_network_correct = true;
-            for(auto &node : allNodes) {
-                if(node.layer == last_layer) {
-                    if(vauge_network_correct) {
-                        if(correct_outputs[output_count] == 1.0) {
-                            if(node.activation_value <= 0.9) {
-                                vauge_network_correct = false;
-                            }
-                        } else if (correct_outputs[output_count] == 0.0) {
-                            if(node.activation_value > 0.3) {
-                                vauge_network_correct = false;
-                            }
-                        }
-                    }
-
-                    // Calculate Correct
-                    if(precise_network_correct) {
-                        if(correct_outputs[output_count] == 1.0) {
-                            if(node.activation_value < 0.9) {
-                                precise_network_correct = false;
-                            }
-                        }
-                        else if (correct_outputs[output_count] == 0.0) {
-                            if(node.activation_value > 0.1) {
-                                precise_network_correct = false;
-                            }
-                        }
-                        else {
-                            cout << "OUTPUT NOT RECOGNIZED: " << correct_outputs[output_count] << endl;
-                        }
-                    }
-
-                    // Calculate Target Value
-                    double target_val = correct_outputs[output_count] - node.activation_value;
-
-                    // Calculate Node Error Value
-                    node.error_value = node.activation_value * (1 - node.activation_value) * (target_val);
-                    total_error += abs(node.error_value);
-                    output_count++;
-                    cost += pow(target_val, 2);
-                }
-            }
-            if(vauge_network_correct) {
-                vauge_correct_count++;
-            }
-            if(precise_network_correct) {
-                precise_correct_count++;
-            }
-            average_cost.emplace_back(cost);
+void NeuralNetwork::run_network(vector<double> inputs, vector<double> correct_outputs) {
+    // Set input values
+    int inputIndex = 0;
+    for (auto& node : allNodes) {
+        if (node.layer == 0) {
+            node.setActivationValue(inputs[inputIndex]);
+            inputIndex++;
         }
+    }
+
+    // Forward propagation through layers
+    int current_layer = 1;
+    while (current_layer <= last_layer) {
+        for (auto& node : allNodes) {
+            if (node.layer == current_layer) {
+                node.calculate_node();
+            }
+        }
+        current_layer++;
+    }
+
+    // Calculate network outputs, cost, and errors for backpropagation
+    int output_count = 0;
+    double total_cost = 0.0;
+    bool vauge_network_correct = true;
+    bool precise_network_correct = true;
+
+    // First calculate error for output layer
+    for(auto& node : allNodes) {
+        if(node.layer == last_layer) {
+
+            // Get target and actual values
+            double target = correct_outputs[output_count];
+            double actual = node.activation_value;
+
+            // Calculate pure cost (MSE component)
+            double error = target - actual;
+            total_cost += pow(error, 2);
+            // Calculate error value for output layer
+            node.error_value = actual * (1 - actual) * error;
+
+            // Accuracy metrics (separate from cost calculation)
+            if(target == 1.0) {
+                if(actual <= 0.9) {
+                    vauge_network_correct = false;
+                }
+                if(actual < 0.9) {
+                    precise_network_correct = false;
+                }
+            }
+            else if(target == 0.0) {
+                if(actual > 0.3) {
+                    vauge_network_correct = false;
+                }
+                if(actual > 0.1) {
+                    precise_network_correct = false;
+                }
+            }
+
+            output_count++;
+        }
+    }
+
+    // Calculate error for hidden layers, moving backward
+    for(int i = last_layer - 1; i > 0; i--) {
+        for(auto& node : allNodes) {
+            if(node.layer == i) {
+                // Sum error values from next layer through connections
+                double error_sum = 0.0;
+                for(auto& connection : node.forward_connections) {
+                    error_sum += connection.second->weight * connection.second->end_address->error_value;
+                }
+
+                // Calculate error value for this hidden node
+                node.error_value = node.activation_value * (1 - node.activation_value) * error_sum;
+            }
+        }
+    }
+    // Update accuracy counters
+    if(vauge_network_correct) {
+        vauge_correct_count++;
+    }
+    if(precise_network_correct) {
+        precise_correct_count++;
+    }
+
+    // Store the cost for monitoring (thread-safe)
+    {
+        std::lock_guard<std::mutex> lock(cost_mutex);
+        average_cost.push_back(total_cost);
+    }
+}
 
 void NeuralNetwork:: resetStatistics() {
     std::lock_guard<std::mutex> lock(statsMutex);
@@ -314,62 +393,54 @@ void NeuralNetwork:: resetStatistics() {
     vauge_correct_count = 0;
 }
 
-void NeuralNetwork:: backpropigate_network()
-                {
-                    // New Weights To Implement
-                    unordered_map<int, double> newWeights;
-                    unordered_map<int, double> newBaises;
-                    // Learning Rate 1 for default
-                    double learningRate = 0.05;
+void NeuralNetwork::backpropigate_network()
+{
+    // Maps to store new weights and biases
+    unordered_map<int, double> newWeights;
+    unordered_map<int, double> newBiases;
 
-                    // Increment Networks Run Count
+    // Calculate new weights
+    for (auto& connection : allConnections) {
+        // Get error from end node (already calculated in run_network)
+        double nodeError = connection.second.end_address->error_value;
 
-                    // Loop Through Layers Starting with Second To Last Going Backward
-                    for(int i =last_layer - 1; 0 < i ; i--)
-                    {
-                        for(auto& node: allNodes) {
-                            if (node.layer == i && node.layer != last_layer){
-                                // Sum Error Values of Previous Layer to Get Error From Current Node
-                                double error_sum = 0;
-                                for(auto _connection : node.forward_connections) {
-                                    error_sum += _connection.second->weight * _connection.second->end_address->error_value;
-                                }
-                                // Set Error Value
-                                node.error_value = node.activation_value*(1-node.activation_value)*(error_sum);
-                            }
-                        }
-                    }
+        // Calculate weight change using:
+        // learning_rate * error * activation_value_of_start_node
+        double weightChange = learning_rate * nodeError * connection.second.start_address->activation_value;
 
-                    // Determine New Weights for All Connections and Biases for each node
-                    for (auto connection : allConnections) {
-                        // Calculate weight change
-                        double nodeError = connection.second.end_address->error_value;
-                        double weightChange =  this->learning_rate * nodeError * connection.second.start_address->activation_value;
-                        double weightValue = connection.second.weight + weightChange;
-                        newWeights[connection.second.ID] = weightValue;
-                    }
+        // Update weight by adding the change
+        double weightValue = connection.second.weight + weightChange;
+        newWeights[connection.second.ID] = weightValue;
+    }
 
-                    for (auto& node : allNodes) {
-                        if (node.layer != 0) {
-                            // Update bias using the node's own error value
-                            double biasValue = node.bias - this->learning_rate * node.error_value;
-                            newBaises[node.ID] = biasValue;
-                        }
-                    }
+    // Calculate new biases
+    for (auto& node : allNodes) {
+        if (node.layer != 0) {  // Skip input layer as it has no bias
+            // Use error value already calculated in run_network
+            double biasChange = learning_rate * node.error_value;
+            // Update bias by adding the change
+            newBiases[node.ID] = node.bias + biasChange;
+        }
+    }
 
-                    weights_.push_back(newWeights);
-                    biases_.push_back(newBaises);
+    // Apply new weights and biases
+    edit_weights(newWeights);
+    edit_biases(newBiases);
 
-                    backprop_count++;
+    // Update backprop count and handle learning rate decay
+    backprop_count++;
+    if(backprop_count == upper_backprop_count) {
+        runs++;
 
-                    if(backprop_count == upper_backprop_count) {
-                        edit_weights(average(weights_));
-                        edit_biases(average(biases_));
-                        runs++;
-                        backprop_count = 0;
-                        learning_rate -= LearingRateDeacy(learning_rate);
-                    }
-                }
+        // Apply learning rate decay
+        learning_rate -= LearingRateDeacy(learning_rate);
+
+        // Ensure learning rate doesn't go too low
+        learning_rate = std::max(learning_rate, 0.00001);
+
+        backprop_count = 0;
+    }
+}
 
 pair< unordered_map<int, double>, unordered_map<int, double>>  NeuralNetwork:: getWeightsAndBiases() {
                 unordered_map<int, double> newWeights;
@@ -538,17 +609,18 @@ void NeuralNetwork::loadWeightsAndBiases(const string& filename) {
     std::cout << "Weights and biases loaded from " << filename << std::endl;
 }
 
-double NeuralNetwork:: LearingRateDeacy(double learning_rate) const {
-
-    if (totalRuns + runs <= 0) return learning_rate;
+double NeuralNetwork::LearingRateDeacy(double current_learning_rate) const {
+    if (totalRuns + runs <= 0) return 0;
 
     const double min_learning_rate = 1e-6;
     double ratio = static_cast<double>(runs) / static_cast<double>(totalRuns + runs);
     ratio = std::max(0.0, std::min(1.0, ratio));  // Clamp between 0 and 1
-    double decay_factor = ratio * ratio;
 
-    double decayed_learning_rate = learning_rate * decay_factor;
-    return max(min_learning_rate, decayed_learning_rate);
+    // Exponential decay
+    double decay_factor = ratio * ratio;
+    double decay_amount = current_learning_rate * decay_factor;
+
+    return std::min(decay_amount, current_learning_rate - min_learning_rate);
 }
 
 void NeuralNetwork::clearConnections() {
@@ -633,6 +705,47 @@ ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
         networks_.push_back(make_unique<NeuralNetwork>(input_node_count, hidden_layer_count_,node_per_hidden_layer,
                   output_node_count, current_learning_rate, FilePath, backprop_after));
     }
+}
+
+ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
+                             double upper_learning_rate, int input_node_count,
+                             int hidden_layer_count_, int node_per_hidden_layer,
+                             int output_node_count, const string& FilePath, int backprop_after, bool fileSorting)
+    : threadPool(std::thread::hardware_concurrency() - 1),
+      batchSize(calculateOptimalBatchSize(number_networks)) {
+
+    networks_.reserve(number_networks);
+    processingComplete.resize(number_networks, false);
+
+    double learning_rate_step = abs((upper_learning_rate - lower_learning_rate) / (number_networks - 1));
+
+    for (int i = 0; i < number_networks; i++) {
+        double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
+        networks_.push_back(make_unique<NeuralNetwork>(input_node_count, hidden_layer_count_,node_per_hidden_layer,
+                  output_node_count, current_learning_rate, FilePath, backprop_after, fileSorting));
+    }
+}
+
+ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
+                             double upper_learning_rate, int input_node_count,
+                             int hidden_layer_count_, int node_per_hidden_layer,
+                             int output_node_count, queue<string>& FilePaths, bool fileSorting)
+: threadPool(std::thread::hardware_concurrency() - 1),
+      batchSize(calculateOptimalBatchSize(number_networks))  {
+    networks_.reserve(number_networks);
+    processingComplete.resize(number_networks, false);
+
+    double learning_rate_step = abs((upper_learning_rate - lower_learning_rate) / (number_networks - 1));
+
+    for (int i = 0; i < number_networks; i++) {
+        double current_learning_rate = lower_learning_rate + (i * learning_rate_step);
+        string file = FilePaths.front();
+        FilePaths.pop();
+        networks_.push_back(make_unique<NeuralNetwork>(input_node_count,
+                  hidden_layer_count_,node_per_hidden_layer,
+                  output_node_count, current_learning_rate, file, fileSorting));
+    }
+
 }
 
 void ThreadNetworks::runThreading(const std::vector<double>& image,

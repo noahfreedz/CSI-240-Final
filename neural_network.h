@@ -10,6 +10,7 @@
 #include <fstream>
 #include <random>
 #include <unordered_map>
+#include <queue>
 #include <vector>
 #include <map>
 #include <cmath>
@@ -153,17 +154,17 @@ namespace Rebecca {
 
         // Weights for connections from input layer to first hidden layer
         for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
-            startingWeights.push_back(getRandom(-1, 1));
+            startingWeights.push_back(getRandom(-2, 2));
         }
 
         // Weights for connections between hidden layers
         for (int i = 0; i < (number_hidden_layers - 1) * number_node_per_hidden * number_node_per_hidden; i++) {
-            startingWeights.push_back(getRandom(-1, 1));
+            startingWeights.push_back(getRandom(-2, 2));
         }
 
         // Weights for connections from last hidden layer to output layer
         for (int i = 0; i < number_node_per_hidden * output_layer; i++) {
-            startingWeights.push_back(getRandom(-1, 1));
+            startingWeights.push_back(getRandom(-2, 2));
         }
 
         return startingWeights;
@@ -174,12 +175,12 @@ namespace Rebecca {
 
         // Biases for hidden layers
         for (int i = 0; i < number_hidden_layers * number_node_per_hidden; i++) {
-            startingBiases.push_back(getRandom(-15.0,15.0));
+            startingBiases.push_back(getRandom(-0.5, 0.5));
         }
 
         // Biases for output layer
         for (int i = 0; i < output_layer; i++) {
-            startingBiases.push_back(getRandom(-15.0,15.0));
+            startingBiases.push_back(getRandom(-0.5, 0.5));
         }
 
         return startingBiases;
@@ -300,6 +301,9 @@ namespace Rebecca {
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count,
         double _learning_rate,const string& FilePath, int backprop_after);
 
+        NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count,
+        double _learning_rate,const string& FilePath, int backprop_after, bool fileSorting);
+
         ~NeuralNetwork();
 
         void run_network(vector<double> inputs, vector<double> correct_outputs);
@@ -323,6 +327,7 @@ namespace Rebecca {
         int cost_sample_count = 0;
 
         vector<Node> allNodes;
+        bool fileSorting = false;
         unordered_map<int, connection> allConnections;
         vector<unordered_map<int, double>> weights_;
         vector<unordered_map<int, double>> biases_;
@@ -368,6 +373,16 @@ namespace Rebecca {
                              double upper_learning_rate, int input_node_count,
                              int hidden_layer_count_, int node_per_hidden_layer,
                              int output_node_count, const string& FilePath, int backprop_after);
+
+        ThreadNetworks(int number_networks, double lower_learning_rate,
+                             double upper_learning_rate, int input_node_count,
+                             int hidden_layer_count_, int node_per_hidden_layer,
+                             int output_node_count, const string& FilePath, int backprop_after, bool fliesorting);
+
+        ThreadNetworks(int number_networks, double lower_learning_rate,
+                             double upper_learning_rate, int input_node_count,
+                             int hidden_layer_count_, int node_per_hidden_layer,
+                             int output_node_count, queue<string>& FilePaths, bool fileSorting);
 
         void SetWindow(GraphWindow& window) { window_ = &window; }
         void runThreading(const std::vector<double>& image, const std::vector<double>& correct_label_output);

@@ -5,7 +5,6 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
-#include <queue>
 
 #include "neural_network.h"
 
@@ -76,7 +75,7 @@ int main() {
         string filePath = filePaths.front();
         filePaths.pop();
         NeuralNetwork network(input_layer, number_hidden_layers, number_node_per_hidden,
-                  output_layer, 1.0, DIR + filePath + "/Network.bin", 100);
+                  output_layer, 1.0, DIR + filePath + "/Network.bin", 100, true);
 
         // Reset network statistics before evaluation
         network.resetStatistics();
