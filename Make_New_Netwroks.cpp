@@ -28,34 +28,28 @@ int main() {
 
     int input_layer = 784;
     int output_layer = 10;
-    int number_hidden_layers = 2;
-    int number_node_per_hidden = 128;
-    int runs_tell_backprop = 100;
+    int number_hidden_layers = 3;
+    int number_node_per_hidden = 512;
+    int runs_tell_backprop = 10;
 
     vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
 
     int count = 0;
-    ThreadNetworks allNetworks(10, .01, .1, startingWeights, startingBiases, input_layer,
+    ThreadNetworks allNetworks(2, .06, .1, startingWeights, startingBiases, input_layer,
               number_hidden_layers,number_node_per_hidden,
               output_layer, runs_tell_backprop);
 
     GraphWindow window_(1000, 600, "REBECCA", &allNetworks);
 
     allNetworks.SetWindow(window_);
-    int i = 0;
+
     while (window_.run_network) {
 
+        int i = getRandom(0, numImages);
         vector<double> correct_label_output(10, 0.0);
         correct_label_output[labels[i]] = 1.0;
         allNetworks.runThreading(images[i], correct_label_output);
-        i = getRandom(0, numImages);
-        count++;
-
-        if (count == runs_tell_backprop) {
-            allNetworks.PrintCost();
-            count = 0;
-        }
 
         // Render
         window_.render();

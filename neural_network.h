@@ -62,6 +62,48 @@ namespace Rebecca {
         return result;
     }
 
+
+    inline void monitorNetworkSetup(const vector<double>& weights, const vector<double>& biases, int input_nodes, int hidden_layers, int nodes_per_hidden, int output_nodes) {
+        cout << "\n=== Network Configuration ===" << endl;
+        cout << "Input nodes: " << input_nodes << endl;
+        cout << "Hidden layers: " << hidden_layers << endl;
+        cout << "Initial nodes per hidden layer: " << nodes_per_hidden << endl;
+        cout << "Output nodes: " << output_nodes << endl;
+
+        cout << "\nWeight Statistics:" << endl;
+        double weight_sum = 0;
+        double weight_min = weights[0];
+        double weight_max = weights[0];
+        for(const auto& w : weights) {
+            weight_sum += w;
+            weight_min = min(weight_min, w);
+            weight_max = max(weight_max, w);
+        }
+        cout << "Weight range: [" << weight_min << ", " << weight_max << "]" << endl;
+        cout << "Weight average: " << weight_sum / weights.size() << endl;
+
+        cout << "\nBias Statistics:" << endl;
+        double bias_sum = 0;
+        double bias_min = biases[0];
+        double bias_max = biases[0];
+        for(const auto& b : biases) {
+            bias_sum += b;
+            bias_min = min(bias_min, b);
+            bias_max = max(bias_max, b);
+        }
+        cout << "Bias range: [" << bias_min << ", " << bias_max << "]" << endl;
+        cout << "Bias average: " << bias_sum / biases.size() << endl;
+    }
+
+    inline double relu(double x) {
+        return std::max(0.0, x);
+    }
+
+    // And its derivative for backpropagation
+    inline double relu_derivative(double x) {
+        return x > 0 ? 1.0 : 0.0;
+    }
+
     inline unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
     {
         unordered_map<int, double> averagedWeights;
@@ -150,39 +192,115 @@ namespace Rebecca {
     }
 
     inline vector<double> generateStartingWeights(int input_layer, int number_hidden_layers, int number_node_per_hidden, int output_layer) {
-         vector<double> startingWeights;
+    vector<double> startingWeights;
+    int total_weights = 0;
 
-        // Weights for connections from input layer to first hidden layer
-        for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
-            startingWeights.push_back(getRandom(-2, 2));
-        }
+    // Calculate total weights needed
+    // Input to first hidden layer
+    int input_weights = input_layer * number_node_per_hidden;
+    cout << "Input to first hidden weights: " << input_weights << endl;
+    total_weights += input_weights;
 
-        // Weights for connections between hidden layers
-        for (int i = 0; i < (number_hidden_layers - 1) * number_node_per_hidden * number_node_per_hidden; i++) {
-            startingWeights.push_back(getRandom(-2, 2));
-        }
-
-        // Weights for connections from last hidden layer to output layer
-        for (int i = 0; i < number_node_per_hidden * output_layer; i++) {
-            startingWeights.push_back(getRandom(-2, 2));
-        }
-
-        return startingWeights;
+    // Weights between hidden layers
+    int current_layer_size = number_node_per_hidden;
+    for (int i = 0; i < number_hidden_layers - 1; i++) {
+        int next_layer_size = max(64, current_layer_size / 2);
+        int layer_weights = current_layer_size * next_layer_size;
+        cout << "Hidden layer " << i << " to " << (i+1) << " weights: " << layer_weights << endl;
+        total_weights += layer_weights;
+        current_layer_size = next_layer_size;
     }
 
-    inline vector<double> generateStartingBiases(int number_hidden_layers, int number_node_per_hidden, int output_layer) {
-         vector<double> startingBiases;
+    // Last hidden to output layer
+    int output_weights = current_layer_size * output_layer;
+    cout << "Last hidden to output weights: " << output_weights << endl;
+    total_weights += output_weights;
 
-        // Biases for hidden layers
-        for (int i = 0; i < number_hidden_layers * number_node_per_hidden; i++) {
-            startingBiases.push_back(getRandom(-0.5, 0.5));
+    cout << "Total weights to generate: " << total_weights << endl;
+
+    // Reserve space for efficiency
+    startingWeights.reserve(total_weights);
+
+    // Generate properly scaled weights
+    // Input to first hidden layer
+    double input_scale = sqrt(2.0 / input_layer);
+    for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
+        startingWeights.push_back(getRandom(-2, 2) * input_scale);
+    }
+
+    // Between hidden layers
+    current_layer_size = number_node_per_hidden;
+    for (int layer = 0; layer < number_hidden_layers - 1; layer++) {
+        int next_layer_size = max(64, current_layer_size / 2);
+        double scale = sqrt(2.0 / current_layer_size);
+
+        for (int i = 0; i < current_layer_size * next_layer_size; i++) {
+            startingWeights.push_back(getRandom(-2, 2) * scale);
         }
 
-        // Biases for output layer
+        current_layer_size = next_layer_size;
+    }
+
+    // Last hidden to output layer
+    double output_scale = sqrt(2.0 / current_layer_size);
+    for (int i = 0; i < current_layer_size * output_layer; i++) {
+        startingWeights.push_back(getRandom(-2, 2) * output_scale);
+    }
+
+    cout << "Generated " << startingWeights.size() << " weights" << endl;
+
+    // Calculate and print weight statistics
+    double min_weight = startingWeights[0];
+    double max_weight = startingWeights[0];
+    double sum_weight = 0;
+
+    for (const double& w : startingWeights) {
+        min_weight = min(min_weight, w);
+        max_weight = max(max_weight, w);
+        sum_weight += w;
+    }
+
+    cout << "Weight statistics:" << endl;
+    cout << "  Range: [" << min_weight << ", " << max_weight << "]" << endl;
+    cout << "  Average: " << sum_weight / startingWeights.size() << endl;
+
+    return startingWeights;
+}
+
+    inline vector<double> generateStartingBiases(int number_hidden_layers, int number_node_per_hidden, int output_layer) {
+        vector<double> startingBiases;
+        int total_biases = 0;
+
+        // Calculate total biases needed
+        int current_layer_size = number_node_per_hidden;
+        for (int i = 0; i < number_hidden_layers; i++) {
+            cout << "Hidden layer " << i << " biases: " << current_layer_size << endl;
+            total_biases += current_layer_size;
+            current_layer_size = max(64, current_layer_size / 2);
+        }
+        cout << "Output layer biases: " << output_layer << endl;
+        total_biases += output_layer;
+
+        cout << "Total biases to generate: " << total_biases << endl;
+
+        // Initialize biases with small positive values for ReLU layers
+        startingBiases.reserve(total_biases);
+
+        // Hidden layer biases (small positive initialization for ReLU)
+        current_layer_size = number_node_per_hidden;
+        for (int i = 0; i < number_hidden_layers; i++) {
+            for (int n = 0; n < current_layer_size; n++) {
+                startingBiases.push_back(getRandom(0.0, 0.1));  // Small positive bias
+            }
+            current_layer_size = max(64, current_layer_size / 2);
+        }
+
+        // Output layer biases (zero-centered for sigmoid)
         for (int i = 0; i < output_layer; i++) {
             startingBiases.push_back(getRandom(-0.5, 0.5));
         }
 
+        cout << "Generated " << startingBiases.size() << " biases" << endl;
         return startingBiases;
     }
 
@@ -309,7 +427,10 @@ namespace Rebecca {
         void run_network(vector<double> inputs, vector<double> correct_outputs);
 
         void resetStatistics();
+
         void backpropigate_network();
+
+        void testNetwork(vector<double> inputs, vector<double> correct_outputs);
 
         pair< unordered_map<int, double>, unordered_map<int, double>> getWeightsAndBiases();
 
@@ -333,9 +454,10 @@ namespace Rebecca {
         vector<unordered_map<int, double>> weights_;
         vector<unordered_map<int, double>> biases_;
 
-        unordered_map<int, double> weight_momentum;
-        unordered_map<int, double> bias_momentum;
-        double momentum_factor = 0.9;
+        double momentum = 0.9;  // Momentum coefficient
+        unordered_map<int, double> prev_weight_changes;
+        unordered_map<int, double> prev_bias_changes;
+        const double weight_decay = 0.0001;
 
         std::mutex statsMutex;
 
@@ -348,6 +470,10 @@ namespace Rebecca {
 
         int backprop_count = 0;
         int upper_backprop_count;
+
+        const int SAVE_INTERVAL; // More frequent saving
+        int save_counter = 0;
+
 
         // Instance-specific ID counters
         int next_ID;  // For nodes
@@ -398,8 +524,11 @@ namespace Rebecca {
 
         void SetWindow(GraphWindow& window) { window_ = &window; }
         void runThreading(const std::vector<double>& image, const std::vector<double>& correct_label_output);
-        void PrintCost();
+        void PrintCost(int netwokIndex);
+
         void render() { if (window_) window_->render(); }
+        NeuralNetwork* getBestNetwork() const { return best_network.get(); }
+        int getHighestPrecisionCount() const { return highest_precision_count; }
         bool isRunning() const { return !shouldStop; }
         void stop() { shouldStop = true; }
 
@@ -409,15 +538,36 @@ namespace Rebecca {
         std::vector<std::unique_ptr<NeuralNetwork>> networks_;
         GraphWindow* window_{nullptr};
         ThreadPool threadPool;
-
+        int highest_precision_count = 0;
+        unique_ptr<NeuralNetwork> best_network;
+        int backpropCount = 0;
+        int upperBackProp;
+        int highest_local_precision_count = 0;
         std::mutex resultsMutex;
         std::mutex costMutex;
+        std::mutex best_network_mutex;
         const size_t batchSize;
 
+        const int VAGUE_THRESHOLD = 5;
+        const int PRECISE_THRESHOLD = 3;
+        bool thresholdMet = false;
+
+        mutable mutex test_data_mutex;
+
+        string TestDataFileImage = "Testing-Data-Images.idx3-ubyte";
+        string TestDataFileLabel = "TestingData-labels.idx1-ubyte";
+
+        vector<vector<double>> testImages;
+        vector<int> testLabels;
         std::atomic<bool> shouldStop{false};
         std::atomic<bool> costUpdateInProgress{false};
         std::vector<bool> processingComplete;
         std::atomic<size_t> processedNetworks{0};
+
+        int warmup_counter = 0;  // Track runs since last propagation
+        const int WARMUP_PERIOD = 0;
+
+
 
         void trainNetwork(size_t networkIndex, const std::vector<double>& input,
                          const std::vector<double>& correct_output);
