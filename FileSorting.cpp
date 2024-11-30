@@ -75,7 +75,7 @@ int main() {
         string filePath = filePaths.front();
         filePaths.pop();
         NeuralNetwork network(input_layer, number_hidden_layers, number_node_per_hidden,
-                  output_layer, 1.0,"../Best/0.000000/Network.bin", 105, true);
+                  output_layer, 1.0,DIR+"3.453878/Network.bin", 105, true);
 
         // Reset network statistics before evaluation
         network.resetStatistics();

@@ -246,6 +246,7 @@ namespace Rebecca {
         double bias;
         double activation_value;
         double error_value = 0;
+        double pre_activation;
 
         // Constructor
         Node(int node_layer, int& nextID, double _bais);
