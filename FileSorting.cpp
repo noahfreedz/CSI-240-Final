@@ -61,8 +61,8 @@ int main() {
 
     int input_layer = 784;
     int output_layer = 10;
-    int number_hidden_layers = 2;
-    int number_node_per_hidden = 128;
+    int number_hidden_layers = 3;
+    int number_node_per_hidden = 512;
 
     for (const auto& entry : directory_iterator(DIR)) {
         filePaths.push(entry.path().filename().string());
@@ -84,7 +84,7 @@ int main() {
         for(int i = 0; i < 100; i++) {
             vector<double> correct_label_output(10, 0.0);
             correct_label_output[labels[i]] = 1.0;
-            network.run_network(images[i], correct_label_output);
+            network.testNetwork(images[i], correct_label_output);
         }
 
         // Get final statistics after all runs

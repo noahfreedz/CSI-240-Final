@@ -5,6 +5,7 @@
 #include <numeric>
 #include <thread>
 #include <mutex>
+#include <valarray>
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
@@ -95,13 +96,16 @@ namespace Rebecca {
         cout << "Bias average: " << bias_sum / biases.size() << endl;
     }
 
-    inline double relu(double x) {
+    inline double relu_derivative(double x) {
+        return x > 0 ? 1.0 : 0.0;
+    }
+
+    double relu(double x) {
         return std::max(0.0, x);
     }
 
-    // And its derivative for backpropagation
-    inline double relu_derivative(double x) {
-        return x > 0 ? 1.0 : 0.0;
+    double softmax(double x, double sum) {
+        return std::exp(x) / sum;
     }
 
     inline unordered_map<int, double> average(vector<unordered_map<int, double>>& _vector)
@@ -290,12 +294,11 @@ namespace Rebecca {
         current_layer_size = number_node_per_hidden;
         for (int i = 0; i < number_hidden_layers; i++) {
             for (int n = 0; n < current_layer_size; n++) {
-                startingBiases.push_back(getRandom(0.0, 0.1));  // Small positive bias
+                startingBiases.push_back(0.01);  // Small positive bias
             }
             current_layer_size = max(64, current_layer_size / 2);
         }
 
-        // Output layer biases (zero-centered for sigmoid)
         for (int i = 0; i < output_layer; i++) {
             startingBiases.push_back(getRandom(-0.5, 0.5));
         }
@@ -327,6 +330,7 @@ namespace Rebecca {
         unordered_map<int, connection*> backward_connections;
 
         void setActivationValue(double x);
+        double batch_normalize(double x);
 
         void calculate_node();
     };
@@ -410,6 +414,59 @@ namespace Rebecca {
         int vauge_correct_count = 0;
         int precise_correct_count = 0;
 
+        using Matrix = std::valarray<std::valarray<double>>;
+
+        using WeightMatrix = vector<vector<double>>;
+
+        WeightMatrix convertToMatrix(const vector<unordered_map<int, double>>& maps) {
+            size_t rows = maps.size();
+            size_t maxCol = 0;
+
+            // Find max column index
+            for(const auto& map : maps) {
+                for(const auto& [id, _] : map) {
+                    maxCol = max(maxCol, static_cast<size_t>(id + 1));
+                }
+            }
+
+            // Initialize matrix with zeros
+            WeightMatrix matrix(rows, vector<double>(maxCol, 0.0));
+
+            // Fill matrix
+            for(size_t i = 0; i < maps.size(); i++) {
+                for(const auto& [id, val] : maps[i]) {
+                    matrix[i][id] = val;
+                }
+            }
+            return matrix;
+        }
+
+        unordered_map<int, double> averageMatrix(const WeightMatrix& matrix) {
+            unordered_map<int, double> result;
+            if(matrix.empty()) return result;
+
+            size_t cols = matrix[0].size();
+            for(size_t j = 0; j < cols; j++) {
+                double sum = 0.0;
+                int count = 0;
+                for(size_t i = 0; i < matrix.size(); i++) {
+                    if(matrix[i][j] != 0.0) {
+                        sum += matrix[i][j];
+                        count++;
+                    }
+                }
+                if(count > 0) {
+                    result[j] = sum / count;
+                }
+            }
+            return result;
+        }
+
+        unordered_map<int, double> batchAverage(const vector<unordered_map<int, double>>& updates) {
+            auto matrix = convertToMatrix(updates);
+            return averageMatrix(matrix);
+        }
+
         //NeuralNetwork(){}
         NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count, int oNode_count, double _learning_rate, int backprop_after);
 
@@ -424,11 +481,9 @@ namespace Rebecca {
 
         ~NeuralNetwork();
 
-        void run_network(vector<double> inputs, vector<double> correct_outputs);
+        void backpropigate_network(const vector<double>& inputs, const vector<double>& correct_outputs);
 
         void resetStatistics();
-
-        void backpropigate_network();
 
         void testNetwork(vector<double> inputs, vector<double> correct_outputs);
 
@@ -457,7 +512,7 @@ namespace Rebecca {
         double momentum = 0.9;  // Momentum coefficient
         unordered_map<int, double> prev_weight_changes;
         unordered_map<int, double> prev_bias_changes;
-        const double weight_decay = 0.0001;
+        const double weight_decay = 0.001;
 
         std::mutex statsMutex;
 

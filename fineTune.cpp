@@ -31,7 +31,7 @@ int main() {
     int output_layer = 10;
     int number_hidden_layers = 3;
     int number_node_per_hidden = 512;
-    int runs_tell_backprop = 10;
+    int runs_tell_backprop = 100;
 
     vector<double> startingWeights = generateStartingWeights(input_layer, number_hidden_layers, number_node_per_hidden, output_layer);
     vector<double> startingBiases = generateStartingBiases(number_hidden_layers, number_node_per_hidden, output_layer);
