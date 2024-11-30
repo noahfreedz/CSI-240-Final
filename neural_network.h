@@ -196,114 +196,39 @@ namespace Rebecca {
     }
 
     inline vector<double> generateStartingWeights(int input_layer, int number_hidden_layers, int number_node_per_hidden, int output_layer) {
-    vector<double> startingWeights;
-    int total_weights = 0;
+        vector<double> startingWeights;
 
-    // Calculate total weights needed
-    // Input to first hidden layer
-    int input_weights = input_layer * number_node_per_hidden;
-    cout << "Input to first hidden weights: " << input_weights << endl;
-    total_weights += input_weights;
-
-    // Weights between hidden layers
-    int current_layer_size = number_node_per_hidden;
-    for (int i = 0; i < number_hidden_layers - 1; i++) {
-        int next_layer_size = max(64, current_layer_size / 2);
-        int layer_weights = current_layer_size * next_layer_size;
-        cout << "Hidden layer " << i << " to " << (i+1) << " weights: " << layer_weights << endl;
-        total_weights += layer_weights;
-        current_layer_size = next_layer_size;
-    }
-
-    // Last hidden to output layer
-    int output_weights = current_layer_size * output_layer;
-    cout << "Last hidden to output weights: " << output_weights << endl;
-    total_weights += output_weights;
-
-    cout << "Total weights to generate: " << total_weights << endl;
-
-    // Reserve space for efficiency
-    startingWeights.reserve(total_weights);
-
-    // Generate properly scaled weights
-    // Input to first hidden layer
-    double input_scale = sqrt(2.0 / input_layer);
-    for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
-        startingWeights.push_back(getRandom(-2, 2) * input_scale);
-    }
-
-    // Between hidden layers
-    current_layer_size = number_node_per_hidden;
-    for (int layer = 0; layer < number_hidden_layers - 1; layer++) {
-        int next_layer_size = max(64, current_layer_size / 2);
-        double scale = sqrt(2.0 / current_layer_size);
-
-        for (int i = 0; i < current_layer_size * next_layer_size; i++) {
-            startingWeights.push_back(getRandom(-2, 2) * scale);
+        // Weights for connections from input layer to first hidden layer
+        for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
+            startingWeights.push_back(getRandom(-2, 2));
         }
 
-        current_layer_size = next_layer_size;
+        // Weights for connections between hidden layers
+        for (int i = 0; i < (number_hidden_layers - 1) * number_node_per_hidden * number_node_per_hidden; i++) {
+            startingWeights.push_back(getRandom(-2, 2));
+        }
+
+        // Weights for connections from last hidden layer to output layer
+        for (int i = 0; i < number_node_per_hidden * output_layer; i++) {
+            startingWeights.push_back(getRandom(-2, 2));
+        }
+
+        return startingWeights;
     }
-
-    // Last hidden to output layer
-    double output_scale = sqrt(2.0 / current_layer_size);
-    for (int i = 0; i < current_layer_size * output_layer; i++) {
-        startingWeights.push_back(getRandom(-2, 2) * output_scale);
-    }
-
-    cout << "Generated " << startingWeights.size() << " weights" << endl;
-
-    // Calculate and print weight statistics
-    double min_weight = startingWeights[0];
-    double max_weight = startingWeights[0];
-    double sum_weight = 0;
-
-    for (const double& w : startingWeights) {
-        min_weight = min(min_weight, w);
-        max_weight = max(max_weight, w);
-        sum_weight += w;
-    }
-
-    cout << "Weight statistics:" << endl;
-    cout << "  Range: [" << min_weight << ", " << max_weight << "]" << endl;
-    cout << "  Average: " << sum_weight / startingWeights.size() << endl;
-
-    return startingWeights;
-}
 
     inline vector<double> generateStartingBiases(int number_hidden_layers, int number_node_per_hidden, int output_layer) {
         vector<double> startingBiases;
-        int total_biases = 0;
 
-        // Calculate total biases needed
-        int current_layer_size = number_node_per_hidden;
-        for (int i = 0; i < number_hidden_layers; i++) {
-            cout << "Hidden layer " << i << " biases: " << current_layer_size << endl;
-            total_biases += current_layer_size;
-            current_layer_size = max(64, current_layer_size / 2);
-        }
-        cout << "Output layer biases: " << output_layer << endl;
-        total_biases += output_layer;
-
-        cout << "Total biases to generate: " << total_biases << endl;
-
-        // Initialize biases with small positive values for ReLU layers
-        startingBiases.reserve(total_biases);
-
-        // Hidden layer biases (small positive initialization for ReLU)
-        current_layer_size = number_node_per_hidden;
-        for (int i = 0; i < number_hidden_layers; i++) {
-            for (int n = 0; n < current_layer_size; n++) {
-                startingBiases.push_back(0.01);  // Small positive bias
-            }
-            current_layer_size = max(64, current_layer_size / 2);
+        // Biases for hidden layers
+        for (int i = 0; i < number_hidden_layers * number_node_per_hidden; i++) {
+            startingBiases.push_back(getRandom(0,0.2));
         }
 
+        // Biases for output layer
         for (int i = 0; i < output_layer; i++) {
-            startingBiases.push_back(getRandom(-0.5, 0.5));
+            startingBiases.push_back(getRandom(0,0.2));
         }
 
-        cout << "Generated " << startingBiases.size() << " biases" << endl;
         return startingBiases;
     }
 

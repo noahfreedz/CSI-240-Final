@@ -75,7 +75,7 @@ int main() {
         string filePath = filePaths.front();
         filePaths.pop();
         NeuralNetwork network(input_layer, number_hidden_layers, number_node_per_hidden,
-                  output_layer, 1.0, DIR + filePath + "/Network.bin", 105, true);
+                  output_layer, 1.0,"../Best/0.000000/Network.bin", 105, true);
 
         // Reset network statistics before evaluation
         network.resetStatistics();
@@ -92,6 +92,7 @@ int main() {
         Points.emplace(filePath, Point_System(network.precise_correct_count,
                                             network.vauge_correct_count,
                                             final_cost));
+        cout << network.precise_correct_count <<endl;
     }
 
     for(auto net : Points) {
