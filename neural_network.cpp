@@ -33,6 +33,7 @@ void debugNodeCalculation(const Node& node, double connection_total) {
     cout << "Bias: " << node.bias << endl;
     cout << "Final pre-ReLU value: " << (connection_total - node.bias) << endl;
 }
+
 Node::Node(int node_layer, int& nextID, double _bais) : activation_value(0.0), layer(node_layer) {
             ID = nextID;
             nextID++;
@@ -66,10 +67,13 @@ void Node::calculate_node() {
             connection_total += pair.second->start_address->activation_value *
                               pair.second->weight;
         }
-        if (layer == 4) {  // Output layer
-            activation_value = sigmoid(connection_total - bias);
-        } else {  // Hidden layers
-            activation_value = relu(connection_total - bias);
+        const double leaky_alpha = 0.2;
+        if (layer == 3) {
+            activation_value = sigmoid(connection_total);
+        } else {
+            activation_value = connection_total > 0 ?
+                connection_total :
+                (leaky_alpha * connection_total);
         }
     }
 }
@@ -150,13 +154,12 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
 
                 // Create hidden layers
                 int current_layer_nodes = hNode_count;  // Start with initial count (e.g. 512)
-                const int MIN_NODES = 64;  // Don't go below this number
                 for (int l = 0; l < hLayer_count; l++) {
                     for (int n = 0; n < current_layer_nodes; n++) {
                         Node newHiddenNode(l+1, next_ID, _startingBiases[n*(l+1)]);
                         allNodes.push_back(newHiddenNode);
                     }
-                    current_layer_nodes = max(MIN_NODES, current_layer_nodes / 2);  // Halve but don't go below minimum
+                    current_layer_nodes = current_layer_nodes /2;
                     last_layer++;
                 }
 
@@ -213,13 +216,12 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
 
     // Create hidden layers
     int current_layer_nodes = hNode_count;  // Start with initial count (e.g. 512)
-    const int MIN_NODES = 64;  // Don't go below this number
     for (int l = 0; l < hLayer_count; l++) {
         for (int n = 0; n < current_layer_nodes; n++) {
             Node newHiddenNode(l+1, next_ID, 0);
             allNodes.push_back(newHiddenNode);
         }
-        current_layer_nodes = max(MIN_NODES, current_layer_nodes / 2);  // Halve but don't go below minimum
+        current_layer_nodes = current_layer_nodes /2;
         last_layer++;
     }
 
@@ -277,13 +279,12 @@ NeuralNetwork::NeuralNetwork(int iNode_count, int hLayer_count, int hNode_count,
 
     // Create hidden layers
     int current_layer_nodes = hNode_count;  // Start with initial count (e.g. 512)
-    const int MIN_NODES = 64;  // Don't go below this number
+
     for (int l = 0; l < hLayer_count; l++) {
         for (int n = 0; n < current_layer_nodes; n++) {
             Node newHiddenNode(l+1, next_ID, 0);
             allNodes.push_back(newHiddenNode);
         }
-        current_layer_nodes = max(MIN_NODES, current_layer_nodes / 2);  // Halve but don't go below minimum
         last_layer++;
     }
 
@@ -351,116 +352,157 @@ void NeuralNetwork::backpropigate_network(const vector<double>& inputs, const ve
     while (current_layer <= last_layer) {
         for (auto& node : allNodes) {
             if (node.layer == current_layer) {
-                node.calculate_node();
+                double connection_total = 0;
+                for (const auto& pair : node.backward_connections) {
+                    connection_total += pair.second->start_address->activation_value *
+                                     pair.second->weight;
+                }
+
+                node.pre_activation = connection_total - node.bias;
+
+                // Use ReLU for hidden layers
+                if (current_layer != last_layer) {
+                    node.activation_value = max(0.0, node.pre_activation);
+                } else {
+                    // Store raw values for softmax
+                    node.activation_value = node.pre_activation;
+                }
+            }
+        }
+
+        // Apply softmax to output layer
+        if (current_layer == last_layer) {
+            // Compute softmax with numerical stability
+            double max_val = -numeric_limits<double>::infinity();
+            for (auto& node : allNodes) {
+                if (node.layer == last_layer) {
+                    max_val = max(max_val, node.activation_value);
+                }
+            }
+
+            double sum_exp = 0.0;
+            for (auto& node : allNodes) {
+                if (node.layer == last_layer) {
+                    node.activation_value = exp(node.activation_value - max_val);
+                    sum_exp += node.activation_value;
+                }
+            }
+
+            // Normalize
+            for (auto& node : allNodes) {
+                if (node.layer == last_layer) {
+                    node.activation_value /= sum_exp;
+                }
             }
         }
         current_layer++;
     }
 
-    // Calculate softmax activation for output layer
-    double sum = 0;
-    for (auto& node : allNodes) {
-        if (node.layer == last_layer) {
-            sum += std::exp(node.activation_value);
-        }
-    }
-    for (auto& node : allNodes) {
-        if (node.layer == last_layer) {
-            node.activation_value = std::exp(node.activation_value) / sum;
-        }
-    }
-
-    // Save network periodically
-    save_counter++;
-    if (save_counter >= SAVE_INTERVAL) {
-        cout << "Saving network data at counter: " << save_counter << endl;
-        saveNetworkData();
-        save_counter = 0;
-    }
-
-    // Learning rate warmup
-    static const double initial_lr_scale = 0.1;
-    static const int warmup_steps = upper_backprop_count * 0.1;
-    double current_lr = learning_rate;
-    if (backprop_count < warmup_steps) {
-        current_lr *= (initial_lr_scale + (1.0 - initial_lr_scale) *
-                      static_cast<double>(backprop_count) / warmup_steps);
-    }
-
-    // Calculate output layer error and cost
-    int output_count = 0;
     double total_cost = 0.0;
+    int output_count = 0;
+
     for (auto& node : allNodes) {
         if (node.layer == last_layer) {
-            double target = correct_outputs[output_count];
-            double actual = node.activation_value;
-            total_cost -= target * std::log(actual);
-            node.error_value = actual - target;
+            double y_true = correct_outputs[output_count];
+            double y_pred = max(1e-15, min(1.0 - 1e-15, node.activation_value));
+
+            // CCE loss for this output
+            if (y_true > 0) {
+                total_cost -= y_true * log(y_pred);
+            }
+
+            // Gradient for softmax with CCE is simple: prediction - target
+            node.error_value = y_pred - y_true;
             output_count++;
         }
     }
 
+    // Store the cost (add this section)
+    {
+        lock_guard<mutex> lock(cost_mutex);
+        if (isfinite(total_cost) && total_cost > 0) {
+            average_cost.push_back(total_cost);
+        }
+    }
+
+    // Add L2 regularization to cost if weight decay is enabled
+    if (weight_decay > 0) {
+        double l2_cost = 0.0;
+        for (const auto& connection : allConnections) {
+            l2_cost += 0.5 * weight_decay * pow(connection.second.weight, 2);
+        }
+        total_cost += l2_cost;
+    }
+
+    // Backpropagate through hidden layers
     for (int i = last_layer - 1; i > 0; i--) {
         for (auto& node : allNodes) {
             if (node.layer == i) {
                 double error_sum = 0.0;
-                for (auto& connection : node.forward_connections) {
-                    double contribution = connection.second->weight *
-                                        connection.second->end_address->error_value;
-                    error_sum += contribution;
+                for (const auto& connection : node.forward_connections) {
+                    error_sum += connection.second->weight *
+                                connection.second->end_address->error_value;
                 }
-                node.error_value = relu_derivative(node.activation_value) * error_sum;
+                // ReLU derivative
+                node.error_value = error_sum * (node.pre_activation > 0 ? 1.0 : 0.0);
             }
         }
     }
 
-    {
-        std::lock_guard<std::mutex> lock(cost_mutex);
-        average_cost.push_back(total_cost);
-    }
+    // Update weights with improved gradient scaling
+    const double scale_factor = 1.0 / sqrt(backprop_count + 1);
 
     unordered_map<int, double> newWeights;
     unordered_map<int, double> newBiases;
 
-    // Calculate new weights
     for (auto& connection : allConnections) {
         double nodeError = connection.second.end_address->error_value;
         double activation = connection.second.start_address->activation_value;
-        double weightChange = current_lr * nodeError * activation;
 
-        // Apply momentum
+        // Scale the learning rate based on layer depth
+        double effective_lr = learning_rate * scale_factor;
+
+        double raw_weight_change = effective_lr * nodeError * activation;
+        raw_weight_change -= weight_decay * connection.second.weight;
+
+        double weightChange = raw_weight_change;
         if (prev_weight_changes.find(connection.second.ID) != prev_weight_changes.end()) {
             weightChange += momentum * prev_weight_changes[connection.second.ID];
         }
+
         prev_weight_changes[connection.second.ID] = weightChange;
 
-        newWeights[connection.second.ID] = connection.second.weight + weightChange;
+        // Gradient clipping
+        weightChange = max(-0.1, min(0.1, weightChange));
+
+        double new_weight = connection.second.weight + weightChange;
+        newWeights[connection.second.ID] = new_weight;
     }
 
-    // Calculate new biases
+    // Update biases with similar improvements
     for (auto& node : allNodes) {
         if (node.layer != 0) {
-            double biasChange = current_lr * node.error_value;
+            double effective_lr = learning_rate * scale_factor;
+            double biasChange = effective_lr * node.error_value;
 
-            // Apply momentum
             if (prev_bias_changes.find(node.ID) != prev_bias_changes.end()) {
                 biasChange += momentum * prev_bias_changes[node.ID];
             }
+
             prev_bias_changes[node.ID] = biasChange;
 
-            newBiases[node.ID] = node.bias + biasChange;
+            // Gradient clipping for biases
+            biasChange = max(-0.1, min(0.1, biasChange));
+
+            double new_bias = node.bias + biasChange;
+            newBiases[node.ID] = new_bias;
         }
     }
 
     weights_.push_back(newWeights);
     biases_.push_back(newBiases);
 
-    backprop_count++;
-    if (backprop_count % (upper_backprop_count / 10) == 0) {
-        cout << "\nProgress: " << backprop_count << "/" << upper_backprop_count << endl;
-    }
-
-    if (backprop_count == upper_backprop_count) {
+    if (++backprop_count == upper_backprop_count) {
         auto avgWeights = batchAverage(weights_);
         auto avgBiases = batchAverage(biases_);
 
@@ -469,19 +511,20 @@ void NeuralNetwork::backpropigate_network(const vector<double>& inputs, const ve
 
         weights_.clear();
         biases_.clear();
-
-        learning_rate *= 0.9999;
-        learning_rate = max(0.00001, learning_rate);
-
         backprop_count = 0;
+
+        // Adaptive learning rate decay
+        learning_rate *= 0.995;  // Slower decay
+        learning_rate = max(0.0001, learning_rate);  // Higher minimum
     }
 }
 
-void NeuralNetwork:: resetStatistics() {
-    std::lock_guard<std::mutex> lock(statsMutex);
+void NeuralNetwork::resetStatistics() {
+    lock_guard<mutex> lock(statsMutex);
     average_cost.clear();
     precise_correct_count = 0;
     vauge_correct_count = 0;
+    guess_correct_count = 0;  // Reset the new counter
 }
 
 pair< unordered_map<int, double>, unordered_map<int, double>>  NeuralNetwork:: getWeightsAndBiases() {
@@ -498,30 +541,37 @@ pair< unordered_map<int, double>, unordered_map<int, double>>  NeuralNetwork:: g
                 return make_pair(newWeights, newBaises);
             }
 
-double NeuralNetwork:: getCost() {
-    std::lock_guard<std::mutex> lock(cost_mutex);
+double NeuralNetwork::getCost() {
+    lock_guard<mutex> lock(cost_mutex);
+
     if (average_cost.empty()) {
         return current_cost;
     }
 
-    double total_cost = 0.0;
-    int count = 0;
-
+    // Calculate median instead of mean for more stability
+    vector<double> valid_costs;
     for (double cost : average_cost) {
-        if (std::isfinite(cost)) {
-            total_cost += cost;
-            count++;
+        if (isfinite(cost) && cost > 0) {
+            valid_costs.push_back(cost);
         }
     }
 
-    if (count == 0) {
+    if (valid_costs.empty()) {
         return current_cost;
     }
 
-    current_cost = total_cost / count;
-    cost_sample_count = count;
+    sort(valid_costs.begin(), valid_costs.end());
+    size_t mid = valid_costs.size() / 2;
 
+    if (valid_costs.size() % 2 == 0) {
+        current_cost = (valid_costs[mid-1] + valid_costs[mid]) / 2.0;
+    } else {
+        current_cost = valid_costs[mid];
+    }
+
+    cost_sample_count = valid_costs.size();
     average_cost.clear();
+
     return current_cost;
 }
 
@@ -670,23 +720,42 @@ void NeuralNetwork::testNetwork(vector<double> inputs, vector<double> correct_ou
     int inputIndex = 0;
     for (auto& node : allNodes) {
         if (node.layer == 0) {
-            node.setActivationValue(inputs[inputIndex++]);
+            node.setActivationValue(inputs[inputIndex]);
+            inputIndex++;
+        }
+    }
+
+    // Track non-zero inputs
+    int nonzero_inputs = 0;
+    double input_sum = 0;
+    for (auto& node : allNodes) {
+        if (node.layer == 0) {
+            if (node.activation_value > 0) {
+                nonzero_inputs++;
+                input_sum += node.activation_value;
+            }
         }
     }
 
     // Forward propagation
-    for(int layer = 1; layer <= last_layer; layer++) {
+    int current_layer = 1;
+    while (current_layer <= last_layer) {
         for (auto& node : allNodes) {
-            if (node.layer == layer) {
-                double sum = 0.0;
-                for (const auto& conn : node.backward_connections) {
-                    sum += conn.second->start_address->activation_value *
-                          conn.second->weight;
+            if (node.layer == current_layer) {
+                double connection_total = 0;
+                for (const auto& pair : node.backward_connections) {
+                    double contribution = pair.second->start_address->activation_value *
+                                        pair.second->weight;
+                    connection_total += contribution;
                 }
-                node.activation_value = (layer == last_layer) ?
-                    sigmoid(sum - node.bias) : relu(sum - node.bias);
+                if (node.layer == last_layer) {
+                    node.activation_value = sigmoid(connection_total - node.bias);
+                } else {
+                    node.activation_value = leaky_relu(connection_total - node.bias);
+                }
             }
         }
+        current_layer++;
     }
 
     // Check accuracy
@@ -694,23 +763,51 @@ void NeuralNetwork::testNetwork(vector<double> inputs, vector<double> correct_ou
     bool vague = true;
     int output_idx = 0;
 
+    // Find highest activation and its index
+    double highest_activation = -1.0;
+    int highest_idx = -1;
+    int correct_idx = -1;
+
+    // First pass - find target index and highest activation
     for (const auto& node : allNodes) {
-        if(node.layer == last_layer) {
+        if (node.layer == last_layer) {
+            if (correct_outputs[output_idx] == 1.0) {
+                correct_idx = output_idx;
+            }
+            if (node.activation_value > highest_activation) {
+                highest_activation = node.activation_value;
+                highest_idx = output_idx;
+            }
+            output_idx++;
+        }
+    }
+
+    // Check if highest activation matches correct index
+    if (highest_idx == correct_idx) {
+        guess_correct_count++;
+    }
+
+    // Reset output_idx for original precision checks
+    output_idx = 0;
+
+    // Original precision checks
+    for (const auto& node : allNodes) {
+        if (node.layer == last_layer) {
             double target = correct_outputs[output_idx++];
             double actual = node.activation_value;
 
-            if(target == 1.0) {
-                if(actual <= 0.9) vague = false;
-                if(actual < 0.9) precise = false;
+            if (target == 1.0) {
+                if (actual <= 0.9) vague = false;
+                if (actual < 0.9) precise = false;
             } else {
-                if(actual > 0.3) vague = false;
-                if(actual > 0.1) precise = false;
+                if (actual > 0.5) vague = false;
+                if (actual > 0.1) precise = false;
             }
         }
     }
 
-    if(precise) precise_correct_count++;
-    if(vague) vauge_correct_count++;
+    if (precise) precise_correct_count++;
+    if (vague) vauge_correct_count++;
 }
 
 void NeuralNetwork::clearConnections() {
@@ -863,6 +960,103 @@ ThreadNetworks::ThreadNetworks(int number_networks, double lower_learning_rate,
 
 }
 
+ThreadNetworks::ThreadNetworks(int number_networks, double learning_rate,
+                             int input_node_count, int base_hidden_layer_count,
+                             int base_total_nodes, int output_node_count,
+                             int backprop_after)
+    : threadPool(std::thread::hardware_concurrency() - 1),
+      batchSize(calculateOptimalBatchSize(number_networks)),
+      upperBackProp(backprop_after)
+{
+    networks_.reserve(number_networks);
+    processingComplete.resize(number_networks, false);
+
+    // Setup test data
+    int numImages = 1000;
+    int numRows = 28;
+    int numCols = 28;
+    testImages = readMNISTImages(TestDataFileImage, numImages, numRows, numCols);
+    testLabels = readMNISTLabels(TestDataFileLabel, numImages);
+
+    // Create variations for each network
+    for (int i = 0; i < number_networks; i++) {
+        // Vary number of hidden layers (base ± 2)
+        int hidden_layers = base_hidden_layer_count;
+        if (i % 5 == 1) hidden_layers = max(1, base_hidden_layer_count - 2);
+        if (i % 5 == 2) hidden_layers = max(1, base_hidden_layer_count - 1);
+        if (i % 5 == 3) hidden_layers = base_hidden_layer_count + 1;
+        if (i % 5 == 4) hidden_layers = base_hidden_layer_count + 2;
+
+        vector<int> nodes_per_layer(hidden_layers);
+        double total_nodes_used = 0;
+
+        // Distribute nodes based on architecture pattern while maintaining total
+        if (i % 4 == 0) {
+            // Pyramidal (decreasing)
+            double factor = base_total_nodes /
+                          (hidden_layers * (1.0 + hidden_layers) / 2.0); // Sum of sequence 1 to n
+            for (int l = 0; l < hidden_layers; l++) {
+                nodes_per_layer[l] = max(32, static_cast<int>(factor * (hidden_layers - l)));
+                total_nodes_used += nodes_per_layer[l];
+            }
+        }
+        else if (i % 4 == 1) {
+            // Inverse pyramidal (increasing)
+            double factor = base_total_nodes /
+                          (hidden_layers * (1.0 + hidden_layers) / 2.0);
+            for (int l = 0; l < hidden_layers; l++) {
+                nodes_per_layer[l] = max(32, static_cast<int>(factor * (l + 1)));
+                total_nodes_used += nodes_per_layer[l];
+            }
+        }
+        else if (i % 4 == 2) {
+            // Diamond (peak in middle)
+            double mid_point = (hidden_layers - 1) / 2.0;
+            double max_height = base_total_nodes / hidden_layers;
+            for (int l = 0; l < hidden_layers; l++) {
+                double distance = abs(l - mid_point);
+                nodes_per_layer[l] = max(32, static_cast<int>(
+                    max_height * (1.0 - 0.5 * (distance / mid_point))));
+                total_nodes_used += nodes_per_layer[l];
+            }
+        }
+        else {
+            // Uniform distribution
+            int nodes_per_layer_uniform = base_total_nodes / hidden_layers;
+            for (int l = 0; l < hidden_layers; l++) {
+                nodes_per_layer[l] = max(32, nodes_per_layer_uniform);
+                total_nodes_used += nodes_per_layer[l];
+            }
+        }
+
+        // Generate weights and biases
+        vector<double> startingWeights = generateStartingWeights(input_node_count, hidden_layers,
+                                                               nodes_per_layer[0], output_node_count);
+        vector<double> startingBiases = generateStartingBiases(hidden_layers,
+                                                             accumulate(nodes_per_layer.begin(),
+                                                                      nodes_per_layer.end(), 0) / hidden_layers,
+                                                             output_node_count);
+
+        // Create network with custom architecture
+        networks_.push_back(make_unique<NeuralNetwork>(
+            input_node_count, hidden_layers, nodes_per_layer[0],
+            output_node_count, learning_rate, startingWeights, startingBiases,
+            backprop_after
+        ));
+
+        // Log network architecture
+        cout << "Network " << i << " architecture:" << endl;
+        cout << "  Hidden layers: " << hidden_layers << endl;
+        cout << "  Nodes per layer: ";
+        for (int nodes : nodes_per_layer) {
+            cout << nodes << " ";
+        }
+        cout << "\n  Total nodes: " << total_nodes_used << endl;
+        cout << "  Average nodes per layer: " << total_nodes_used/hidden_layers << endl;
+        cout << endl;
+    }
+}
+
 void ThreadNetworks::runThreading(const std::vector<double>& image,
                                 const std::vector<double>& correct_label_output) {
     if (shouldStop || costUpdateInProgress) return;
@@ -927,7 +1121,7 @@ void ThreadNetworks::trainNetwork(size_t networkIndex, const vector<double>& inp
         lock_guard<mutex> test_lock(test_data_mutex);
 
         // Run test batch
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < upperBack; i++) {
             int j = getRandom(0, testImages.size() - 1);
             vector<double> test_label(10, 0.0);
             test_label[testLabels[j]] = 1.0;
@@ -936,6 +1130,7 @@ void ThreadNetworks::trainNetwork(size_t networkIndex, const vector<double>& inp
         PrintCost(networkIndex);
     }
 }
+
 void ThreadNetworks::PrintCost(int netwokIndex) {
     if (costUpdateInProgress.exchange(true)) return;
     lock_guard<mutex> lock(costMutex);
@@ -945,26 +1140,23 @@ void ThreadNetworks::PrintCost(int netwokIndex) {
             return;
         }
 
-            auto& network = networks_[netwokIndex];
-            double cost = network->getCost();
-            int precise_count = network->precise_correct_count;
-            int vague_count = network->vauge_correct_count;
+        auto& network = networks_[netwokIndex];
+        double cost = network->getCost();
+        int precise_count = network->precise_correct_count;
+        int vague_count = network->vauge_correct_count;
+        int guess_count = network->guess_correct_count;  // Get new counter
 
-            // Update window data
-            window_->setLearningRate(network->ID, network->getLearningRate());
-            window_->addDataPoint(network->ID, cost);
+        window_->setLearningRate(network->ID, network->getLearningRate());
+        window_->addDataPoint(network->ID, cost);
 
-            // Print network stats
-        cout << network->getLearningRate() << ": (VAGUE) "
-                 << vague_count << "/" << upperBackProp << " (PRECISE) "
-                 << precise_count << "/" << upperBackProp
-                 << " Cost: " << cost << endl;
-        cout << endl; // Add blank line between batches
-        // Reset statistics for next batch
+        cout << network->getLearningRate() << ": (GUESS) "
+             << guess_count << "/" << upperBackProp << " (VAGUE) "
+             << vague_count << "/" << upperBackProp << " (PRECISE) "
+             << precise_count << "/" << upperBackProp
+             << " Cost: " << cost << endl;
+        cout << endl;
 
         network->resetStatistics();
-
-
     } catch (const exception& e) {
         cerr << "Error in PrintCost: " << e.what() << endl;
     }
