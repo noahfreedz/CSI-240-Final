@@ -198,19 +198,23 @@ namespace Rebecca {
     inline vector<double> generateStartingWeights(int input_layer, int number_hidden_layers, int number_node_per_hidden, int output_layer) {
         vector<double> startingWeights;
 
-        // Weights for connections from input layer to first hidden layer
+        // Xavier/Glorot initialization for better convergence
+        // Input to first hidden layer
+        double scale = sqrt(2.0 / (input_layer + number_node_per_hidden));
         for (int i = 0; i < input_layer * number_node_per_hidden; i++) {
-            startingWeights.push_back(getRandom(-2, 2));
+            startingWeights.push_back(getRandom(-scale, scale));
         }
 
-        // Weights for connections between hidden layers
+        // Hidden layer to hidden layer
+        scale = sqrt(2.0 / (number_node_per_hidden + number_node_per_hidden));
         for (int i = 0; i < (number_hidden_layers - 1) * number_node_per_hidden * number_node_per_hidden; i++) {
-            startingWeights.push_back(getRandom(-2, 2));
+            startingWeights.push_back(getRandom(-scale, scale));
         }
 
-        // Weights for connections from last hidden layer to output layer
+        // Last hidden to output layer
+        scale = sqrt(2.0 / (number_node_per_hidden + output_layer));
         for (int i = 0; i < number_node_per_hidden * output_layer; i++) {
-            startingWeights.push_back(getRandom(-2, 2));
+            startingWeights.push_back(getRandom(-scale, scale));
         }
 
         return startingWeights;
@@ -219,19 +223,18 @@ namespace Rebecca {
     inline vector<double> generateStartingBiases(int number_hidden_layers, int number_node_per_hidden, int output_layer) {
         vector<double> startingBiases;
 
-        // Biases for hidden layers
+        // Initialize biases to small values
         for (int i = 0; i < number_hidden_layers * number_node_per_hidden; i++) {
-            startingBiases.push_back(getRandom(0,0.2));
+            startingBiases.push_back(getRandom(-0.1, 0.1));
         }
 
-        // Biases for output layer
+        // Output layer biases
         for (int i = 0; i < output_layer; i++) {
-            startingBiases.push_back(getRandom(0,0.2));
+            startingBiases.push_back(getRandom(-0.1, 0.1));
         }
 
         return startingBiases;
     }
-
     struct connection {
         Node* start_address;
         Node* end_address;
@@ -339,6 +342,7 @@ namespace Rebecca {
         static int nextID;
         int vauge_correct_count = 0;
         int precise_correct_count = 0;
+        int guess_correct_count = 0;
 
         using Matrix = std::valarray<std::valarray<double>>;
 
@@ -435,10 +439,10 @@ namespace Rebecca {
         vector<unordered_map<int, double>> weights_;
         vector<unordered_map<int, double>> biases_;
 
-        double momentum = 0.9;  // Momentum coefficient
+        double momentum = 0.95;  // Momentum coefficient
         unordered_map<int, double> prev_weight_changes;
         unordered_map<int, double> prev_bias_changes;
-        const double weight_decay = 0.001;
+        const double weight_decay = 0.0001;
 
         std::mutex statsMutex;
 
@@ -502,6 +506,10 @@ namespace Rebecca {
                              double upper_learning_rate, int input_node_count,
                              int hidden_layer_count_, int node_per_hidden_layer,
                              int output_node_count, queue<string>& FilePaths, bool fileSorting);
+       ThreadNetworks(int number_networks, double learning_rate,
+                             int input_node_count, int base_hidden_layer_count,
+                             int base_total_nodes, int output_node_count,
+                             int backprop_after);
 
         void SetWindow(GraphWindow& window) { window_ = &window; }
         void runThreading(const std::vector<double>& image, const std::vector<double>& correct_label_output);
