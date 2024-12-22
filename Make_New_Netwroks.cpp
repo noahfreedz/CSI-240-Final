@@ -1,4 +1,5 @@
 
+
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -16,6 +17,7 @@ int main() {
     string labelFilePath = "set1-labels.idx1-ubyte";
 
     int numImages = 60000;
+
     int numRows = 28;
     int numCols = 28;
 

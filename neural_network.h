@@ -247,6 +247,7 @@ namespace Rebecca {
         int ID;
         int layer;
         double bias;
+
         double activation_value;
         double error_value = 0;
         double pre_activation;

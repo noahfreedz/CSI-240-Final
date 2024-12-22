@@ -118,8 +118,8 @@ void GraphWindow::drawGraph() {
 
     try {
         // Calculate global min/max safely
-        double globalMax = -std::numeric_limits<double>::infinity();
-        double globalMin = std::numeric_limits<double>::infinity();
+         double globalMax = -std::numeric_limits<double>::infinity();
+         double globalMin = std::numeric_limits<double>::infinity();
 
         for (const auto& [id, data] : dataSets) {
             if (!data.empty()) {

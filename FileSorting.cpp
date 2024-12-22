@@ -14,6 +14,7 @@ using  namespace Rebecca;
 struct Point_System {
     int _precise_correct_count = 0;
     int _vauge_correct_count = 0;
+
     float _cost = 0.0f;
     int _total_points = 0;
 

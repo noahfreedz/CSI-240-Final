@@ -7,6 +7,7 @@ mutex data_mutex;
 int NeuralNetwork::nextID = 0;
 
 void debugNodeCalculation(const Node& node, double connection_total) {
+
     cout << "\nDetailed analysis of node " << node.ID << ":" << endl;
     cout << "Number of connections: " << node.backward_connections.size() << endl;
 
@@ -25,6 +26,7 @@ void debugNodeCalculation(const Node& node, double connection_total) {
             }
         }
     }
+
 
     cout << "Active inputs: " << active_inputs << endl;
     cout << "Sum of positive contributions: " << sum_pos << endl;

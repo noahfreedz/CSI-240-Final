@@ -14,6 +14,7 @@ using  namespace Rebecca;
 
 int main() {
 
+
     // Paths to MNIST files
      string imageFilePath = "set1-images.idx3-ubyte";
      string labelFilePath = "set1-labels.idx1-ubyte";
